@@ -6,13 +6,13 @@ from acme_dns_auth.authenticate import Authenticate
 
 
 def test_digitalocean_authentication_record_creation(
-        api_key, domain, auth_hostname, auth_token, temporary_filename,
+        api_key, domain, fqdn, auth_token, temporary_filename,
         authorization_header, base_uri):
     # Setup
     create_environment = {
         'DO_API_KEY': api_key,
         'DO_DOMAIN': domain,
-        'CERTBOT_DOMAIN': auth_hostname,
+        'CERTBOT_DOMAIN': fqdn,
         'CERTBOT_VALIDATION': auth_token,
     }
 
@@ -26,7 +26,7 @@ def test_digitalocean_authentication_record_creation(
     response = get(request_uri, headers=authorization_header)
     record_data = response.json()['domain_record']
     assert record_data['type'] == 'TXT' and \
-        record_data['name'] == auth_hostname and \
+        record_data['name'] == fqdn and \
         record_data['data'] == auth_token
 
     # Cleanup

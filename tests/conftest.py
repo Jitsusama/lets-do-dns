@@ -25,8 +25,13 @@ def authorization_header(api_key):
 
 
 @pytest.fixture
-def auth_hostname(domain):
-    return 'test-ssl-host.%s' % domain
+def hostname(domain):
+    return 'test-ssl-host'
+
+
+@pytest.fixture
+def fqdn(hostname, domain):
+    return '%s.%s' % (hostname, domain)
 
 
 @pytest.fixture
@@ -35,5 +40,5 @@ def auth_token():
 
 
 @pytest.fixture
-def temporary_filename(domain, hostname, auth_token):
-    return '/tmp/%s-%s' % (hostname, auth_token)
+def temporary_filename(fqdn, auth_token):
+    return '/tmp/%s-%s' % (fqdn, auth_token)
