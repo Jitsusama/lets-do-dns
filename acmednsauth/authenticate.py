@@ -15,6 +15,7 @@ class Authenticate(object):
 
         record = Record(self.api_key, self.domain, hostname)
         record.create(self.validation_key)
+        record.store()
 
     def _parse_hostname(self):
         domain_start_index = self.fqdn.rfind('.' + self.domain)
