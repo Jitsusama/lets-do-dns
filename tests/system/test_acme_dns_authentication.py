@@ -2,7 +2,7 @@
 
 import os
 from requests import get, delete
-from acme_dns_auth.authenticate import Authenticate
+from acmednsauth.authenticate import Authenticate
 
 
 def test_digitalocean_authentication_record_creation(
