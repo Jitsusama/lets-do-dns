@@ -18,4 +18,4 @@ def test_valid_data_calls_digital_ocean_record_creation(
     Authenticate(environment=create_environment)
 
     record.assert_called_once_with(api_key, domain, hostname)
-    record.has_calls([call().create(auth_token)])
+    assert call().create(auth_token) in record.mock_calls
