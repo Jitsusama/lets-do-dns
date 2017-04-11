@@ -3,12 +3,23 @@ from digitalocean.domain import Record
 
 class Authenticate(object):
     def __init__(self, environment):
-        api_key = environment.get('DO_API_KEY')
-        domain = environment.get('DO_DOMAIN')
-        fqdn = environment.get('CERTBOT_DOMAIN')
-        token = environment.get('CERTBOT_VALIDATION')
+        self.api_key = environment.get('DO_API_KEY')
+        self.domain = environment.get('DO_DOMAIN')
+        self.fqdn = environment.get('CERTBOT_DOMAIN')
+        self.validation_key = environment.get('CERTBOT_VALIDATION')
 
-        hostname = fqdn[0:fqdn.rfind('.' + domain)]
+        self._create_record()
 
-        record = Record(api_key, domain, hostname)
-        record.create(token)
+    def _create_record(self):
+        hostname = self._parse_hostname()
+
+        record = Record(self.api_key, self.domain, hostname)
+        record.create(self.validation_key)
+
+    def _parse_hostname(self):
+        domain_start_index = self.fqdn.rfind('.' + self.domain)
+        fqdn_start_index = 0
+
+        hostname = self.fqdn[fqdn_start_index:domain_start_index]
+
+        return hostname
