@@ -3,6 +3,8 @@ from printer import Printer
 
 
 class Authenticate(object):
+    """Handle letsencrypt DNS certificate identity authentication."""
+
     def __init__(self, environment):
         self.api_key = environment.get('DO_API_KEY')
         self.domain = environment.get('DO_DOMAIN')
