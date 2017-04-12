@@ -27,13 +27,16 @@ def test_triggering_of_record_creation_after_initialization(
     record.assert_has_calls(initialize_then_create)
 
 
+class FakeRecord(object):
+    def __init__(self, a, b, c): pass
+
+    @staticmethod
+    def create(a):
+        return 123456
+
+
 def test_passes_record_id_to_printer_after_record_creation(
         mocker, create_environment):
-
-    class FakeRecord(object):
-        def __init__(self, a, b, c): pass
-        def create(self, a): return 123456
-
     mocker.patch('acmednsauth.authenticate.Record', new=FakeRecord)
     stub_printer = mocker.patch('acmednsauth.authenticate.Printer')
 
