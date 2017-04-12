@@ -15,7 +15,7 @@ def create_environment(api_key, domain, fqdn, auth_token):
     }
 
 
-def test_valid_data_calls_record_creation_after_initialization(
+def test_triggering_of_record_creation_after_initialization(
         mocker, api_key, hostname, domain, auth_token, create_environment):
     record = mocker.patch('acmednsauth.authenticate.Record')
 
@@ -27,7 +27,7 @@ def test_valid_data_calls_record_creation_after_initialization(
     record.assert_has_calls(initialize_then_create)
 
 
-def test_valid_data_writes_to_printer_after_record_creation(
+def test_passes_record_id_to_printer_after_record_creation(
         mocker, create_environment):
 
     class FakeRecord(object):
