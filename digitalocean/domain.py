@@ -4,6 +4,3 @@ class Record(object):
 
     def create(self, value):
         pass
-
-    def store(self):
-        pass
