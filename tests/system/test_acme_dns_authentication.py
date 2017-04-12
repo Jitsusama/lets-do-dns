@@ -6,9 +6,8 @@ from acmednsauth.authenticate import Authenticate
 
 
 def test_digitalocean_authentication_record_creation(
-        api_key, domain, fqdn, auth_token, temporary_filename,
+        capsys, api_key, domain, fqdn, auth_token, temporary_filename,
         authorization_header, base_uri):
-    # Setup
     create_environment = {
         'DO_API_KEY': api_key,
         'DO_DOMAIN': domain,
@@ -16,12 +15,11 @@ def test_digitalocean_authentication_record_creation(
         'CERTBOT_VALIDATION': auth_token,
     }
 
-    # Exercise
     Authenticate(environment=create_environment)
-    temporary_file = open(temporary_filename, 'r')
-    record_id = int(temporary_file.read())
 
-    # Assert
+    record_id, _ = capsys.readouterr()
+    assert int(record_id) > 0
+
     request_uri = '%s/%s/%d' % (base_uri, domain, record_id)
     response = get(request_uri, headers=authorization_header)
     record_data = response.json()['domain_record']
@@ -31,4 +29,3 @@ def test_digitalocean_authentication_record_creation(
 
     # Cleanup
     delete(request_uri, headers=authorization_header)
-    os.remove(temporary_filename)

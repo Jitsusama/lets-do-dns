@@ -1,4 +1,5 @@
 from digitalocean.domain import Record
+from printer import Printer
 
 
 class Authenticate(object):
@@ -14,7 +15,8 @@ class Authenticate(object):
         hostname = self._parse_hostname()
 
         record = Record(self.api_key, self.domain, hostname)
-        record.create(self.validation_key)
+        record_id = record.create(self.validation_key)
+        Printer(record_id)
 
     def _parse_hostname(self):
         domain_start_index = self.fqdn.rfind('.' + self.domain)
