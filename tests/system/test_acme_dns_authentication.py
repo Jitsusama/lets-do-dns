@@ -1,6 +1,5 @@
 """Test the acme_dns_authentication script."""
 
-import os
 from requests import get, delete
 from acmednsauth.authenticate import Authenticate
 
