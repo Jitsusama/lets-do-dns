@@ -1,7 +1,7 @@
 """Test the DigitalOcean backed ACME DNS Authentication Class."""
 
 from acmednsauth.authenticate import Authenticate
-from mock import call, ANY
+from mock import call
 import pytest
 
 
