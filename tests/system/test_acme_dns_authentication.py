@@ -25,7 +25,7 @@ def test_digitalocean_authentication_record_creation(
 
     # Verify that the authentication process created the proper DNS record
     # with DigitalOcean.
-    request_uri = '%s/%s/%d' % (base_uri, domain, record_id)
+    request_uri = '%s/%s/%s' % (base_uri, domain, record_id)
     response = get(request_uri, headers=authorization_header)
     record_data = response.json()['domain_record']
     assert record_data['type'] == 'TXT' and \

@@ -1,3 +1,6 @@
+from digitalocean import http
+
+
 class Record(object):
     """Handle DigitalOcean DNS records."""
 
@@ -5,4 +8,4 @@ class Record(object):
         pass
 
     def create(self, value):
-        pass
+        return http.create()
