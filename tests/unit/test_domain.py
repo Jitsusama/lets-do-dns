@@ -1,4 +1,4 @@
-from do_record.record import Record
+from do_record import Record
 import pytest
 
 
