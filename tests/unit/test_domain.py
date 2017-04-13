@@ -21,5 +21,4 @@ def test_create_properly_calls_http_create(
     record = Record(api_key, domain, hostname)
     record.create(auth_token)
 
-    stub_http_create.assert_called_once_with(
-        api_key, domain, hostname, auth_token)
+    stub_http_create.assert_called_once_with(record, auth_token)

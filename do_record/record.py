@@ -10,4 +10,4 @@ class Record(object):
         self.hostname = hostname
 
     def create(self, value):
-        return http.create(self.api_key, self.domain, self.hostname, value)
+        return http.create(self, value)
