@@ -1,0 +1,8 @@
+# Ignore Python Specific Stuff
+venv
+.cache
+*.pyc
+__pycache__
+
+# Ignore PyCharm Configuration
+.idea
