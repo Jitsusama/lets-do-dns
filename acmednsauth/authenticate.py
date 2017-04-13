@@ -1,4 +1,4 @@
-from digitalocean.domain import Record
+from do_record.domain import Record
 from printer import Printer
 
 

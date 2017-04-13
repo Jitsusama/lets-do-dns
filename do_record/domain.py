@@ -1,4 +1,4 @@
-from digitalocean import http
+from do_record import http
 
 
 class Record(object):
