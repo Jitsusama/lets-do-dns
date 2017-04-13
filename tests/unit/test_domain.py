@@ -1,4 +1,4 @@
-from do_record.domain import Record
+from do_record.record import Record
 import pytest
 
 
@@ -6,7 +6,7 @@ import pytest
 def test_create_returns_record_id_from_created_dns_record(
         mocker, api_key, domain, hostname, auth_token, input_record_id):
     mocker.patch(
-        'do_record.domain.http.create', return_value=input_record_id)
+        'do_record.record.http.create', return_value=input_record_id)
 
     record = Record(api_key, domain, hostname)
     output_record_id = record.create(auth_token)
@@ -16,7 +16,7 @@ def test_create_returns_record_id_from_created_dns_record(
 
 def test_create_properly_calls_http_create(
         mocker, api_key, domain, hostname, auth_token):
-    stub_http_create = mocker.patch('do_record.domain.http.create')
+    stub_http_create = mocker.patch('do_record.record.http.create')
 
     record = Record(api_key, domain, hostname)
     record.create(auth_token)
