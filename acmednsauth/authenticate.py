@@ -1,5 +1,5 @@
 from do_record import Record
-from printer import Printer
+from printer import printer
 
 
 class Authenticate(object):
@@ -18,7 +18,7 @@ class Authenticate(object):
 
         record = Record(self.api_key, self.domain, hostname)
         record_id = record.create(self.validation_key)
-        Printer(record_id)
+        printer(record_id)
 
     def _parse_hostname(self):
         domain_start_index = self.fqdn.rfind('.' + self.domain)

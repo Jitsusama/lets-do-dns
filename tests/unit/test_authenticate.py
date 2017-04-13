@@ -38,8 +38,8 @@ class FakeRecord(object):
 def test_passes_record_id_to_printer_after_record_creation(
         mocker, create_environment):
     mocker.patch('acmednsauth.authenticate.Record', new=FakeRecord)
-    stub_printer = mocker.patch('acmednsauth.authenticate.Printer')
+    stub_printer = mocker.patch('acmednsauth.authenticate.printer')
 
     Authenticate(environment=create_environment)
 
-    stub_printer.assert_has_calls([call(123456)])
+    stub_printer.assert_called_once_with(123456)

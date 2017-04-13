@@ -1,5 +1,3 @@
-class Printer(object):
+def printer(message):
     """Write messages to STDOUT."""
-
-    def __init__(self, message):
-        print message
+    print message
