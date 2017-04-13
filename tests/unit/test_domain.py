@@ -12,3 +12,14 @@ def test_create_returns_record_id_from_created_dns_record(
     output_record_id = record.create(auth_token)
 
     assert input_record_id == output_record_id
+
+
+def test_create_properly_calls_http_create(
+        mocker, api_key, domain, hostname, auth_token):
+    stub_http_create = mocker.patch('digitalocean.domain.http.create')
+
+    record = Record(api_key, domain, hostname)
+    record.create(auth_token)
+
+    stub_http_create.assert_called_once_with(
+        api_key, domain, hostname, auth_token)
