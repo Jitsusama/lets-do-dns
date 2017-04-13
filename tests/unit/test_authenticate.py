@@ -16,7 +16,9 @@ def create_environment(api_key, domain, fqdn, auth_token):
 
 
 def test_triggering_of_record_creation_after_initialization(
-        mocker, api_key, hostname, domain, auth_token, create_environment):
+        mocker, api_key, hostname, domain, auth_token,
+        create_environment):
+    mocker.patch('acmednsauth.authenticate.printer')
     record = mocker.patch('acmednsauth.authenticate.Record')
 
     Authenticate(environment=create_environment)
@@ -31,8 +33,7 @@ class FakeRecord(object):
     def __init__(self, a, b, c): pass
 
     @staticmethod
-    def create(a):
-        return 123456
+    def create(_): return 123456
 
 
 def test_passes_record_id_to_printer_after_record_creation(

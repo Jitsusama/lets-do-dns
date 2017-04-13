@@ -1,6 +1,6 @@
 from do_record.http import create
 from mock import call
-import pytest
+
 
 class StubRecord(object):
     def __init__(self, api_key, domain, hostname):
