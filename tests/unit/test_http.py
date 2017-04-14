@@ -59,3 +59,15 @@ class TestCreate(object):
         response = create(stub_record, AUTH_TOKEN)
 
         assert int(response) == input_record_id
+
+    def test_calls_response_with_post_response(self, mocker, stub_record):
+        mocker.patch('do_record.http.requests.post', return_value=1)
+        stub_response = mocker.patch('do_record.http.Response')
+
+        create(stub_record, AUTH_TOKEN)
+
+        stub_response.assert_called_with(1)
+
+
+class TestResponse(object):
+    pass
