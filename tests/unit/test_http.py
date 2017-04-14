@@ -17,6 +17,15 @@ class StubRecord(object):
         self.hostname = hostname
 
 
+def test_create_calls_post(mocker):
+    fake_requests = mocker.patch('do_record.http.requests.post')
+    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
+
+    create(stub_record, AUTH_TOKEN)
+
+    fake_requests.assert_called_once()
+
+
 def test_create_calls_correct_uri(
         mocker, api_key, domain, hostname, auth_token):
     fake_requests = mocker.patch('do_record.http.requests')
