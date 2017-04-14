@@ -26,7 +26,7 @@ def test_create_calls_correct_uri(
 
     do_record_put_uri = (
         'https://api.digitalocean.com/v2/domains/grrbrr.ca/%s' % hostname)
-    call_put_properly = [call.put(do_record_put_uri, headers=ANY)]
+    call_put_properly = [call.push(do_record_put_uri, headers=ANY)]
 
     fake_requests.assert_has_calls(call_put_properly)
 
@@ -37,7 +37,7 @@ def test_create_passes_authorization_header(mocker):
 
     create(stub_record, AUTH_TOKEN)
 
-    call_put_properly = [call.put(ANY, headers=AUTHORIZATION_HEADER)]
+    call_put_properly = [call.push(ANY, headers=AUTHORIZATION_HEADER)]
 
     fake_requests.assert_has_calls(call_put_properly)
 
