@@ -2,30 +2,30 @@
 
 from acmednsauth.authenticate import Authenticate
 from mock import call
-import pytest
+
+API_KEY = 'super-secret-key'
+AUTHORIZATION_HEADER = {'Authorization': 'Bearer %s' % API_KEY}
+AUTH_TOKEN = 'validate-with-this'
+DOMAIN = 'grrbrr.ca'
+HOSTNAME = 'testing-ssl-host'
+
+CREATE_ENVIRONMENT = {
+   'DO_API_KEY': API_KEY,
+   'DO_DOMAIN': DOMAIN,
+   'CERTBOT_DOMAIN': '%s.%s' % (HOSTNAME, DOMAIN),
+   'CERTBOT_VALIDATION': AUTH_TOKEN
+}
 
 
-@pytest.fixture()
-def create_environment(api_key, domain, fqdn, auth_token):
-    return {
-        'DO_API_KEY': api_key,
-        'DO_DOMAIN': domain,
-        'CERTBOT_DOMAIN': fqdn,
-        'CERTBOT_VALIDATION': auth_token,
-    }
-
-
-def test_triggering_of_record_creation_after_initialization(
-        mocker, api_key, hostname, domain, auth_token,
-        create_environment):
+def test_triggering_of_record_creation_after_initialization(mocker):
     mocker.patch('acmednsauth.authenticate.printer')
     record = mocker.patch('acmednsauth.authenticate.Record')
 
-    Authenticate(environment=create_environment)
+    Authenticate(environment=CREATE_ENVIRONMENT)
 
     initialize_then_create = [
-        call(api_key, domain, hostname),
-        call().create(auth_token)]
+        call(API_KEY, DOMAIN, HOSTNAME),
+        call().create(AUTH_TOKEN)]
     record.assert_has_calls(initialize_then_create)
 
 
@@ -36,11 +36,10 @@ class FakeRecord(object):
     def create(_): return 123456
 
 
-def test_passes_record_id_to_printer_after_record_creation(
-        mocker, create_environment):
+def test_passes_record_id_to_printer_after_record_creation(mocker):
     mocker.patch('acmednsauth.authenticate.Record', new=FakeRecord)
     stub_printer = mocker.patch('acmednsauth.authenticate.printer')
 
-    Authenticate(environment=create_environment)
+    Authenticate(environment=CREATE_ENVIRONMENT)
 
     stub_printer.assert_called_once_with(123456)

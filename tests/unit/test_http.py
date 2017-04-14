@@ -2,12 +2,11 @@ from do_record.http import create
 from mock import call, ANY
 import pytest
 
-API_KEY = (
-    'b7e303ba3771d024c0f1a62b9b8d1ad35d4c7db5a2a6ce69962618eb89a9276c')
+API_KEY = 'shhhhhhhhh'
 AUTHORIZATION_HEADER = {'Authorization': 'Bearer %s' % API_KEY}
-AUTH_TOKEN = 'validate-with-this'
+AUTH_TOKEN = 'validate-with-another'
 DOMAIN = 'grrbrr.ca'
-HOSTNAME = 'test-ssl-host'
+HOSTNAME = 'test-ssl-hostie'
 
 
 class StubRecord(object):
@@ -26,15 +25,14 @@ def test_create_calls_post(mocker):
     fake_requests.assert_called_once()
 
 
-def test_create_calls_correct_uri(
-        mocker, api_key, domain, hostname, auth_token):
+def test_create_calls_correct_uri(mocker):
     fake_requests = mocker.patch('do_record.http.requests')
-    stub_record = StubRecord(api_key, domain, hostname)
+    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
-    create(stub_record, auth_token)
+    create(stub_record, AUTH_TOKEN)
 
     do_record_put_uri = (
-        'https://api.digitalocean.com/v2/domains/grrbrr.ca/%s' % hostname)
+        'https://api.digitalocean.com/v2/domains/grrbrr.ca/%s' % HOSTNAME)
     call_put_properly = [call.post(do_record_put_uri, headers=ANY)]
 
     fake_requests.assert_has_calls(call_put_properly)
