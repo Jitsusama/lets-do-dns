@@ -16,45 +16,45 @@ class StubRecord(object):
         self.hostname = hostname
 
 
-def test_create_calls_post(mocker):
-    fake_requests = mocker.patch('do_record.http.requests.post')
-    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
+class TestCreate(object):
+    def test_calls_post(self, mocker):
+        fake_requests = mocker.patch('do_record.http.requests.post')
+        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
-    create(stub_record, AUTH_TOKEN)
+        create(stub_record, AUTH_TOKEN)
 
-    fake_requests.assert_called_once()
+        fake_requests.assert_called_once()
 
+    def test_calls_correct_uri(self, mocker):
+        fake_requests = mocker.patch('do_record.http.requests')
+        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
-def test_create_calls_correct_uri(mocker):
-    fake_requests = mocker.patch('do_record.http.requests')
-    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
+        create(stub_record, AUTH_TOKEN)
 
-    create(stub_record, AUTH_TOKEN)
+        do_record_put_uri = (
+            'https://api.digitalocean.com/v2/domains/grrbrr.ca/%s' % (
+                HOSTNAME))
+        call_put_properly = [call.post(do_record_put_uri, headers=ANY)]
 
-    do_record_put_uri = (
-        'https://api.digitalocean.com/v2/domains/grrbrr.ca/%s' % HOSTNAME)
-    call_put_properly = [call.post(do_record_put_uri, headers=ANY)]
+        fake_requests.assert_has_calls(call_put_properly)
 
-    fake_requests.assert_has_calls(call_put_properly)
+    def test_passes_authorization_header(self, mocker):
+        fake_requests = mocker.patch('do_record.http.requests')
+        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
+        create(stub_record, AUTH_TOKEN)
 
-def test_create_passes_authorization_header(mocker):
-    fake_requests = mocker.patch('do_record.http.requests')
-    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
+        call_put_properly = [call.post(ANY, headers=AUTHORIZATION_HEADER)]
 
-    create(stub_record, AUTH_TOKEN)
+        fake_requests.assert_has_calls(call_put_properly)
 
-    call_put_properly = [call.post(ANY, headers=AUTHORIZATION_HEADER)]
+    @pytest.mark.parametrize('input_record_id', [98765, 49586])
+    def test_returns_integer_response(self, mocker, input_record_id):
+        mocker.patch('do_record.http.requests')
+        mocker.patch(
+            'do_record.http.Response', return_value=input_record_id)
+        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
-    fake_requests.assert_has_calls(call_put_properly)
+        response = create(stub_record, AUTH_TOKEN)
 
-
-@pytest.mark.parametrize('input_record_id', [98765, 49586])
-def test_create_returns_integer_response(mocker, input_record_id):
-    mocker.patch('do_record.http.requests')
-    mocker.patch('do_record.http.Response', return_value=input_record_id)
-    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
-
-    response = create(stub_record, AUTH_TOKEN)
-
-    assert int(response) == input_record_id
+        assert int(response) == input_record_id
