@@ -9,7 +9,7 @@ def create(record, value):
     post_uri = '%s/%s/%s' % (BASE_URI, record.domain, record.hostname)
     http_response = requests.post(post_uri, headers=authorization_header)
 
-    return Response(http_response)
+    return response(http_response)
 
 
 def _authorization_header(api_key):
@@ -19,9 +19,3 @@ def _authorization_header(api_key):
 def response(requests_response):
     """A response from DigitalOcean for making an HTTP resource request."""
     return requests_response.json()['domain_record']['id']
-
-
-class Response(object):
-    """A response from DigitalOcean for making an HTTP resource request."""
-    def __init__(self, response):
-        pass

@@ -54,15 +54,15 @@ class TestCreate(object):
             self, mocker, input_record_id, stub_record):
         mocker.patch('do_record.http.requests')
         mocker.patch(
-            'do_record.http.Response', return_value=input_record_id)
+            'do_record.http.response', return_value=input_record_id)
 
-        response = create(stub_record, AUTH_TOKEN)
+        create_response = create(stub_record, AUTH_TOKEN)
 
-        assert int(response) == input_record_id
+        assert create_response == input_record_id
 
     def test_calls_response_with_post_response(self, mocker, stub_record):
         mocker.patch('do_record.http.requests.post', return_value=1)
-        stub_response = mocker.patch('do_record.http.Response')
+        stub_response = mocker.patch('do_record.http.response')
 
         create(stub_record, AUTH_TOKEN)
 
