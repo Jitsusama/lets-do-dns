@@ -9,25 +9,27 @@ DOMAIN = 'grrbrr.ca'
 HOSTNAME = 'test-ssl-hostie'
 
 
-class StubRecord(object):
-    def __init__(self, api_key, domain, hostname):
-        self.api_key = api_key
-        self.domain = domain
-        self.hostname = hostname
+@pytest.fixture()
+def stub_record():
+    class StubRecord(object):
+        def __init__(self, api_key, domain, hostname):
+            self.api_key = api_key
+            self.domain = domain
+            self.hostname = hostname
+
+    return StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
 
 class TestCreate(object):
-    def test_calls_post(self, mocker):
+    def test_calls_post(self, mocker, stub_record):
         fake_requests = mocker.patch('do_record.http.requests.post')
-        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
         create(stub_record, AUTH_TOKEN)
 
         fake_requests.assert_called_once()
 
-    def test_calls_correct_uri(self, mocker):
+    def test_calls_correct_uri(self, mocker, stub_record):
         fake_requests = mocker.patch('do_record.http.requests')
-        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
         create(stub_record, AUTH_TOKEN)
 
@@ -38,9 +40,8 @@ class TestCreate(object):
 
         fake_requests.assert_has_calls(call_put_properly)
 
-    def test_passes_authorization_header(self, mocker):
+    def test_passes_authorization_header(self, mocker, stub_record):
         fake_requests = mocker.patch('do_record.http.requests')
-        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
         create(stub_record, AUTH_TOKEN)
 
@@ -49,11 +50,11 @@ class TestCreate(object):
         fake_requests.assert_has_calls(call_put_properly)
 
     @pytest.mark.parametrize('input_record_id', [98765, 49586])
-    def test_returns_integer_response(self, mocker, input_record_id):
+    def test_returns_integer_response(
+            self, mocker, input_record_id, stub_record):
         mocker.patch('do_record.http.requests')
         mocker.patch(
             'do_record.http.Response', return_value=input_record_id)
-        stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
 
         response = create(stub_record, AUTH_TOKEN)
 
