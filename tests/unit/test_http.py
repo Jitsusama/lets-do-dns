@@ -50,7 +50,7 @@ def test_create_passes_authorization_header(mocker):
 
 
 @pytest.mark.parametrize('input_record_id', [98765, 49586])
-def test_create_returns_response_object(mocker, input_record_id):
+def test_create_returns_integer_response(mocker, input_record_id):
     mocker.patch('do_record.http.requests')
     mocker.patch('do_record.http.Response', return_value=input_record_id)
     stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
