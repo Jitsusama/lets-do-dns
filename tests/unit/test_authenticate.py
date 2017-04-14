@@ -30,7 +30,10 @@ def test_triggering_of_record_creation_after_initialization(mocker):
 
 
 class FakeRecord(object):
-    def __init__(self, a, b, c): pass
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
 
     @staticmethod
     def create(_): return 123456
