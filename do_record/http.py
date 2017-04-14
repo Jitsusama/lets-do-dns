@@ -16,6 +16,11 @@ def _authorization_header(api_key):
     return {'Authorization': 'Bearer %s' % api_key}
 
 
+def response(requests_response):
+    """A response from DigitalOcean for making an HTTP resource request."""
+    return requests_response.json()['domain_record']['id']
+
+
 class Response(object):
     """A response from DigitalOcean for making an HTTP resource request."""
     def __init__(self, response):

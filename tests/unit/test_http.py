@@ -1,4 +1,4 @@
-from do_record.http import create
+from do_record.http import create, response
 from mock import call, ANY
 import pytest
 
@@ -69,5 +69,28 @@ class TestCreate(object):
         stub_response.assert_called_with(1)
 
 
+@pytest.fixture()
+def fake_requests_response():
+    class FakeRequestsResponse(object):
+        def __init__(self, status_code):
+            self.id = None
+            self.status_code = status_code
+            self.ok = True
+
+        def json(self):
+            return {
+                'domain_record': {
+                    'id': self.id, 'type': 'TXT', 'name': HOSTNAME,
+                    'data': AUTH_TOKEN, 'priority': None, 'port': None,
+                    'weight': None}}
+
+    return FakeRequestsResponse(201)
+
+
 class TestResponse(object):
-    pass
+    def test_returns_integer(self, mocker, fake_requests_response):
+        fake_requests_response.id = 987123
+
+        response_result = response(fake_requests_response)
+
+        assert response_result == 987123
