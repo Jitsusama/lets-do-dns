@@ -1,5 +1,12 @@
 from do_record.http import create
-from mock import call
+from mock import call, ANY
+
+API_KEY = (
+    'b7e303ba3771d024c0f1a62b9b8d1ad35d4c7db5a2a6ce69962618eb89a9276c')
+AUTHORIZATION_HEADER = {'Authorization': 'Bearer %s' % API_KEY}
+AUTH_TOKEN = 'validate-with-this'
+DOMAIN = 'grrbrr.ca'
+HOSTNAME = 'test-ssl-host'
 
 
 class StubRecord(object):
@@ -18,6 +25,17 @@ def test_create_calls_correct_uri(
 
     do_record_put_uri = (
         'https://api.digitalocean.com/v2/domains/grrbrr.ca/%s' % hostname)
-    call_put_properly = [call.put(do_record_put_uri)]
+    call_put_properly = [call.put(do_record_put_uri, headers=ANY)]
+
+    fake_requests.assert_has_calls(call_put_properly)
+
+
+def test_create_passes_authorization_header(mocker):
+    fake_requests = mocker.patch('do_record.http.requests')
+    stub_record = StubRecord(API_KEY, DOMAIN, HOSTNAME)
+
+    create(stub_record, AUTH_TOKEN)
+
+    call_put_properly = [call.put(ANY, headers=AUTHORIZATION_HEADER)]
 
     fake_requests.assert_has_calls(call_put_properly)
