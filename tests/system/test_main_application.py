@@ -12,8 +12,7 @@ DOMAIN = 'grrbrr.ca'
 HOSTNAME = 'test-ssl-host'
 
 
-def test_digitalocean_authentication_record_creation(
-        capsys, authorization_header):
+def test_digitalocean_authentication_record_creation(capsys):
     # Emulate certbot passing in proper environment variables for
     # the authentication step.
     create_environment = {
@@ -40,4 +39,4 @@ def test_digitalocean_authentication_record_creation(
         record_data['data'] == AUTH_TOKEN
 
     # Manually cleanup the created DigitalOcean authentication DNS record.
-    delete(request_uri, headers=authorization_header)
+    delete(request_uri, headers=AUTHORIZATION_HEADER)
