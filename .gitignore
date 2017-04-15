@@ -6,3 +6,6 @@ __pycache__
 
 # Ignore PyCharm Configuration
 .idea
+
+# Ignore API Key File
+digital_ocean_api_key.txt
