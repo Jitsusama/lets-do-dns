@@ -30,7 +30,7 @@ def test_prints_record_uri_with_raised_exception(
     with pytest.raises(RecordCreationFailure) as exception:
         response(fake_requests_response(600))
 
-    expected_uri = 'https://api.digitalocean.com/v2/domains/%s/%s' % (
-        env.domain, env.hostname)
+    expected_uri = ('https://api.digitalocean.com/v2/domains/'
+                    '%s/records' % env.domain)
 
     assert str(exception).find(expected_uri) > 0

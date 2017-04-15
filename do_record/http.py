@@ -6,7 +6,7 @@ BASE_URI = 'https://api.digitalocean.com/v2/domains'
 def create(record, value):
     """Create HTTP resource on DigitalOcean."""
     authorization_header = _authorization_header(record.api_key)
-    post_uri = _post_uri(record.domain, record.hostname)
+    post_uri = _post_uri(record.domain)
     json_request = _json_request(record.hostname, value)
 
     http_response = requests.post(
@@ -15,8 +15,8 @@ def create(record, value):
     return response(http_response)
 
 
-def _post_uri(domain, hostname):
-    return '%s/%s/%s' % (BASE_URI, domain, hostname)
+def _post_uri(domain):
+    return '%s/%s/records' % (BASE_URI, domain)
 
 
 def _authorization_header(api_key):

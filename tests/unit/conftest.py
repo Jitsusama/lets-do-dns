@@ -45,8 +45,8 @@ def fake_requests_response(env):
         def __init__(self, status_code):
             self.id = None
             self.status_code = status_code
-            self.url = 'https://api.digitalocean.com/v2/domains/%s/%s' % (
-                env.domain, env.hostname)
+            self.url = ('https://api.digitalocean.com/v2/domains/'
+                        '%s/records' % env.domain)
 
         @property
         def ok(self): return self.status_code < 400

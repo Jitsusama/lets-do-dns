@@ -17,8 +17,7 @@ def test_calls_correct_uri(mocker, env, fake_record):
     create(fake_record(), env.auth_token)
 
     do_record_put_uri = (
-        'https://api.digitalocean.com/v2/domains/%s/%s' % (
-            env.domain, env.hostname))
+        'https://api.digitalocean.com/v2/domains/%s/records' % env.domain)
 
     stub_requests.assert_called_once_with(
         do_record_put_uri, headers=ANY, json=ANY)
