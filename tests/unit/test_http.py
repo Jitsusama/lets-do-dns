@@ -88,7 +88,7 @@ def fake_requests_response():
 
 
 class TestResponse(object):
-    def test_returns_integer(self, mocker, fake_requests_response):
+    def test_returns_integer(self, fake_requests_response):
         fake_requests_response.id = 987123
 
         response_result = response(fake_requests_response)
