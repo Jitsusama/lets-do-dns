@@ -26,13 +26,24 @@ def response(requests_response):
     resource_request_failure = not requests_response.ok
 
     if resource_request_failure:
-        error_message = (
-            'Encountered a %s response during record creation.' % (
-                requests_response.status_code))
+        _raise_create_exception(requests_response)
 
-        raise RecordCreationFailure(error_message)
+    return _grab_record_id(requests_response)
 
+
+def _raise_create_exception(requests_response):
+    response_code = requests_response.status_code
+    resource_uri = requests_response.url
+    error_message = (
+        'Encountered a %s response while creating the record resource'
+        '@ URI %s' % (response_code, resource_uri))
+
+    raise RecordCreationFailure(error_message)
+
+
+def _grab_record_id(requests_response):
     json_response = requests_response.json()
+
     return json_response['domain_record']['id']
 
 

@@ -74,6 +74,8 @@ def fake_requests_response():
         def __init__(self, status_code):
             self.id = None
             self.status_code = status_code
+            self.url = 'https://api.digitalocean.com/v2/domains/%s/%s' % (
+                DOMAIN, HOSTNAME)
 
         @property
         def ok(self): return self.status_code < 400
@@ -83,7 +85,9 @@ def fake_requests_response():
                 'domain_record': {
                     'id': self.id, 'type': 'TXT', 'name': HOSTNAME,
                     'data': AUTH_TOKEN, 'priority': None, 'port': None,
-                    'weight': None}}
+                    'weight': None
+                },
+                'message': ''}
 
     return FakeRequestsResponse(201)
 
@@ -102,3 +106,24 @@ class TestResponse(object):
 
         with pytest.raises(RecordCreationFailure):
             response(fake_requests_response)
+
+    def test_prints_response_status_code_with_raised_exception(
+            self, fake_requests_response):
+        fake_requests_response.status_code = 500
+
+        with pytest.raises(RecordCreationFailure) as exception:
+            response(fake_requests_response)
+
+        assert str(exception).find('500') > 0
+
+    def test_prints_record_uri_with_raised_exception(
+            self, fake_requests_response):
+        fake_requests_response.status_code = 600
+
+        with pytest.raises(RecordCreationFailure) as exception:
+            response(fake_requests_response)
+
+        expected_uri = 'https://api.digitalocean.com/v2/domains/%s/%s' %(
+            DOMAIN, HOSTNAME)
+
+        assert str(exception).find(expected_uri) > 0
