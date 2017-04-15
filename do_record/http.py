@@ -35,8 +35,8 @@ def _raise_create_exception(requests_response):
     response_code = requests_response.status_code
     resource_uri = requests_response.url
     error_message = (
-        'Encountered a %s response while creating the record resource'
-        '@ URI %s' % (response_code, resource_uri))
+        'Encountered a %s response while creating the record resource '
+        'at %s' % (response_code, resource_uri))
 
     raise RecordCreationFailure(error_message)
 
