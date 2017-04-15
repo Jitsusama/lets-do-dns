@@ -2,7 +2,6 @@ from do_record import Record
 import pytest
 
 API_KEY = 'super-duper-secret'
-AUTHORIZATION_HEADER = {'Authorization': 'Bearer %s' % API_KEY}
 AUTH_TOKEN = 'validate-with-that'
 DOMAIN = 'grrbrr.ca'
 HOSTNAME = 'another-test-ssl-host'
