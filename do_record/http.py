@@ -18,4 +18,14 @@ def _authorization_header(api_key):
 
 def response(requests_response):
     """A response from DigitalOcean for making an HTTP resource request."""
+    if not requests_response.ok:
+        message = 'Encountered a %s response during record creation.' % (
+            requests_response.status_code)
+        raise RecordCreationFailure(message)
+
     return requests_response.json()['domain_record']['id']
+
+
+class RecordCreationFailure(RuntimeError):
+    """An error was encountered while attempting to create a record."""
+    pass

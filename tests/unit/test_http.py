@@ -1,4 +1,4 @@
-from do_record.http import create, response
+from do_record.http import create, response, RecordCreationFailure
 from mock import ANY
 import pytest
 
@@ -74,7 +74,9 @@ def fake_requests_response():
         def __init__(self, status_code):
             self.id = None
             self.status_code = status_code
-            self.ok = True
+
+        @property
+        def ok(self): return self.status_code < 400
 
         def json(self):
             return {
@@ -93,3 +95,10 @@ class TestResponse(object):
         response_result = response(fake_requests_response)
 
         assert response_result == 987123
+
+    def test_raises_exception_on_bad_status_code(
+            self, fake_requests_response):
+        fake_requests_response.status_code = 404
+
+        with pytest.raises(RecordCreationFailure):
+            response(fake_requests_response)
