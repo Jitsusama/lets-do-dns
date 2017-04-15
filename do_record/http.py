@@ -7,8 +7,10 @@ def create(record, value):
     """Create HTTP resource on DigitalOcean."""
     authorization_header = _authorization_header(record.api_key)
     post_uri = _post_uri(record.domain, record.hostname)
+    json_request = _json_request(record.hostname, value)
 
-    http_response = requests.post(post_uri, headers=authorization_header)
+    http_response = requests.post(
+        post_uri, headers=authorization_header, json=json_request)
 
     return response(http_response)
 
@@ -19,6 +21,12 @@ def _post_uri(domain, hostname):
 
 def _authorization_header(api_key):
     return {'Authorization': 'Bearer %s' % api_key}
+
+
+def _json_request(hostname, value):
+    return {'type': 'TXT',
+            'name': hostname,
+            'data': value}
 
 
 def response(requests_response):

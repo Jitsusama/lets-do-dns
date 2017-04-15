@@ -21,7 +21,7 @@ def test_calls_correct_uri(mocker, env, fake_record):
             env.domain, env.hostname))
 
     stub_requests.assert_called_once_with(
-        do_record_put_uri, headers=ANY)
+        do_record_put_uri, headers=ANY, json=ANY)
 
 
 def test_passes_authorization_header(mocker, env, fake_record):
@@ -30,7 +30,20 @@ def test_passes_authorization_header(mocker, env, fake_record):
     create(fake_record(), env.auth_token)
 
     stub_requests.assert_called_once_with(
-        ANY, headers=env.auth_header)
+        ANY, headers=env.auth_header, json=ANY)
+
+
+def test_passes_json_body(mocker, env, fake_record):
+    stub_post = mocker.patch('do_record.http.requests.post')
+    json_request = {
+        'type': 'TXT',
+        'name': env.hostname,
+        'data': env.auth_token,
+    }
+
+    create(fake_record(), env.auth_token)
+
+    stub_post.assert_called_once_with(ANY, headers=ANY, json=json_request)
 
 
 @pytest.mark.parametrize('input_record_id', [98765, 49586])
