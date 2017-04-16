@@ -9,7 +9,7 @@ BASE_URI = 'https://api.digitalocean.com/v2/domains'
 def create(record, value):
     """Create HTTP resource on DigitalOcean."""
     authorization_header = _authorization_header(record.api_key)
-    post_uri = _post_uri(record.domain)
+    post_uri = _request_uri(record.domain)
     json_request = _json_request(record.hostname, value)
 
     http_response = requests.post(
@@ -20,11 +20,22 @@ def create(record, value):
 
 def delete(record, record_id):
     """Delete HTTP resource on DigitalOcean."""
-    pass
+    authorization_header = _authorization_header(record.api_key)
+    delete_uri = _request_uri(record.domain, record_id)
+
+    http_response = requests.delete(
+        delete_uri, headers=authorization_header)
+
+    return response(http_response)
 
 
-def _post_uri(domain):
-    return '%s/%s/records' % (BASE_URI, domain)
+def _request_uri(domain, record_id=None):
+    common_uri = '%s/%s/records' % (BASE_URI, domain)
+
+    if record_id:
+        return '%s/%s' % (common_uri, record_id)
+
+    return common_uri
 
 
 def _authorization_header(api_key):
