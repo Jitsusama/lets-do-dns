@@ -23,11 +23,12 @@ def test_digitalocean_authentication_record_creation(capsys, env):
 
     # Verify that the authentication process created the proper DNS record
     # with DigitalOcean.
-    request_uri = '%s/%s/%s' % (env.base_uri, env.domain, record_id)
+    request_uri = '%s/%s/records/%s' % (
+        env.base_uri, env.domain, record_id)
     response = get(request_uri, headers=env.auth_header)
     record_data = response.json()['domain_record']
     assert record_data['type'] == 'TXT' and \
-        record_data['name'] == '%s.%s' % (env.hostname, env.domain) and \
+        record_data['name'] == env.hostname and \
         record_data['data'] == env.auth_token
 
     # Manually cleanup the created DigitalOcean authentication DNS record.
