@@ -4,9 +4,9 @@ import pytest
 
 @pytest.mark.parametrize('record_id', [987623])
 def test_digitalocean_authentication_record_creation(
-        mocker, fake_requests_response, create_environment,
+        mocker, fake_requests_post_response, create_environment,
         record_id):
-    mock_post_response = fake_requests_response(201)
+    mock_post_response = fake_requests_post_response(201)
     mock_post_response.id = record_id
 
     mocker.patch('do_record.http.requests.post',
@@ -21,9 +21,10 @@ def test_digitalocean_authentication_record_creation(
 
 @pytest.mark.parametrize('record_id', [539283])
 def test_digitalocean_authentication_record_deletion(
-        mocker, fake_requests_response, delete_environment,
+        mocker, env, fake_requests_delete_response, delete_environment,
         record_id):
-    mock_delete_response = fake_requests_response(204)
+    mock_delete_response = fake_requests_delete_response(204, record_id)
+    expected_delete_uri = mock_delete_response.url
 
     mock_delete = mocker.patch(
         'do_record.http.requests.delete',
@@ -33,4 +34,5 @@ def test_digitalocean_authentication_record_deletion(
         environment=delete_environment(record_id))
     authentication.perform()
 
-    mock_delete.assert_called_once_with(record_id)
+    mock_delete.assert_called_once_with(
+        expected_delete_uri, headers=env.auth_header)

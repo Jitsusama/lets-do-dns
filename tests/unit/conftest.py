@@ -51,7 +51,7 @@ def fake_record(env):
 
 
 @pytest.fixture()
-def fake_requests_response(env):
+def fake_requests_post_response(env):
     class FakeRequestsResponse(object):
         def __init__(self, status_code):
             self.id = None
@@ -72,5 +72,38 @@ def fake_requests_response(env):
                     'port': None, 'weight': None
                 },
                 'message': ''}
+
+        @property
+        def request(self):
+            class Method(object):
+                def __init__(self):
+                    self.method = 'POST'
+            return Method()
+
+    return FakeRequestsResponse
+
+
+@pytest.fixture()
+def fake_requests_delete_response(env):
+    class FakeRequestsResponse(object):
+        def __init__(self, status_code, record_id):
+            self.status_code = status_code
+            self.url = ('https://api.digitalocean.com/v2/domains/'
+                        '%s/records/%s' % (env.domain, record_id))
+
+        @property
+        def ok(self):
+            return self.status_code < 400
+
+        @staticmethod
+        def json():
+            return None
+
+        @property
+        def request(self):
+            class Method(object):
+                def __init__(self):
+                    self.method = 'DELETE'
+            return Method()
 
     return FakeRequestsResponse

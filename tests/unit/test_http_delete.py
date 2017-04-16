@@ -11,6 +11,12 @@ def test_calls_delete(mocker, fake_record):
     stub_requests.assert_called_once()
 
 
+def test_does_not_return_value(mocker, fake_record):
+    mocker.patch('do_record.http.requests.delete')
+
+    assert delete(fake_record(), 2322346) is None
+
+
 @pytest.mark.parametrize('record_id', [82227342, 2342552])
 def test_calls_correct_uri(mocker, env, fake_record, record_id):
     stub_requests = mocker.patch('do_record.http.requests.delete')

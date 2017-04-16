@@ -26,7 +26,7 @@ def delete(record, record_id):
     http_response = requests.delete(
         delete_uri, headers=authorization_header)
 
-    return response(http_response)
+    response(http_response)
 
 
 def _request_uri(domain, record_id=None):
@@ -55,7 +55,10 @@ def response(requests_response):
     if resource_request_failure:
         _raise_create_exception(requests_response)
 
-    return _grab_record_id(requests_response)
+    post_request = requests_response.request.method == 'POST'
+
+    if post_request:
+        return _grab_record_id(requests_response)
 
 
 def _raise_create_exception(requests_response):
