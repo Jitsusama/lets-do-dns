@@ -5,7 +5,7 @@ venv
 __pycache__
 build/
 dist/
-lets_do_dns.egg-info/
+*.egg-info/
 
 # Ignore PyCharm Configuration
 .idea
