@@ -4,7 +4,7 @@ from certbot_dns_auth import Authenticate
 from mock import call
 
 
-def test_triggering_of_record_creation_after_initialization(
+def test_triggers_record_creation_after_initialization(
         mocker, env, create_environment):
     mocker.patch('certbot_dns_auth.authenticate.printer')
     stub_record = mocker.patch('certbot_dns_auth.authenticate.Record')
