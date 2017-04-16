@@ -11,9 +11,7 @@ def test_pre_authentication_hook(capsys, env):
         'CERTBOT_VALIDATION': env.auth_token,
     })
 
-    subprocess.check_call('lets-do-dns')
-
-    record_id, _ = capsys.readouterr()
+    record_id = subprocess.check_output('lets-do-dns')
 
     assert int(record_id) > 0
 

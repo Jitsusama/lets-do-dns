@@ -12,8 +12,10 @@ class Authenticate(object):
         self.validation_key = environment.get('CERTBOT_VALIDATION')
 
     def perform(self):
+        """Execute the authentication logic."""
         try:
-            self._create_record()
+            record_id = self._create_record()
+            printer(record_id)
         finally:
             return 0
 
@@ -21,8 +23,8 @@ class Authenticate(object):
         hostname = self._parse_hostname()
 
         record = Record(self.api_key, self.domain, hostname)
-        record_id = record.create(self.validation_key)
-        printer(record_id)
+
+        return record.create(self.validation_key)
 
     def _parse_hostname(self):
         domain_start_index = self.fqdn.rfind('.' + self.domain)
