@@ -1,3 +1,6 @@
+"""Performs lower level functions against DigitalOcean's REST API."""
+
+
 import requests
 
 BASE_URI = 'https://api.digitalocean.com/v2/domains'
@@ -57,4 +60,5 @@ def _grab_record_id(requests_response):
 
 class RecordCreationFailure(RuntimeError):
     """An error was encountered while attempting to create a record."""
+
     pass

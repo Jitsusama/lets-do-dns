@@ -34,7 +34,8 @@ def fake_record(env):
             self.hostname = hostname
 
         @staticmethod
-        def create(self): return 123456
+        def create(_):
+            return 123456
 
     return FakeRecord
 
@@ -49,7 +50,8 @@ def fake_requests_response(env):
                         '%s/records' % env.domain)
 
         @property
-        def ok(self): return self.status_code < 400
+        def ok(self):
+            return self.status_code < 400
 
         def json(self):
             return {

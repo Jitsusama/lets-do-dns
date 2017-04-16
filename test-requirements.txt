@@ -1,5 +1,7 @@
 -r requirements.txt
 mock
-pylint
+pylama
+pylama_pylint
 pytest
 pytest-mock
+radon

@@ -1,5 +1,7 @@
+"""letsencrypt's certbot Authentication Logic."""
+
 from do_record import Record
-from printer import printer
+from certbot_dns_auth.printer import printer
 
 
 class Authenticate(object):
@@ -13,11 +15,10 @@ class Authenticate(object):
 
     def perform(self):
         """Execute the authentication logic."""
-        try:
-            record_id = self._create_record()
-            printer(record_id)
-        finally:
-            return 0
+        record_id = self._create_record()
+        printer(record_id)
+
+        return 0
 
     def _create_record(self):
         hostname = self._parse_hostname()

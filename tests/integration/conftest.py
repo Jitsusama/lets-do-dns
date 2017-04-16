@@ -34,7 +34,8 @@ def fake_requests_response(env):
                         '%s/records' % env.domain)
 
         @property
-        def ok(self): return self.status_code < 400
+        def ok(self):
+            return self.status_code < 400
 
         def json(self):
             return {

@@ -1,3 +1,5 @@
+"""PIP Project Installation Program."""
+
 from setuptools import setup, find_packages
 
 setup(

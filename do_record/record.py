@@ -1,3 +1,6 @@
+"""DigitalOcean DNS Records."""
+
+
 from do_record import http
 
 
@@ -10,4 +13,5 @@ class Record(object):
         self.hostname = hostname
 
     def create(self, value):
+        """Create this record on DigitalOcean with the supplied value."""
         return http.create(self, value)
