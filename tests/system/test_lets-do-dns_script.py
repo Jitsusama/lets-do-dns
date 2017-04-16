@@ -3,7 +3,7 @@ import subprocess
 from requests import get, delete
 
 
-def test_pre_authentication_hook(capsys, env):
+def test_pre_authentication_hook(env):
     os.environ.update({
         'DO_API_KEY': env.key,
         'DO_DOMAIN': env.domain,
