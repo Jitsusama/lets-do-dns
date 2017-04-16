@@ -25,6 +25,16 @@ def create_environment(env):
 
 
 @pytest.fixture()
+def delete_environment(create_environment):
+    def updated_environment(record_id):
+        create_environment.update({
+            'CERTBOT_AUTH_OUTPUT': record_id})
+        return create_environment
+
+    return updated_environment
+
+
+@pytest.fixture()
 def fake_requests_response(env):
     class FakeRequestsResponse(object):
         def __init__(self, status_code):
