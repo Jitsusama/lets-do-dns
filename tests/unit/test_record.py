@@ -21,3 +21,13 @@ def test_create_properly_calls_http_create(mocker, env):
     record.create(env.auth_token)
 
     stub_http_create.assert_called_once_with(record, env.auth_token)
+
+
+@pytest.mark.parametrize('record_id', [491834, 882342])
+def test_delete_properly_calls_http_delete(mocker, env, record_id):
+    stub_http_delete = mocker.patch('do_record.record.http.delete')
+
+    record = Record(env.key, env.domain, env.hostname)
+    record.delete(record_id)
+
+    stub_http_delete.assert_called_once_with(record, record_id)

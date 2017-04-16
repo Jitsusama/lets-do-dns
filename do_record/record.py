@@ -14,3 +14,7 @@ class Record(object):
     def create(self, value):
         """Create this record on DigitalOcean with the supplied value."""
         return http.create(self, value)
+
+    def delete(self, record_id):
+        """Delete this record on DigitalOcean, identified by record_id."""
+        http.delete(self, record_id)

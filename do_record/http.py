@@ -18,6 +18,11 @@ def create(record, value):
     return response(http_response)
 
 
+def delete(record, record_id):
+    """Delete HTTP resource on DigitalOcean."""
+    pass
+
+
 def _post_uri(domain):
     return '%s/%s/records' % (BASE_URI, domain)
 
