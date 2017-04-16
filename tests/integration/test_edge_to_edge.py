@@ -16,6 +16,7 @@ def test_digitalocean_authentication_record_creation(
                  return_value=fake_delete_response)
     stub_printer = mocker.patch('certbot_dns_auth.authenticate.printer')
 
-    Authenticate(environment=create_environment)
+    authentication = Authenticate(environment=create_environment)
+    authentication.perform()
 
     stub_printer.assert_called_once_with(record_id)

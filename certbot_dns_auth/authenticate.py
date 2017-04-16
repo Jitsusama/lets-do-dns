@@ -11,7 +11,11 @@ class Authenticate(object):
         self.fqdn = environment.get('CERTBOT_DOMAIN')
         self.validation_key = environment.get('CERTBOT_VALIDATION')
 
-        self._create_record()
+    def perform(self):
+        try:
+            self._create_record()
+        finally:
+            return 0
 
     def _create_record(self):
         hostname = self._parse_hostname()
