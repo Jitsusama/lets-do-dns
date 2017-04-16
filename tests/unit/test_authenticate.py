@@ -1,13 +1,13 @@
 """Test the DigitalOcean backed ACME DNS Authentication Class."""
 
-from acmednsauth.authenticate import Authenticate
+from certbot_dns_auth.authenticate import Authenticate
 from mock import call
 
 
 def test_triggering_of_record_creation_after_initialization(
         mocker, env, create_environment):
-    mocker.patch('acmednsauth.authenticate.printer')
-    stub_record = mocker.patch('acmednsauth.authenticate.Record')
+    mocker.patch('certbot_dns_auth.authenticate.printer')
+    stub_record = mocker.patch('certbot_dns_auth.authenticate.Record')
 
     Authenticate(environment=create_environment)
 
@@ -19,8 +19,8 @@ def test_triggering_of_record_creation_after_initialization(
 
 def test_passes_record_id_to_printer_after_record_creation(
         mocker, create_environment, fake_record):
-    mocker.patch('acmednsauth.authenticate.Record', new=fake_record)
-    stub_printer = mocker.patch('acmednsauth.authenticate.printer')
+    mocker.patch('certbot_dns_auth.authenticate.Record', new=fake_record)
+    stub_printer = mocker.patch('certbot_dns_auth.authenticate.printer')
 
     Authenticate(environment=create_environment)
 

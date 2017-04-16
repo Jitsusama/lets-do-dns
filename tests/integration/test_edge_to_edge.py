@@ -1,4 +1,4 @@
-from acmednsauth.authenticate import Authenticate
+from certbot_dns_auth.authenticate import Authenticate
 import pytest
 
 
@@ -14,7 +14,7 @@ def test_digitalocean_authentication_record_creation(
                  return_value=fake_post_response)
     mocker.patch('do_record.http.requests.delete',
                  return_value=fake_delete_response)
-    stub_printer = mocker.patch('acmednsauth.authenticate.printer')
+    stub_printer = mocker.patch('certbot_dns_auth.authenticate.printer')
 
     Authenticate(environment=create_environment)
 

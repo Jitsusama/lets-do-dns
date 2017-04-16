@@ -1,4 +1,4 @@
-from acmednsauth.printer import printer
+from certbot_dns_auth.printer import printer
 from mock import call
 
 
