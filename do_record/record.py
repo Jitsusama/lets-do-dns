@@ -1,6 +1,5 @@
 """DigitalOcean DNS Records."""
 
-
 from do_record import http
 
 
