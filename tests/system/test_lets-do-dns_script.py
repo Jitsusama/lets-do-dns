@@ -1,6 +1,6 @@
 import os
 import subprocess
-from requests import get, delete
+from requests import get, delete, post
 
 
 def test_pre_authentication_hook(env):
@@ -25,3 +25,29 @@ def test_pre_authentication_hook(env):
             record_data['data'] == env.auth_token)
 
     delete(request_uri, headers=env.auth_header)
+
+
+def test_post_authentication_hook(env):
+    create_response = post(
+        '%s/%s/records' % (env.base_uri, env.domain),
+        headers=env.auth_header,
+        json={'type': 'TXT',
+              'name': env.hostname,
+              'data': env.auth_token})
+    record_id = create_response.json()['domain_record']['id']
+
+    os.environ.update({
+        'DO_API_KEY': env.key,
+        'DO_DOMAIN': env.domain,
+        'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
+        'CERTBOT_VALIDATION': env.auth_token,
+        'CERTBOT_AUTH_OUTPUT': str(record_id)
+    })
+
+    subprocess.check_call('lets-do-dns')
+
+    request_uri = '%s/%s/records/%s' % (
+        env.base_uri, env.domain, record_id)
+    get_response = get(request_uri, headers=env.auth_header)
+
+    assert get_response.status_code == 404
