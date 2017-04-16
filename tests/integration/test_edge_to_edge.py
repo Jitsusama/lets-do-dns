@@ -1,4 +1,4 @@
-from certbot_dns_auth.authenticate import Authenticate
+from certbot_dns_auth import Authenticate
 import pytest
 
 
