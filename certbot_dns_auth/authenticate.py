@@ -1,6 +1,7 @@
 """letsencrypt's certbot Authentication Logic."""
 
 from do_record import Record
+from certbot_dns_auth.command import run
 from certbot_dns_auth.printer import printer
 
 
@@ -13,11 +14,13 @@ class Authenticate(object):
         self.fqdn = environment.get('CERTBOT_DOMAIN')
         self.validation_key = environment.get('CERTBOT_VALIDATION')
         self.record_id = environment.get('CERTBOT_AUTH_OUTPUT')
+        self.post_cmd = environment.get('LETS_DO_POSTCMD')
 
     def perform(self):
         """Execute the authentication logic."""
         if self._in_post_hook_phase:
             self._delete_record()
+            self._run_post_cmd()
         else:
             record_id = self._create_record()
             printer(record_id)
@@ -35,6 +38,10 @@ class Authenticate(object):
     def _create_record(self):
         record = self._init_record()
         return record.create(self.validation_key)
+
+    def _run_post_cmd(self):
+        if self.post_cmd:
+            run(self.post_cmd)
 
     def _init_record(self):
         hostname = self._parse_hostname()
