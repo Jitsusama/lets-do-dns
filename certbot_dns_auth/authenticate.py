@@ -22,8 +22,8 @@ class Authenticate(object):
             self._delete_record()
             self._run_post_cmd()
         else:
-            record_id = self._create_record()
-            printer(record_id)
+            self._create_record()
+            self._print_record_id()
 
         return 0
 
@@ -35,13 +35,16 @@ class Authenticate(object):
         record = self._init_record()
         record.delete(self.record_id)
 
-    def _create_record(self):
-        record = self._init_record()
-        return record.create(self.validation_key)
-
     def _run_post_cmd(self):
         if self.post_cmd:
             run(self.post_cmd)
+
+    def _create_record(self):
+        record = self._init_record()
+        self.record_id = record.create(self.validation_key)
+
+    def _print_record_id(self):
+        printer(self.record_id)
 
     def _init_record(self):
         hostname = self._parse_hostname()
