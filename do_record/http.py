@@ -3,8 +3,6 @@
 
 import requests
 
-BASE_URI = 'https://api.digitalocean.com/v2/domains'
-
 
 def create(record, value):
     """Create HTTP resource on DigitalOcean."""
@@ -30,7 +28,8 @@ def delete(record, record_id):
 
 
 def _request_uri(domain, record_id=None):
-    common_uri = '%s/%s/records' % (BASE_URI, domain)
+    common_uri = ('https://api.digitalocean.com/v2/domains/'
+                  '%s/records' % domain)
 
     if record_id:
         return '%s/%s' % (common_uri, record_id)
