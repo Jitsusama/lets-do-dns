@@ -16,19 +16,23 @@ class Record(object):
     def create(self, value):
         """Create this record on DigitalOcean with the supplied value."""
         self._number = http.create(self, value)
+
         return self.number
 
     def delete(self, record_id=None):
         """Delete this record on DigitalOcean, identified by record_id."""
         if record_id is None:
             record_id = self.number
+
         http.delete(self, record_id)
 
     def printer(self):
+        """Print out record ID number."""
         printer(self.number)
 
     @property
     def number(self):
+        """Record ID number."""
         return self._number
 
     @number.setter

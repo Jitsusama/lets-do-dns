@@ -11,4 +11,4 @@ def test_run_properly_calls_check_call(mocker, command):
 
     run(command)
 
-    stub_check_call.assert_called_once_with("sh -c '" + command + "'")
+    stub_check_call.assert_called_once_with(['/bin/sh', '-c', command])

@@ -68,7 +68,7 @@ def test_post_authentication_hook_with_post_command(env):
         'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
         'CERTBOT_VALIDATION': env.auth_token,
         'CERTBOT_AUTH_OUTPUT': str(record_id),
-        'LETS_DO_POSTCMD': 'echo',
+        'LETS_DO_POSTCMD': 'echo hello',
     })
 
     postcmd_output = subprocess.check_output('lets-do-dns')
@@ -78,4 +78,4 @@ def test_post_authentication_hook_with_post_command(env):
     get_response = get(request_uri, headers=env.auth_header)
 
     assert (get_response.status_code == 404 and
-            postcmd_output == '\n')
+            postcmd_output == 'hello\n')
