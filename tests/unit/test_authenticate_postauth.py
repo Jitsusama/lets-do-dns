@@ -1,7 +1,7 @@
 """Test the DigitalOcean backed ACME DNS Authentication Class."""
 
 from certbot_dns_auth import Authenticate
-from mock import call
+from mock import call, PropertyMock
 
 
 def test_triggers_record_deletion_after_initialization(
@@ -13,12 +13,23 @@ def test_triggers_record_deletion_after_initialization(
 
     initialize_then_delete = [
         call(env.key, env.domain, env.hostname),
-        call().delete(918232)]
+        call().delete()]
     stub_record.assert_has_calls(initialize_then_delete)
 
 
-def test_runs_postcmd_program(
-        mocker, delete_environment):
+def test_sets_record_number(mocker, delete_environment):
+    mock_number = mocker.patch(
+        'certbot_dns_auth.authenticate.Record.number',
+        new_callable=PropertyMock)
+    mocker.patch('certbot_dns_auth.authenticate.Record.delete')
+
+    authentication = Authenticate(environment=delete_environment(1235234))
+    authentication.perform()
+
+    assert mock_number.called_once_with(1235234)
+
+
+def test_runs_postcmd_program(mocker, delete_environment):
     mocker.patch('certbot_dns_auth.authenticate.Record')
     stub_run = mocker.patch('certbot_dns_auth.authenticate.run')
 

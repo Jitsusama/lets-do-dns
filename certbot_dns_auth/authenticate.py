@@ -33,6 +33,7 @@ class Authenticate(object):
 
     def _delete_record(self):
         record = self._init_record()
+        record.number = self.record_id
         record.delete(self.record_id)
 
     def _run_post_cmd(self):
