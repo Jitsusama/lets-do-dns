@@ -1,7 +1,45 @@
 """Performs lower level functions against DigitalOcean's REST API."""
 
-
 import requests
+
+
+class Resource(object):
+    """Embody a DigitalOcean HTTP DNS Resource."""
+
+    def __init__(self, record, value=None):
+        self._record = record
+        self.value = value
+        self._request = None
+
+    def create(self):
+        """Post HTTP Resource to DigitalOcean."""
+        self._request = requests.post(
+            self._uri, headers=self._header, json=self._json_data)
+
+    def __int__(self):
+        """DigitalOcean's unique identifier for this resource."""
+        return response(self._request)
+
+    @property
+    def _uri(self):
+        common_uri = (
+            'https://api.digitalocean.com/v2/domains/%s/records' % (
+                self._record.domain))
+
+        if self._record.number:
+            return '%s/%s' % (common_uri, self._record.number)
+
+        return common_uri
+
+    @property
+    def _header(self):
+        return {'Authorization': 'Bearer %s' % self._record.api_key}
+
+    @property
+    def _json_data(self):
+        return {'type': 'TXT',
+                'name': self._record.hostname,
+                'data': self.value}
 
 
 def create(record, value):
