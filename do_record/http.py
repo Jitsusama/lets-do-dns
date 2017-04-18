@@ -16,10 +16,10 @@ def create(record, value):
     return response(http_response)
 
 
-def delete(record, record_id):
+def delete(record):
     """Delete HTTP resource on DigitalOcean."""
     authorization_header = _authorization_header(record.api_key)
-    delete_uri = _request_uri(record.domain, record_id)
+    delete_uri = _request_uri(record.domain, record.number)
 
     http_response = requests.delete(
         delete_uri, headers=authorization_header)

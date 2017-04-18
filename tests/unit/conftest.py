@@ -42,12 +42,12 @@ def fake_record(env):
             self.api_key = api_key
             self.domain = domain
             self.hostname = hostname
+            self.number = None
 
-        @staticmethod
-        def create(_):
-            return 123456
+        def create(self):
+            pass
 
-    return FakeRecord
+    return FakeRecord()
 
 
 @pytest.fixture()

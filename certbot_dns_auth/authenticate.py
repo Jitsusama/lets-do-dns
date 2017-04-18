@@ -2,7 +2,6 @@
 
 from do_record import Record
 from certbot_dns_auth.command import run
-from certbot_dns_auth.printer import printer
 
 
 class Authenticate(object):

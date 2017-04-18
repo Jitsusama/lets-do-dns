@@ -30,7 +30,7 @@ def test_delete_properly_calls_http_delete(mocker, env, record_id):
     record.number = record_id
     record.delete()
 
-    stub_http_delete.assert_called_once_with(record, record_id)
+    stub_http_delete.assert_called_once_with(record)
 
 
 def test_printer_calls_printer(mocker, env):

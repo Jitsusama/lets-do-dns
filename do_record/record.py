@@ -22,7 +22,7 @@ class Record(object):
         if record_id is None:
             record_id = self.number
 
-        http.delete(self, record_id)
+        http.delete(self)
 
     def printer(self):
         """Print out record ID number."""
