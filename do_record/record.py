@@ -33,8 +33,4 @@ class Record(object):
 
     @number.setter
     def number(self, value):
-        if self.number is None:
-            self._number = value
-        else:
-            raise ValueError(
-                'Cannot externally reset a record\'s number identifier.')
+        self._number = value
