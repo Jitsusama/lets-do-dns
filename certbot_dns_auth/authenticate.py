@@ -9,12 +9,16 @@ class Authenticate(object):
     """Handle letsencrypt DNS certificate identity authentication."""
 
     def __init__(self, environment):
+        # Set internal state according to environment variable inputs.
         self.api_key = environment.get('DO_API_KEY')
         self.domain = environment.get('DO_DOMAIN')
         self.fqdn = environment.get('CERTBOT_DOMAIN')
         self.validation_key = environment.get('CERTBOT_VALIDATION')
         self.record_id = environment.get('CERTBOT_AUTH_OUTPUT')
         self.post_cmd = environment.get('LETS_DO_POSTCMD')
+
+        # Using inputs, create a DNS record object.
+        self._record = self._init_record()
 
     def perform(self):
         """Execute the authentication logic."""
@@ -32,20 +36,18 @@ class Authenticate(object):
         return self.record_id is not None
 
     def _delete_record(self):
-        record = self._init_record()
-        record.number = self.record_id
-        record.delete()
+        self._record.number = self.record_id
+        self._record.delete()
 
     def _run_post_cmd(self):
         if self.post_cmd:
             run(self.post_cmd)
 
     def _create_record(self):
-        record = self._init_record()
-        self.record_id = record.create(self.validation_key)
+        self._record.create(self.validation_key)
 
     def _print_record_id(self):
-        printer(self.record_id)
+        self._record.printer()
 
     def _init_record(self):
         hostname = self._parse_hostname()
@@ -53,9 +55,9 @@ class Authenticate(object):
         return record
 
     def _parse_hostname(self):
-        domain_start_index = self.fqdn.rfind('.' + self.domain)
-        fqdn_start_index = 0
+        domain_suffix = '.' + self.domain
+        domain_start = self.fqdn.rfind(domain_suffix)
 
-        hostname = self.fqdn[fqdn_start_index:domain_start_index]
+        hostname = self.fqdn[0:domain_start]
 
         return hostname
