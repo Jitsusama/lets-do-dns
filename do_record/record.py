@@ -17,11 +17,8 @@ class Record(object):
         """Create this record on DigitalOcean with the supplied value."""
         self._number = http.create(self, value)
 
-    def delete(self, record_id=None):
-        """Delete this record on DigitalOcean, identified by record_id."""
-        if record_id is None:
-            record_id = self.number
-
+    def delete(self):
+        """Delete this record on DigitalOcean."""
         http.delete(self)
 
     def printer(self):
