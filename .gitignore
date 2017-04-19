@@ -6,6 +6,7 @@ __pycache__
 build/
 dist/
 *.egg-info/
+.coverage
 
 # Ignore PyCharm Configuration
 .idea

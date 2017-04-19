@@ -3,5 +3,6 @@ mock
 pylama
 pylama_pylint
 pytest
+pytest-cov
 pytest-mock
 radon
