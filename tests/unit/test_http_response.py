@@ -1,6 +1,7 @@
-from do_record.http import Response
-from do_record.exceptions import RecordCreationFailure
 import pytest
+
+from do_record.errors import RecordCreationFailure
+from do_record.response import Response
 
 
 @pytest.mark.parametrize('record_id', [23465545])
