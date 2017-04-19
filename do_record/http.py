@@ -16,6 +16,11 @@ class Resource(object):
         self._request = requests.post(
             self._uri, headers=self._header, json=self._json_data)
 
+    def delete(self):
+        """Delete HTTP Resource from DigitalOcean."""
+        self._request = requests.delete(
+            self._uri, headers=self._header)
+
     def __int__(self):
         """Unique DigitalOcean identifier for this resource."""
         return response(self._request)
