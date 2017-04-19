@@ -15,6 +15,8 @@ TODO
 
 *  Think about renaming the modules and maybe the project.
 
+*  Make a README.rst file to go along with the project.
+
 *  Develop a script/program to be triggered by this program to handle
    updating Docker container processes when new keys they rely on are
    released.
