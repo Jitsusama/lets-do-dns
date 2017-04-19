@@ -17,7 +17,7 @@ class Resource(object):
             self._uri, headers=self._header, json=self._json_data)
 
     def __int__(self):
-        """DigitalOcean's unique identifier for this resource."""
+        """Unique DigitalOcean identifier for this resource."""
         return response(self._request)
 
     @property
@@ -40,18 +40,6 @@ class Resource(object):
         return {'type': 'TXT',
                 'name': self._record.hostname,
                 'data': self.value}
-
-
-def create(record, value):
-    """Create HTTP resource on DigitalOcean."""
-    authorization_header = _authorization_header(record.api_key)
-    post_uri = _request_uri(record.domain)
-    json_request = _json_request(record.hostname, value)
-
-    http_response = requests.post(
-        post_uri, headers=authorization_header, json=json_request)
-
-    return response(http_response)
 
 
 def delete(record):

@@ -15,7 +15,9 @@ class Record(object):
 
     def create(self, value):
         """Create this record on DigitalOcean with the supplied value."""
-        self._number = http.create(self, value)
+        resource = http.Resource(self, value)
+        resource.create()
+        self._number = resource.__int__()
 
     def delete(self):
         """Delete this record on DigitalOcean."""
