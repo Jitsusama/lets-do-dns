@@ -29,13 +29,15 @@ def test_create_properly_calls_http_create(mocker, env):
 
 @pytest.mark.parametrize('record_id', [491834])
 def test_delete_properly_calls_http_delete(mocker, env, record_id):
-    stub_http_delete = mocker.patch('do_record.record.http.delete')
+    stub_http_delete = mocker.patch('do_record.record.http.Resource')
 
     record = Record(env.key, env.domain, env.hostname)
     record.number = record_id
     record.delete()
 
-    stub_http_delete.assert_called_once_with(record)
+    stub_http_delete.assert_has_calls([
+        call(record),
+        call().delete()])
 
 
 def test_printer_calls_printer(mocker, env):

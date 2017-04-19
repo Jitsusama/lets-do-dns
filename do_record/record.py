@@ -21,7 +21,8 @@ class Record(object):
 
     def delete(self):
         """Delete this record on DigitalOcean."""
-        http.delete(self)
+        resource = http.Resource(self)
+        resource.delete()
 
     def printer(self):
         """Print out record ID number."""

@@ -47,37 +47,6 @@ class Resource(object):
                 'data': self.value}
 
 
-def delete(record):
-    """Delete HTTP resource on DigitalOcean."""
-    authorization_header = _authorization_header(record.api_key)
-    delete_uri = _request_uri(record.domain, record.number)
-
-    http_response = requests.delete(
-        delete_uri, headers=authorization_header)
-
-    response(http_response)
-
-
-def _request_uri(domain, record_id=None):
-    common_uri = ('https://api.digitalocean.com/v2/domains/'
-                  '%s/records' % domain)
-
-    if record_id:
-        return '%s/%s' % (common_uri, record_id)
-
-    return common_uri
-
-
-def _authorization_header(api_key):
-    return {'Authorization': 'Bearer %s' % api_key}
-
-
-def _json_request(hostname, value):
-    return {'type': 'TXT',
-            'name': hostname,
-            'data': value}
-
-
 def response(requests_response):
     """A response from DigitalOcean for making an HTTP resource request."""
     resource_request_failure = not requests_response.ok
