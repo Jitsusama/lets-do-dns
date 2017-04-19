@@ -1,9 +1,6 @@
 TODO
 ====
 
-*  http.response() should be wrapped into a class with its helper
-   methods.
-
 *  Add --help/-h/help parameter. This should detail what parameters are
    required and how they effect the program's state. It should also give
    a short blurb about what the program does.

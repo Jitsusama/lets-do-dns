@@ -9,21 +9,23 @@ class Resource(object):
     def __init__(self, record, value=None):
         self._record = record
         self.value = value
-        self._request = None
+        self._response = None
 
     def create(self):
         """Post HTTP Resource to DigitalOcean."""
-        self._request = requests.post(
-            self._uri, headers=self._header, json=self._json_data)
+        self._response = Response(
+            requests.post(
+                self._uri, headers=self._header, json=self._json_data))
 
     def delete(self):
         """Delete HTTP Resource from DigitalOcean."""
-        self._request = requests.delete(
-            self._uri, headers=self._header)
+        self._response = Response(
+            requests.delete(
+                self._uri, headers=self._header))
 
     def __int__(self):
         """Unique DigitalOcean identifier for this resource."""
-        return response(self._request)
+        return self._response.resource_id
 
     @property
     def _uri(self):
@@ -47,33 +49,41 @@ class Resource(object):
                 'data': self.value}
 
 
-def response(requests_response):
-    """A response from DigitalOcean for making an HTTP resource request."""
-    resource_request_failure = not requests_response.ok
+class Response(object):
+    """HTTP resource request response from DigitalOcean."""
 
-    if resource_request_failure:
-        _raise_create_exception(requests_response)
+    def __init__(self, requests_response):
+        self._response = requests_response
+        self._check_response()
 
-    post_request = requests_response.request.method == 'POST'
+    @property
+    def resource_id(self):
+        """The resource identifier present in the DigitalOcean response."""
+        if self._request_type != 'POST':
+            return None
 
-    if post_request:
-        return _grab_record_id(requests_response)
+        json_response = self._response.json()
 
+        return json_response['domain_record']['id']
 
-def _raise_create_exception(requests_response):
-    response_code = requests_response.status_code
-    resource_uri = requests_response.url
-    error_message = (
-        'Encountered a %s response while creating the record resource '
-        'at %s' % (response_code, resource_uri))
+    @property
+    def _request_type(self):
+        return self._response.request.method
 
-    raise RecordCreationFailure(error_message)
+    def _check_response(self):
+        resource_request_failure = not self._response.ok
 
+        if resource_request_failure:
+            raise self._raise_creation_failure()
 
-def _grab_record_id(requests_response):
-    json_response = requests_response.json()
+    def _raise_creation_failure(self):
+        response_code = self._response.status_code
+        resource_uri = self._response.url
+        error_message = (
+            'Encountered a %s response while creating the record resource '
+            'at %s' % (response_code, resource_uri))
 
-    return json_response['domain_record']['id']
+        return RecordCreationFailure(error_message)
 
 
 class RecordCreationFailure(RuntimeError):

@@ -43,7 +43,7 @@ def test_passes_authorization_header(mocker, env, fake_record, record_id):
 def test_calls_response_with_post_response(
         mocker, fake_record, record_id):
     mocker.patch('do_record.http.requests.delete', return_value=record_id)
-    stub_response = mocker.patch('do_record.http.response')
+    stub_response = mocker.patch('do_record.http.Response')
     fake_record.number = record_id
 
     resource = Resource(fake_record)
