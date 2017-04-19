@@ -1,7 +1,7 @@
 """Performs lower level functions against DigitalOcean's REST API."""
 
 import requests
-from response import Response
+from do_record.response import Response
 
 
 class Resource(object):

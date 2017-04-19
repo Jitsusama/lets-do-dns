@@ -1,7 +1,7 @@
 """DigitalOcean DNS Records."""
 
 from certbot_dns_auth.printer import printer
-from do_record import http
+from do_record.resource import Resource
 
 
 class Record(object):
@@ -15,13 +15,13 @@ class Record(object):
 
     def create(self, value):
         """Create this record on DigitalOcean with the supplied value."""
-        resource = http.Resource(self, value)
+        resource = Resource(self, value)
         resource.create()
         self._number = resource.__int__()
 
     def delete(self):
         """Delete this record on DigitalOcean."""
-        resource = http.Resource(self)
+        resource = Resource(self)
         resource.delete()
 
     def printer(self):
