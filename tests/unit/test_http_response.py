@@ -1,4 +1,5 @@
-from do_record.http import Response, RecordCreationFailure
+from do_record.http import Response
+from do_record.exceptions import RecordCreationFailure
 import pytest
 
 

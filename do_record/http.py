@@ -1,6 +1,7 @@
 """Performs lower level functions against DigitalOcean's REST API."""
 
 import requests
+from exceptions import RecordCreationFailure
 
 
 class Resource(object):
@@ -84,9 +85,3 @@ class Response(object):
             'at %s' % (response_code, resource_uri))
 
         return RecordCreationFailure(error_message)
-
-
-class RecordCreationFailure(RuntimeError):
-    """An error was encountered while attempting to create a record."""
-
-    pass
