@@ -79,3 +79,9 @@ def test_post_authentication_hook_with_post_command(env):
 
     assert (get_response.status_code == 404 and
             postcmd_output == 'hello\n')
+
+
+def test_help_command():
+    help_output = subprocess.check_output(['lets-do-dns', '--help'])
+
+    assert help_output.find('lets-do-dns') >= 0
