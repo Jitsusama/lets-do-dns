@@ -7,7 +7,7 @@ from certbot_dns_auth.command import run
 class Authenticate(object):
     """Handle letsencrypt DNS certificate identity authentication."""
 
-    def __init__(self, environment):
+    def __init__(self, environment, arguments=None):
         # Set internal state according to environment variable inputs.
         self.api_key = environment.get('DO_API_KEY')
         self.domain = environment.get('DO_DOMAIN')
