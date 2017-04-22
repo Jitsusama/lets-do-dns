@@ -3,4 +3,5 @@
 
 def printer(message):
     """Write messages to STDOUT."""
-    print message
+    if message is not None and len(str(message)) > 0:
+        print message
