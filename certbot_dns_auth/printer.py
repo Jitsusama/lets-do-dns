@@ -1,10 +1,23 @@
 """Handles the printing of messages."""
 
+from __future__ import print_function
+import sys
+
 
 def printer(message):
     """Write messages to STDOUT."""
+    if _is_valid_message(message):
+        print(message)
+
+
+def stderr(message):
+    """Write message to STDERR."""
+    if _is_valid_message(message):
+        print(message, file=sys.stderr)
+
+
+def _is_valid_message(message):
     not_none = message is not None
     not_empty = len(str(message)) > 0
 
-    if not_none and not_empty:
-        print message
+    return not_none and not_empty
