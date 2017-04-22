@@ -79,14 +79,31 @@ def test_exits_with_code_two_when_environment_throws_missing_exception(
         mocker):
     mocker.patch('certbot_dns_auth.__main__.Authenticate')
     mocker.patch('certbot_dns_auth.__main__.Arguments')
+    mocker.patch('certbot_dns_auth.__main__.printer')
     mocker.patch('certbot_dns_auth.__main__.os.environ')
     mocker.patch('certbot_dns_auth.__main__.sys.argv')
     mocker.patch(
         'certbot_dns_auth.__main__.Environment',
-        side_effect=RequiredInputMissing('Missing Required Input'))
+        side_effect=RequiredInputMissing())
 
     stub_exit = mocker.patch('certbot_dns_auth.__main__.sys.exit')
 
     main()
 
     stub_exit.assert_has_calls([call(2)])
+
+
+def test_passes_environment_exception_message_to_printer(mocker):
+    mocker.patch('certbot_dns_auth.__main__.Authenticate')
+    mocker.patch('certbot_dns_auth.__main__.Arguments')
+    mocker.patch('certbot_dns_auth.__main__.os.environ')
+    mocker.patch('certbot_dns_auth.__main__.sys')
+    mocker.patch(
+        'certbot_dns_auth.__main__.Environment',
+        side_effect=RequiredInputMissing('Missing Required Input'))
+
+    stub_printer = mocker.patch('certbot_dns_auth.__main__.printer')
+
+    main()
+
+    stub_printer.assert_called_once_with('Missing Required Input')
