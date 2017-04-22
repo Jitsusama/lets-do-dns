@@ -5,6 +5,7 @@ import pytest
 
 def test_passes_environment_to_authenticate(mocker):
     mocker.patch('certbot_dns_auth.__main__.sys.exit')
+    mocker.patch('certbot_dns_auth.__main__.Arguments')
 
     stub_environment = mocker.patch(
         'certbot_dns_auth.__main__.os.environ')
@@ -22,6 +23,7 @@ def test_exits_with_authenticates_return_code(mocker, return_code):
                  return_value=None)
     mocker.patch('certbot_dns_auth.__main__.Authenticate.perform',
                  return_value=return_code)
+    mocker.patch('certbot_dns_auth.__main__.Arguments')
 
     stub_exit = mocker.patch('certbot_dns_auth.__main__.sys.exit')
 

@@ -1,14 +1,15 @@
-"""Validates and Stores CLI Arguments."""
+"""Validates CLI Arguments."""
 
 import argparse
 
 
 class Arguments(object):
-    """Parses and (potentially) Stores Passed Arguments."""
+    """Parses Passed Arguments."""
 
-    def __init__(self, argv):
-        argparse.ArgumentParser(
+    def __init__(self, arguments):
+        parser = argparse.ArgumentParser(
             description=self._description, epilog=self._epilog)
+        parser.parse_args(arguments[1:])
 
     @property
     def _description(self):
