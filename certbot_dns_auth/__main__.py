@@ -12,10 +12,12 @@ from certbot_dns_auth.printer import printer
 def main():
     """Bootstrap the application."""
     arguments = Arguments(sys.argv)
+
     try:
         Environment(os.environ)
     except RequiredInputMissing as exception:
         _handle_missing_input_exception(exception)
+
     authentication = Authenticate(os.environ, arguments)
     sys.exit(authentication.perform())
 
