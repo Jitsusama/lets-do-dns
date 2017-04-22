@@ -2,6 +2,15 @@ import os
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def os_environ_reset():
+    """Reset os.environ in between test runs."""
+    original_env = os.environ.copy()
+    yield
+    os.environ.clear()
+    os.environ.update(original_env)
+
+
 @pytest.fixture()
 def env(api_key):
     class Environment(object):

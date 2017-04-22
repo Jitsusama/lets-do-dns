@@ -3,6 +3,8 @@ import subprocess
 import pytest
 from requests import get, delete, post
 
+# ATTENTION: Look at conftest.py for py.test fixture definitions.
+
 
 def test_pre_authentication_hook(env):
     os.environ.update({
@@ -88,8 +90,11 @@ def test_help_command():
     assert help_output.find('lets-do-dns') >= 0
 
 
-def test_missing_required_environment_variables_exits_with_code_two():
+def test_missing_required_environment_variables_exits_properly(capsys):
     with pytest.raises(subprocess.CalledProcessError) as exception:
         subprocess.check_call('lets-do-dns')
 
-    assert exception.value.returncode == 2
+    _, error_output = capsys.readouterr()
+
+    assert (exception.value.returncode == 2 and
+            error_output.find('missing') > 0)
