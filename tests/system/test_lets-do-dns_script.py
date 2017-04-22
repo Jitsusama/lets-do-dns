@@ -1,5 +1,6 @@
 import os
 import subprocess
+import pytest
 from requests import get, delete, post
 
 
@@ -85,3 +86,30 @@ def test_help_command():
     help_output = subprocess.check_output(['lets-do-dns', '--help'])
 
     assert help_output.find('lets-do-dns') >= 0
+
+
+@pytest.mark.parametrize(
+    'environment,error', [
+        ({}, ('CERTBOT_DOMAIN, CERTBOT_VALIDATION, DO_API_KEY and '
+              'DO_DOMAIN')),
+        ({'DO_DOMAIN': 'b',
+          'CERTBOT_DOMAIN': 'c',
+          'CERTBOT_VALIDATION': 'd'}, 'DO_API_KEY'),
+        ({'DO_API_KEY': 'a',
+          'CERTBOT_DOMAIN': 'c',
+          'CERTBOT_VALIDATION': 'd'}, 'DO_DOMAIN'),
+        ({'DO_API_KEY': 'a',
+          'DO_DOMAIN': 'b',
+          'CERTBOT_VALIDATION': 'd'}, 'CERTBOT_DOMAIN'),
+        ({'DO_API_KEY': 'a',
+          'DO_DOMAIN': 'b',
+          'CERTBOT_DOMAIN': 'c'}, 'CERTBOT_VALIDATION')])
+def test_missing_required_environment_variables_exits_with_code_two(
+        environment, error):
+    os.environ.update(environment)
+
+    with pytest.raises(subprocess.CalledProcessError) as exception:
+        subprocess.check_call('lets-do-dns')
+
+    assert (exception.value.returncode == 2 and
+            error in exception.value)
