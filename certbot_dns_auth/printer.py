@@ -4,8 +4,8 @@ from __future__ import print_function
 import sys
 
 
-def printer(message):
-    """Write messages to STDOUT."""
+def stdout(message):
+    """Write message to STDOUT."""
     if _is_valid_message(message):
         print(message)
 

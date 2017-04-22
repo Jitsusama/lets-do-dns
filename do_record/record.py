@@ -1,6 +1,6 @@
 """DigitalOcean DNS Records."""
 
-from certbot_dns_auth.printer import printer
+from certbot_dns_auth.printer import stdout
 from do_record.resource import Resource
 
 
@@ -26,7 +26,7 @@ class Record(object):
 
     def printer(self):
         """Print out record ID number."""
-        printer(self.number)
+        stdout(self.number)
 
     @property
     def number(self):

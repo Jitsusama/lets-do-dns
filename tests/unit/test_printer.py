@@ -1,4 +1,4 @@
-from certbot_dns_auth.printer import printer, stderr
+from certbot_dns_auth.printer import stdout, stderr
 from mock import call
 import pytest
 
@@ -6,7 +6,7 @@ import pytest
 def test_printer_writes_to_stdout(mocker):
     stub_stdout = mocker.patch('sys.stdout.write')
 
-    printer(234567)
+    stdout(234567)
 
     stub_stdout.assert_has_calls([call('234567')])
 
@@ -15,7 +15,7 @@ def test_printer_writes_to_stdout(mocker):
 def test_printer_writes_nothing_with_empty_message(mocker, message):
     stub_stdout = mocker.patch('sys.stdout.write')
 
-    printer(message)
+    stdout(message)
 
     stub_stdout.assert_not_called()
 

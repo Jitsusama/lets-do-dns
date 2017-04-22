@@ -41,7 +41,7 @@ def test_delete_properly_calls_http_delete(mocker, env, record_id):
 
 
 def test_printer_calls_printer(mocker, env):
-    stub_printer = mocker.patch('do_record.record.printer')
+    stub_printer = mocker.patch('do_record.record.stdout')
     record_id = 918342
 
     record = Record(env.key, env.domain, env.hostname)
