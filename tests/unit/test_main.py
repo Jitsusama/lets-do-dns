@@ -58,3 +58,17 @@ def test_passes_arguments_to_authenticate(mocker):
     main()
 
     stub_authenticate.assert_called_once_with(ANY, 1)
+
+
+def test_passes_os_environ_to_environment(mocker):
+    mocker.patch('certbot_dns_auth.__main__.Authenticate')
+    mocker.patch('certbot_dns_auth.__main__.Arguments')
+    mocker.patch('certbot_dns_auth.__main__.sys')
+
+    stub_environ = mocker.patch('certbot_dns_auth.__main__.os.environ')
+    stub_environment = mocker.patch(
+        'certbot_dns_auth.__main__.Environment')
+
+    main()
+
+    stub_environment.assert_called_once_with(stub_environ)
