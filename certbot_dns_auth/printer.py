@@ -3,5 +3,8 @@
 
 def printer(message):
     """Write messages to STDOUT."""
-    if message is not None and len(str(message)) > 0:
+    not_none = message is not None
+    not_empty = len(str(message)) > 0
+
+    if not_none and not_empty:
         print message
