@@ -29,12 +29,6 @@ TODO
 
 .. code:: python
 
-    description = '''\
-    Perform ACME DNS01 authentication for the EFF's certbot program.
-
-    The DNS01 authentication record will be created via DigitalOcean's
-    REST API.'''
-
     epilog = '''\
     This program requires the presence of the CERBOT_DOMAIN and
     CERTBOT_VALIDATION environment variables. These should be supplied by
