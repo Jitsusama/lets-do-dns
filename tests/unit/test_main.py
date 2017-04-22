@@ -1,5 +1,6 @@
 from certbot_dns_auth.__main__ import main
-from mock import ANY
+from certbot_dns_auth.errors import RequiredInputMissing
+from mock import ANY, call
 import pytest
 
 
@@ -72,3 +73,20 @@ def test_passes_os_environ_to_environment(mocker):
     main()
 
     stub_environment.assert_called_once_with(stub_environ)
+
+
+def test_exits_with_code_two_when_environment_throws_missing_exception(
+        mocker):
+    mocker.patch('certbot_dns_auth.__main__.Authenticate')
+    mocker.patch('certbot_dns_auth.__main__.Arguments')
+    mocker.patch('certbot_dns_auth.__main__.os.environ')
+    mocker.patch('certbot_dns_auth.__main__.sys.argv')
+    mocker.patch(
+        'certbot_dns_auth.__main__.Environment',
+        side_effect=RequiredInputMissing('Missing Required Input'))
+
+    stub_exit = mocker.patch('certbot_dns_auth.__main__.sys.exit')
+
+    main()
+
+    stub_exit.assert_has_calls([call(2)])
