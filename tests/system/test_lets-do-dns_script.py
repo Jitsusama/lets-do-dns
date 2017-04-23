@@ -90,11 +90,8 @@ def test_help_command():
     assert help_output.find('lets-do-dns') >= 0
 
 
-def test_missing_required_environment_variables_exits_properly(capsys):
+def test_missing_required_environment_variables_exits_properly():
     with pytest.raises(subprocess.CalledProcessError) as exception:
         subprocess.check_call('lets-do-dns')
 
-    _, error_output = capsys.readouterr()
-
-    assert (exception.value.returncode == 2 and
-            error_output.find('missing') > 0)
+    assert exception.value.returncode == 2

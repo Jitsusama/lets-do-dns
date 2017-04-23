@@ -17,10 +17,9 @@ def test_missing_required_argument_causes_required_parameter_exception(
 
 
 def test_does_not_raise_exception_with_required_arguments_present():
-    environment = {'DO_APIKEY': 'a',
-                   'DO_DOMAIN': 'b',
-                   'CERTBOT_DOMAIN': 'c',
-                   'CERTBOT_VALIDATION': 'd'}
+    environment = {
+        'DO_APIKEY': 'a', 'DO_DOMAIN': 'b',
+        'CERTBOT_DOMAIN': 'c', 'CERTBOT_VALIDATION': 'd'}
 
     Environment(environment)
 
@@ -43,3 +42,22 @@ def test_passes_missing_variables_to_exception_message(
         Environment(environment)
 
     assert str(exception).find(message_segment) > 0
+
+
+def test_stores_environment_variables():
+    input_environment = {
+        'DO_APIKEY': 'a',
+        'DO_DOMAIN': 'b',
+        'CERTBOT_DOMAIN': 'c',
+        'CERTBOT_VALIDATION': 'd',
+        'CERTBOT_AUTH_OUTPUT': 'e',
+        'LETS_DO_POSTCMD': 'f'}
+
+    output_environment = Environment(input_environment)
+
+    assert (output_environment.api_key == 'a' and
+            output_environment.domain == 'b' and
+            output_environment.fqdn == 'c' and
+            output_environment.validation_key == 'd' and
+            output_environment.record_id == 'e' and
+            output_environment.post_cmd == 'f')

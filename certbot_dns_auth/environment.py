@@ -3,25 +3,50 @@ from certbot_dns_auth.errors import RequiredInputMissing
 
 
 class Environment(object):
-    """Wraps os.environ and Validates Required Variables Are Present."""
+    """Validates and Stores Desired Environment Variables."""
 
     def __init__(self, environment):
-        missing_parameters = list()
-        if environment.get('DO_APIKEY') is None:
-            missing_parameters.append('DO_APIKEY')
-        if environment.get('DO_DOMAIN') is None:
-            missing_parameters.append('DO_DOMAIN')
-        if environment.get('CERTBOT_DOMAIN') is None:
-            missing_parameters.append('CERTBOT_DOMAIN')
-        if environment.get('CERTBOT_VALIDATION') is None:
-            missing_parameters.append('CERTBOT_VALIDATION')
+        self._environ = environment
+        self._missing_parameters = list()
 
-        if len(missing_parameters) > 1:
-            raise RequiredInputMissing(
-                'Missing the following required environment variables: '
-                '%s and %s' % (', '.join(missing_parameters[:-1]),
-                               missing_parameters[-1]))
-        elif len(missing_parameters) == 1:
-            raise RequiredInputMissing(
+        # Required Parameters
+        self.api_key = self._obtain_parameter('DO_APIKEY')
+        self.domain = self._obtain_parameter('DO_DOMAIN')
+        self.fqdn = self._obtain_parameter('CERTBOT_DOMAIN')
+        self.validation_key = self._obtain_parameter('CERTBOT_VALIDATION')
+
+        # "Optional" Parameters
+        self.record_id = self._obtain_parameter('CERTBOT_AUTH_OUTPUT')
+        self.post_cmd = self._obtain_parameter('LETS_DO_POSTCMD')
+
+        self._validate_environment()
+
+    def _obtain_parameter(self, key):
+        value = self._environ.get(key)
+
+        optional_parameters = [
+            'CERTBOT_AUTH_OUTPUT',
+            'LETS_DO_POSTCMD']
+
+        if value is None and key not in optional_parameters:
+            self._missing_parameters.append(key)
+
+        return value
+
+    def _validate_environment(self):
+        exception_message = self._generate_exception_message()
+
+        if exception_message:
+            raise RequiredInputMissing(exception_message)
+
+    def _generate_exception_message(self):
+        if len(self._missing_parameters) == 1:
+            return (
                 'Missing the following required environment variable: '
-                '%s' % missing_parameters[0])
+                '%s' % self._missing_parameters[0])
+
+        if len(self._missing_parameters) > 1:
+            return (
+                'Missing the following required environment variables: '
+                '%s and %s' % (', '.join(self._missing_parameters[:-1]),
+                               self._missing_parameters[-1]))
