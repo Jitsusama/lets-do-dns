@@ -9,7 +9,7 @@ class Authenticate(object):
 
     def __init__(self, environment, arguments=None):
         # Set internal state according to environment variable inputs.
-        self.api_key = environment.get('DO_API_KEY')
+        self.api_key = environment.get('DO_APIKEY')
         self.domain = environment.get('DO_DOMAIN')
         self.fqdn = environment.get('CERTBOT_DOMAIN')
         self.validation_key = environment.get('CERTBOT_VALIDATION')

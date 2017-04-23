@@ -27,11 +27,11 @@ CERTBOT_VALIDATION environment variables. These should be supplied by
 the certbot program when this program is called via its
 --manual-auth-hook or --manual-cleanup-hook arguments.
 
-This program also requires the presence of the DO_API_KEY and
+This program also requires the presence of the DO_APIKEY and
 DO_DOMAIN environment variables. These have to be provided via the
 environment that certbot is executed from.
 
-DO_API_KEY refers to a DigitalOcean API key generated through its API
+DO_APIKEY refers to a DigitalOcean API key generated through its API
 control panel. This key should have read and write access to your
 DigitalOcean account.
 

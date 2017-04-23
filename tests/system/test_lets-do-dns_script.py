@@ -8,7 +8,7 @@ from requests import get, delete, post
 
 def test_pre_authentication_hook(env):
     os.environ.update({
-        'DO_API_KEY': env.key,
+        'DO_APIKEY': env.key,
         'DO_DOMAIN': env.domain,
         'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
         'CERTBOT_VALIDATION': env.auth_token,
@@ -40,7 +40,7 @@ def test_post_authentication_hook_without_post_command(env):
     record_id = create_response.json()['domain_record']['id']
 
     os.environ.update({
-        'DO_API_KEY': env.key,
+        'DO_APIKEY': env.key,
         'DO_DOMAIN': env.domain,
         'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
         'CERTBOT_VALIDATION': env.auth_token,
@@ -66,7 +66,7 @@ def test_post_authentication_hook_with_post_command(env):
     record_id = create_response.json()['domain_record']['id']
 
     os.environ.update({
-        'DO_API_KEY': env.key,
+        'DO_APIKEY': env.key,
         'DO_DOMAIN': env.domain,
         'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
         'CERTBOT_VALIDATION': env.auth_token,

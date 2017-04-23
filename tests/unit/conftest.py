@@ -17,7 +17,7 @@ def env():
 @pytest.fixture()
 def create_environment(env):
     return {
-        'DO_API_KEY': env.key,
+        'DO_APIKEY': env.key,
         'DO_DOMAIN': env.domain,
         'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
         'CERTBOT_VALIDATION': env.auth_token
