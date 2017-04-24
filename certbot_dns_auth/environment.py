@@ -1,9 +1,8 @@
 """Environment Wrapper and Validator."""
 from certbot_dns_auth.errors import RequiredInputMissing
-from collections import Mapping
 
 
-class Environment(Mapping):
+class Environment(object):
     """Validates and Stores Desired Environment Variables."""
 
     def __init__(self, environment):
@@ -51,23 +50,3 @@ class Environment(Mapping):
                 'Missing the following required environment variables: '
                 '%s and %s' % (', '.join(self._missing_parameters[:-1]),
                                self._missing_parameters[-1]))
-
-    def __getitem__(self, item):
-        return self._dictionary.get(item)
-
-    def __len__(self):
-        return len(self._dictionary)
-
-    def __iter__(self):
-        yield [key for key in self._dictionary.keys()]
-
-    @property
-    def _dictionary(self):
-        return {
-            'DO_APIKEY': self.api_key,
-            'DO_DOMAIN': self.domain,
-            'CERTBOT_DOMAIN': self.fqdn,
-            'CERTBOT_VALIDATION': self.validation_key,
-            'CERTBOT_AUTH_OUTPUT': self.record_id,
-            'LETS_DO_POSTCMD': self.post_cmd,
-        }

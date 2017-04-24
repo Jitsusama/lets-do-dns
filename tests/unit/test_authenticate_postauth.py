@@ -35,7 +35,7 @@ def test_runs_postcmd_program(mocker, delete_environment):
     stub_run = mocker.patch('certbot_dns_auth.authenticate.run')
 
     delete_environment = delete_environment(1)
-    delete_environment.update({'LETS_DO_POSTCMD': 'test-program --help'})
+    delete_environment.post_cmd = 'test-program --help'
 
     authentication = Authenticate(environment=delete_environment)
     authentication.perform()

@@ -16,19 +16,22 @@ def env():
 
 @pytest.fixture()
 def create_environment(env):
-    return {
-        'DO_APIKEY': env.key,
-        'DO_DOMAIN': env.domain,
-        'CERTBOT_DOMAIN': '%s.%s' % (env.hostname, env.domain),
-        'CERTBOT_VALIDATION': env.auth_token
-    }
+    class FakeEnvironment(object):
+        def __init__(self):
+            self.api_key = env.key
+            self.domain = env.domain
+            self.fqdn = '%s.%s' % (env.hostname, env.domain)
+            self.validation_key = env.auth_token
+            self.record_id = None
+            self.post_cmd = None
+
+    return FakeEnvironment()
 
 
 @pytest.fixture()
 def delete_environment(create_environment):
     def updated_environment(record_id):
-        create_environment.update({
-            'CERTBOT_AUTH_OUTPUT': record_id})
+        create_environment.record_id = record_id
         return create_environment
 
     return updated_environment
