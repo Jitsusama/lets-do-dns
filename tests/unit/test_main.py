@@ -6,12 +6,15 @@ import pytest
 
 class TestAuthenticateInteractions(object):
     def test_passed_environment(self, mocker):
+        stub_environment = mocker.MagicMock()
+
+        mocker.patch('certbot_dns_auth.__main__.os.environ')
         mocker.patch('certbot_dns_auth.__main__.sys.exit')
         mocker.patch('certbot_dns_auth.__main__.Arguments')
-        mocker.patch('certbot_dns_auth.__main__.Environment')
+        mocker.patch(
+            'certbot_dns_auth.__main__.Environment',
+            return_value=stub_environment)
 
-        stub_environment = mocker.patch(
-            'certbot_dns_auth.__main__.os.environ')
         stub_authenticate = mocker.patch(
             'certbot_dns_auth.__main__.Authenticate')
 

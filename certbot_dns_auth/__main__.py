@@ -14,11 +14,11 @@ def main():
     arguments = Arguments(sys.argv)
 
     try:
-        Environment(os.environ)
+        environment = Environment(os.environ)
     except RequiredInputMissing as exception:
         _handle_missing_input_exception(exception)
     else:
-        authentication = Authenticate(os.environ, arguments)
+        authentication = Authenticate(environment, arguments)
         sys.exit(authentication.perform())
 
 
