@@ -44,8 +44,9 @@ def test_passes_missing_variables_to_exception_message(
     assert str(exception).find(message_segment) > 0
 
 
-def test_stores_environment_variables():
-    input_environment = {
+@pytest.fixture
+def input_environment():
+    return {
         'DO_APIKEY': 'a',
         'DO_DOMAIN': 'b',
         'CERTBOT_DOMAIN': 'c',
@@ -53,6 +54,9 @@ def test_stores_environment_variables():
         'CERTBOT_AUTH_OUTPUT': 'e',
         'LETS_DO_POSTCMD': 'f'}
 
+
+def test_stores_environment_variables_as_properties(
+        input_environment):
     output_environment = Environment(input_environment)
 
     assert (output_environment.api_key == 'a' and
@@ -61,3 +65,15 @@ def test_stores_environment_variables():
             output_environment.validation_key == 'd' and
             output_environment.record_id == 'e' and
             output_environment.post_cmd == 'f')
+
+
+def test_allows_access_to_properties_as_attributes(
+        input_environment):
+    output_environment = Environment(input_environment)
+
+    assert (output_environment.get('DO_APIKEY') == 'a' and
+            output_environment.get('DO_DOMAIN') == 'b' and
+            output_environment.get('CERTBOT_DOMAIN') == 'c' and
+            output_environment.get('CERTBOT_VALIDATION') == 'd' and
+            output_environment.get('CERTBOT_AUTH_OUTPUT') == 'e' and
+            output_environment.get('LETS_DO_POSTCMD') == 'f')
