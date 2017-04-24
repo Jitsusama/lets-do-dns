@@ -1,11 +1,6 @@
 TODO
 ====
 
-*  Add environment variable verification before running. Check that all
-   required parameters are present in the passed environment variables,
-   or trigger an error with text explaining which variables are missing
-   or have incorrect values.
-
 *  Think about renaming the modules and maybe the project.
 
 *  Make a README.rst file to go along with the project.
