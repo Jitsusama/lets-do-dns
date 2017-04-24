@@ -17,9 +17,9 @@ def main():
         Environment(os.environ)
     except RequiredInputMissing as exception:
         _handle_missing_input_exception(exception)
-
-    authentication = Authenticate(os.environ, arguments)
-    sys.exit(authentication.perform())
+    else:
+        authentication = Authenticate(os.environ, arguments)
+        sys.exit(authentication.perform())
 
 
 def _handle_missing_input_exception(exception):
