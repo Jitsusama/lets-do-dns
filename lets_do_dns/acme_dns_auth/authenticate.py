@@ -49,6 +49,7 @@ class Authenticate(object):
         domain_suffix = '.' + self._env.domain
         domain_start = self._env.fqdn.rfind(domain_suffix)
 
-        hostname = self._env.fqdn[0:domain_start]
+        cert_hostname = self._env.fqdn[0:domain_start]
+        auth_hostname = '_acme-challenge.%s' % cert_hostname
 
-        return hostname
+        return auth_hostname

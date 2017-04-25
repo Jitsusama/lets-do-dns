@@ -8,12 +8,13 @@ def test_triggers_record_creation_after_initialization(
         mocker, env, create_environment):
     stub_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
+    txt_hostname = '%s.%s' % ('_acme-challenge', env.hostname)
 
     authentication = Authenticate(environment=create_environment)
     authentication.perform()
 
     initialize_then_create = [
-        call(env.key, env.domain, env.hostname),
+        call(env.key, env.domain, txt_hostname),
         call().create(env.auth_token)]
     stub_record.assert_has_calls(initialize_then_create)
 

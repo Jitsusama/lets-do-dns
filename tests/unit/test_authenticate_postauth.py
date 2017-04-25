@@ -8,12 +8,13 @@ def test_triggers_record_deletion_after_initialization(
         mocker, env, delete_environment):
     stub_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
+    txt_hostname = '%s.%s' % ('_acme-challenge', env.hostname)
 
     authentication = Authenticate(environment=delete_environment(0))
     authentication.perform()
 
     initialize_then_delete = [
-        call(env.key, env.domain, env.hostname),
+        call(env.key, env.domain, txt_hostname),
         call().delete()]
     stub_record.assert_has_calls(initialize_then_delete)
 
