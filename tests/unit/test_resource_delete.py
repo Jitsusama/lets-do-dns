@@ -1,10 +1,12 @@
-from do_record.resource import Resource
-from mock import ANY
 import pytest
+from mock import ANY
+
+from certbot_dns_auth.do_domain.resource import Resource
 
 
 def test_calls_delete(mocker, fake_record):
-    stub_requests = mocker.patch('do_record.resource.requests.delete')
+    stub_requests = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.delete')
     fake_record.number = 2322346
 
     resource = Resource(fake_record)
@@ -15,7 +17,8 @@ def test_calls_delete(mocker, fake_record):
 
 @pytest.mark.parametrize('record_id', [82227342, 2342552])
 def test_calls_correct_uri(mocker, env, fake_record, record_id):
-    stub_requests = mocker.patch('do_record.resource.requests.delete')
+    stub_requests = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.delete')
     fake_record.number = record_id
 
     resource = Resource(fake_record)
@@ -30,7 +33,8 @@ def test_calls_correct_uri(mocker, env, fake_record, record_id):
 
 @pytest.mark.parametrize('record_id', [4323422, 1231123])
 def test_passes_authorization_header(mocker, env, fake_record, record_id):
-    stub_requests = mocker.patch('do_record.resource.requests.delete')
+    stub_requests = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.delete')
     fake_record.number = record_id
 
     resource = Resource(fake_record)
@@ -43,8 +47,10 @@ def test_passes_authorization_header(mocker, env, fake_record, record_id):
 def test_calls_response_with_delete_response(
         mocker, fake_record, record_id):
     mocker.patch(
-        'do_record.resource.requests.delete', return_value=record_id)
-    stub_response = mocker.patch('do_record.resource.Response')
+        'certbot_dns_auth.do_domain.resource.requests.delete',
+        return_value=record_id)
+    stub_response = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.Response')
     fake_record.number = record_id
 
     resource = Resource(fake_record)

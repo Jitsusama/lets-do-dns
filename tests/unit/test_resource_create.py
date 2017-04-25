@@ -1,10 +1,12 @@
-from do_record.resource import Resource
-from mock import ANY, PropertyMock
 import pytest
+from mock import ANY, PropertyMock
+
+from certbot_dns_auth.do_domain.resource import Resource
 
 
 def test_calls_post(mocker, env, fake_record):
-    stub_requests = mocker.patch('do_record.resource.requests.post')
+    stub_requests = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.post')
 
     resource = Resource(fake_record)
     resource.value = env.auth_token
@@ -14,7 +16,8 @@ def test_calls_post(mocker, env, fake_record):
 
 
 def test_calls_correct_uri(mocker, env, fake_record):
-    stub_requests = mocker.patch('do_record.resource.requests.post')
+    stub_requests = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.post')
 
     resource = Resource(fake_record)
     resource.value = env.auth_token
@@ -28,7 +31,8 @@ def test_calls_correct_uri(mocker, env, fake_record):
 
 
 def test_passes_authorization_header(mocker, env, fake_record):
-    stub_requests = mocker.patch('do_record.resource.requests.post')
+    stub_requests = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.post')
 
     resource = Resource(fake_record)
     resource.value = env.auth_token
@@ -39,7 +43,8 @@ def test_passes_authorization_header(mocker, env, fake_record):
 
 
 def test_passes_json_body(mocker, env, fake_record):
-    stub_post = mocker.patch('do_record.resource.requests.post')
+    stub_post = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.requests.post')
     json_request = {
         'type': 'TXT',
         'name': env.hostname,
@@ -58,9 +63,10 @@ def test_integer_property_properly_calls_response(
     mock_post_response = fake_requests_post_response(201)
 
     mocker.patch(
-        'do_record.resource.requests.post',
+        'certbot_dns_auth.do_domain.resource.requests.post',
         return_value=mock_post_response)
-    stub_response = mocker.patch('do_record.resource.Response')
+    stub_response = mocker.patch(
+        'certbot_dns_auth.do_domain.resource.Response')
 
     resource = Resource(fake_record)
     resource.value = env.auth_token
@@ -74,11 +80,13 @@ def test_integer_property_accesses_response_resource_id(
     mock_post_response = fake_requests_post_response(201)
 
     mocker.patch(
-        'do_record.resource.requests.post', return_value=mock_post_response)
+        'certbot_dns_auth.do_domain.resource.requests.post',
+        return_value=mock_post_response)
     mocker.patch(
-        'do_record.resource.Response.__init__', return_value=None)
+        'certbot_dns_auth.do_domain.resource.Response.__init__',
+        return_value=None)
     stub_resource_id = mocker.patch(
-        'do_record.resource.Response.resource_id',
+        'certbot_dns_auth.do_domain.resource.Response.resource_id',
         new_callable=PropertyMock)
 
     resource = Resource(fake_record)
@@ -91,12 +99,12 @@ def test_integer_property_accesses_response_resource_id(
 @pytest.mark.parametrize('input_record_id', [98765, 49586])
 def test_stores_integer_identifier(
         mocker, env, input_record_id, fake_record):
-    mocker.patch('do_record.resource.requests.post')
+    mocker.patch('certbot_dns_auth.do_domain.resource.requests.post')
     mocker.patch(
-        'do_record.resource.Response.__init__',
+        'certbot_dns_auth.do_domain.resource.Response.__init__',
         return_value=None)
     mocker.patch(
-        'do_record.resource.Response.resource_id',
+        'certbot_dns_auth.do_domain.resource.Response.resource_id',
         new_callable=PropertyMock,
         return_value=input_record_id)
 

@@ -5,9 +5,9 @@ import pytest
 
 @pytest.mark.parametrize('input_record_id', [491834, 882342])
 def test_create_stores_record_id_internally(mocker, env, input_record_id):
-    mocker.patch('do_record.resource.Resource.create')
+    mocker.patch('do_record.record.Resource.create')
     mocker.patch(
-        'do_record.resource.Resource.__int__',
+        'do_record.record.Resource.__int__',
         return_value=input_record_id)
 
     record = Record(env.key, env.domain, env.hostname)
