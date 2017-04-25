@@ -1,6 +1,6 @@
 """letsencrypt's certbot Authentication Logic."""
 
-from dns01_auth.command import run
+from lets_do_dns.acme_dns_auth.command import run
 from lets_do_dns.do_domain.record import Record
 
 

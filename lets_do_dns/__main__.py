@@ -7,7 +7,7 @@ from lets_do_dns.arguments import Arguments
 from lets_do_dns.environment import Environment
 from lets_do_dns.errors import RequiredInputMissing
 from lets_do_dns.printer import stderr
-from lets_do_dns.dns01_auth import Authenticate
+from lets_do_dns.acme_dns_auth import Authenticate
 
 
 def main():
