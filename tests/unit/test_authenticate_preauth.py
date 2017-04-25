@@ -6,6 +6,8 @@ from mock import call
 
 def test_triggers_record_creation_after_initialization(
         mocker, env, create_environment):
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
+
     stub_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
     txt_hostname = '%s.%s' % ('_acme-challenge', env.hostname)
@@ -19,8 +21,23 @@ def test_triggers_record_creation_after_initialization(
     stub_record.assert_has_calls(initialize_then_create)
 
 
+def test_pauses_after_successful_record_creation(
+        mocker, create_environment):
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record')
+
+    stub_sleep = mocker.patch(
+        'lets_do_dns.acme_dns_auth.authenticate.sleep')
+
+    authentication = Authenticate(environment=create_environment)
+    authentication.perform()
+
+    stub_sleep.assert_called_once_with(2)
+
+
 def test_passes_record_id_to_printer_after_record_creation(
         mocker, create_environment):
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
+
     stub_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
 
@@ -32,6 +49,7 @@ def test_passes_record_id_to_printer_after_record_creation(
 
 def test_returns_zero_after_successful_record_creation(
         mocker, create_environment):
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
     mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record')
 
     authentication = Authenticate(environment=create_environment)

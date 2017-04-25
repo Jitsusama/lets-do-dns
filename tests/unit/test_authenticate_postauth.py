@@ -32,6 +32,19 @@ def test_sets_record_number(mocker, delete_environment):
     assert mock_number.called_once_with(record_id)
 
 
+def test_does_not_pause_after_record_deletion(
+        mocker, delete_environment):
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record')
+
+    stub_sleep = mocker.patch(
+        'lets_do_dns.acme_dns_auth.authenticate.sleep')
+
+    authentication = Authenticate(environment=delete_environment(1))
+    authentication.perform()
+
+    stub_sleep.assert_not_called()
+
+
 def test_runs_postcmd_program(mocker, delete_environment):
     mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record')
     stub_run = mocker.patch('lets_do_dns.acme_dns_auth.authenticate.run')

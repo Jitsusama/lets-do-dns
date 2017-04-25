@@ -22,9 +22,10 @@ def test_pre_authentication_hook(env):
         env.base_uri, env.domain, record_id)
     response = get(request_uri, headers=env.auth_header)
     record_data = response.json()['domain_record']
+    expected_hostname = '_acme-challenge.%s' % env.hostname
 
     assert (record_data['type'] == 'TXT' and
-            record_data['name'] == env.hostname and
+            record_data['name'] == expected_hostname and
             record_data['data'] == env.auth_token)
 
     delete(request_uri, headers=env.auth_header)

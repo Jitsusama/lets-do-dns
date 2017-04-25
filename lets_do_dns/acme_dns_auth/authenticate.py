@@ -1,6 +1,7 @@
 """letsencrypt's certbot Authentication Logic."""
 
 from lets_do_dns.acme_dns_auth.command import run
+from lets_do_dns.acme_dns_auth.time_delay import sleep
 from lets_do_dns.do_domain.record import Record
 
 
@@ -19,6 +20,7 @@ class Authenticate(object):
         else:
             self._create_record()
             self._print_record_id()
+            self._delay_finish()
 
         return 0
 
@@ -53,3 +55,7 @@ class Authenticate(object):
         auth_hostname = '_acme-challenge.%s' % cert_hostname
 
         return auth_hostname
+
+    @staticmethod
+    def _delay_finish():
+        sleep(2)
