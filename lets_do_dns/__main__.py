@@ -3,11 +3,11 @@
 import os
 import sys
 
-from certbot_dns_auth.arguments import Arguments
-from certbot_dns_auth.environment import Environment
-from certbot_dns_auth.errors import RequiredInputMissing
-from certbot_dns_auth.printer import stderr
-from certbot_dns_auth.dns01_auth import Authenticate
+from lets_do_dns.arguments import Arguments
+from lets_do_dns.environment import Environment
+from lets_do_dns.errors import RequiredInputMissing
+from lets_do_dns.printer import stderr
+from lets_do_dns.dns01_auth import Authenticate
 
 
 def main():

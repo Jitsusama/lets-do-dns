@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'lets-do-dns = certbot_dns_auth.__main__:main'
+            'lets-do-dns = lets_do_dns.__main__:main'
         ]
     },
 )

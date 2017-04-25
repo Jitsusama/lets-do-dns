@@ -1,5 +1,5 @@
 """Environment Wrapper and Validator."""
-from certbot_dns_auth.errors import RequiredInputMissing
+from lets_do_dns.errors import RequiredInputMissing
 
 
 class Environment(object):

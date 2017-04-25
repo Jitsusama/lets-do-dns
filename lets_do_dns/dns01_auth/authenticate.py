@@ -1,7 +1,7 @@
 """letsencrypt's certbot Authentication Logic."""
 
 from dns01_auth.command import run
-from certbot_dns_auth.do_domain.record import Record
+from lets_do_dns.do_domain.record import Record
 
 
 class Authenticate(object):

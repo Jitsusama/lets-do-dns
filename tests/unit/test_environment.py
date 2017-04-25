@@ -1,5 +1,5 @@
-from certbot_dns_auth.environment import Environment
-from certbot_dns_auth.errors import RequiredInputMissing
+from lets_do_dns.environment import Environment
+from lets_do_dns.errors import RequiredInputMissing
 import pytest
 
 

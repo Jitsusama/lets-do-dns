@@ -1,7 +1,7 @@
 """DigitalOcean DNS Records."""
 
-from certbot_dns_auth.printer import stdout
-from certbot_dns_auth.do_domain.resource import Resource
+from lets_do_dns.printer import stdout
+from lets_do_dns.do_domain.resource import Resource
 
 
 class Record(object):

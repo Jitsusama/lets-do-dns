@@ -1,6 +1,6 @@
 """HTTP RESTful API Responses From DigitalOcean."""
 
-from certbot_dns_auth.do_domain.errors import RecordCreationFailure
+from lets_do_dns.do_domain.errors import RecordCreationFailure
 
 
 class Response(object):

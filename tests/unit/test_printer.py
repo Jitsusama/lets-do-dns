@@ -1,4 +1,4 @@
-from certbot_dns_auth.printer import stdout, stderr
+from lets_do_dns.printer import stdout, stderr
 from mock import call
 import pytest
 

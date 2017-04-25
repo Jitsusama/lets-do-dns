@@ -1,10 +1,10 @@
-from certbot_dns_auth.arguments import Arguments
+from lets_do_dns.arguments import Arguments
 from mock import ANY, call
 
 
 def test_calls_argumentparser(mocker):
     stub_argumentparser = mocker.patch(
-        'certbot_dns_auth.arguments.argparse.ArgumentParser')
+        'lets_do_dns.arguments.argparse.ArgumentParser')
 
     Arguments('')
 
@@ -13,7 +13,7 @@ def test_calls_argumentparser(mocker):
 
 def test_passes_output_texts_to_argumentparser(mocker):
     stub_argumentparser = mocker.patch(
-        'certbot_dns_auth.arguments.argparse.ArgumentParser')
+        'lets_do_dns.arguments.argparse.ArgumentParser')
 
     Arguments('')
 
@@ -23,7 +23,7 @@ def test_passes_output_texts_to_argumentparser(mocker):
 
 def test_passes_arguments_and_not_progname_to_parseargs(mocker):
     stub_argumentparser = mocker.patch(
-        'certbot_dns_auth.arguments.argparse.ArgumentParser')
+        'lets_do_dns.arguments.argparse.ArgumentParser')
     passed_arguments = ['lets-do-dns', '--help']
 
     Arguments(passed_arguments)

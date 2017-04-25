@@ -2,7 +2,7 @@
 
 import requests
 
-from certbot_dns_auth.do_domain.response import Response
+from lets_do_dns.do_domain.response import Response
 
 
 class Resource(object):
