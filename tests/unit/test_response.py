@@ -1,6 +1,6 @@
 import pytest
 
-from do_record.errors import RecordCreationFailure
+from certbot_dns_auth.do_domain.errors import RecordCreationFailure
 from do_record.response import Response
 
 
