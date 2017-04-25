@@ -1,7 +1,7 @@
 import pytest
 
 from certbot_dns_auth.do_domain.errors import RecordCreationFailure
-from do_record.response import Response
+from certbot_dns_auth.do_domain.response import Response
 
 
 @pytest.mark.parametrize('record_id', [23465545])

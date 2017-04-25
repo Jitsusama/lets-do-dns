@@ -1,7 +1,8 @@
 """Performs lower level functions against DigitalOcean's REST API."""
 
 import requests
-from do_record.response import Response
+
+from certbot_dns_auth.do_domain.response import Response
 
 
 class Resource(object):
