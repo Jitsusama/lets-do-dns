@@ -44,8 +44,9 @@ Here's an example of how you can use this program:
 
    DO_API_KEY=super-secret-key \
    DO_DOMAIN=mydomain.com \
-   LETS_DO_POSTCMD="echo ${CERTBOT_DOMAIN}" \
+   LETS_DO_POSTCMD='echo ${CERTBOT_DOMAIN} > command_output.txt' \
    certbot certonly --manual -d myhostname.mydomain.com \
+       --preferred-challenges dns \
        --manual-auth-hook lets-do-dns \
        --manual-cleanup-hook lets-do-dns
 
