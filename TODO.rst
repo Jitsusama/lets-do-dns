@@ -1,8 +1,6 @@
 TODO
 ====
 
-*  Think about renaming the modules and maybe the project.
-
 *  Make a README.rst file to go along with the project.
 
 *  Develop a script/program to be triggered by this program to handle
