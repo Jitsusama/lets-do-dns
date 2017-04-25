@@ -2,11 +2,12 @@
 
 import os
 import sys
+
 from certbot_dns_auth.arguments import Arguments
-from certbot_dns_auth.authenticate import Authenticate
 from certbot_dns_auth.environment import Environment
 from certbot_dns_auth.errors import RequiredInputMissing
 from certbot_dns_auth.printer import stderr
+from certbot_dns_auth.dns01_auth import Authenticate
 
 
 def main():

@@ -1,12 +1,13 @@
 """Test the DigitalOcean backed ACME DNS Authentication Class."""
 
-from certbot_dns_auth import Authenticate
+from certbot_dns_auth.dns01_auth.authenticate import Authenticate
 from mock import call, PropertyMock
 
 
 def test_triggers_record_deletion_after_initialization(
         mocker, env, delete_environment):
-    stub_record = mocker.patch('certbot_dns_auth.authenticate.Record')
+    stub_record = mocker.patch(
+        'certbot_dns_auth.dns01_auth.authenticate.Record')
 
     authentication = Authenticate(environment=delete_environment(0))
     authentication.perform()
@@ -19,9 +20,9 @@ def test_triggers_record_deletion_after_initialization(
 
 def test_sets_record_number(mocker, delete_environment):
     mock_number = mocker.patch(
-        'certbot_dns_auth.authenticate.Record.number',
+        'certbot_dns_auth.dns01_auth.authenticate.Record.number',
         new_callable=PropertyMock)
-    mocker.patch('certbot_dns_auth.authenticate.Record.delete')
+    mocker.patch('certbot_dns_auth.dns01_auth.authenticate.Record.delete')
     record_id = 1235234
 
     authentication = Authenticate(environment=delete_environment(record_id))
@@ -31,8 +32,8 @@ def test_sets_record_number(mocker, delete_environment):
 
 
 def test_runs_postcmd_program(mocker, delete_environment):
-    mocker.patch('certbot_dns_auth.authenticate.Record')
-    stub_run = mocker.patch('certbot_dns_auth.authenticate.run')
+    mocker.patch('certbot_dns_auth.dns01_auth.authenticate.Record')
+    stub_run = mocker.patch('certbot_dns_auth.dns01_auth.authenticate.run')
 
     delete_environment = delete_environment(1)
     delete_environment.post_cmd = 'test-program --help'
