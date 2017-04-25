@@ -1,9 +1,6 @@
-----------------------------------------------------------------
-lets-do-dns - Let's Encrypt certbot Client ACME-DNS Hook Program
-----------------------------------------------------------------
+lets-do-dns
+===========
 
-Overview
-========
 This program's purpose is to function as a manual authentication and
 cleanup hook for the Let's Encrypt EFF_\'s certbot_ client program when you
 wish to use ACME-DNS authentication during the certificate authentication
@@ -13,7 +10,8 @@ also supports being passed a command string that will be called during the
 cleanup hook stage of the authentication process.
 
 Installation
-============
+------------
+
 Installation of this program is quite easy, as it only has one external
 dependency, and this program includes this dependency in its setup.py
 file. So, you should be able to install the whole enchilada with the
@@ -27,7 +25,8 @@ I plan on putting this program up on PyPi_ at some point. Whenever that
 happens, this program should be called lets-do-dns.
 
 Usage
-=====
+-----
+
 Make sure you pass the ``DO_APIKEY`` and ``DO_DOMAIN`` environment
 variables to certbot when it is called. Tell certbot to load this program
 by passing its name to certbot via the ``--manual-auth-hook`` and the
