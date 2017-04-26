@@ -12,19 +12,19 @@ from lets_do_dns.acme_dns_auth import Authenticate
 
 def main():
     """Bootstrap the application."""
-    arguments = Arguments(sys.argv)
+    Arguments(sys.argv)
 
     try:
         environment = Environment(os.environ)
     except RequiredInputMissing as exception:
         _handle_missing_input_exception(exception)
     else:
-        authentication = Authenticate(environment, arguments)
+        authentication = Authenticate(environment)
         sys.exit(authentication.perform())
 
 
 def _handle_missing_input_exception(exception):
-    stderr(exception.message)
+    stderr(str(exception))
     sys.exit(2)
 
 

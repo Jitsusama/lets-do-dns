@@ -8,7 +8,7 @@ from lets_do_dns.do_domain.record import Record
 class Authenticate(object):
     """Handle letsencrypt DNS certificate identity authentication."""
 
-    def __init__(self, environment, arguments=None):
+    def __init__(self, environment):
         self._env = environment
         self._record = self._init_record()
 
