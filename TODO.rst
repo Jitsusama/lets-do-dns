@@ -1,12 +1,6 @@
 TODO
 ====
 
-*  Test with certbot on a real certificate and verify complete operation.
-
-*  Make sure that setup.py is ready for PyPi.
-
-*  Push project to GitHub.
-
 *  Push project to PyPi.
 
 *  Develop a script/program to be triggered by this program to handle
