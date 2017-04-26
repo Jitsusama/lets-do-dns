@@ -22,7 +22,7 @@ REST API.'''
     @property
     def _epilog(self):
         return '''\
-This program requires the presence of the CERBOT_DOMAIN and
+This program requires the presence of the CERTBOT_DOMAIN and
 CERTBOT_VALIDATION environment variables. These should be supplied by
 the certbot program when this program is called via its
 --manual-auth-hook or --manual-cleanup-hook arguments.
