@@ -14,7 +14,8 @@ def test_pre_authentication_hook(env):
         'CERTBOT_VALIDATION': env.auth_token,
     })
 
-    record_id = subprocess.check_output('lets-do-dns')
+    program_output = subprocess.check_output('lets-do-dns')
+    record_id = program_output.decode().strip()
 
     assert int(record_id) > 0
 
@@ -82,13 +83,13 @@ def test_post_authentication_hook_with_post_command(env):
     get_response = get(request_uri, headers=env.auth_header)
 
     assert (get_response.status_code == 404 and
-            postcmd_output == 'hello\n')
+            postcmd_output.decode() == 'hello\n')
 
 
 def test_help_command():
     help_output = subprocess.check_output(['lets-do-dns', '--help'])
 
-    assert help_output.find('lets-do-dns') >= 0
+    assert str(help_output).find('lets-do-dns') >= 0
 
 
 def test_missing_required_environment_variables_exits_properly():

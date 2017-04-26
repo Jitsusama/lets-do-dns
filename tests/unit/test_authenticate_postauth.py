@@ -26,7 +26,8 @@ def test_sets_record_number(mocker, delete_environment):
     mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record.delete')
     record_id = 1235234
 
-    authentication = Authenticate(environment=delete_environment(record_id))
+    authentication = Authenticate(
+        environment=delete_environment(record_id))
     authentication.perform()
 
     assert mock_number.called_once_with(record_id)

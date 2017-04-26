@@ -5,3 +5,4 @@ pytest
 pytest-cov
 pytest-mock
 radon
+requests=2.13.0

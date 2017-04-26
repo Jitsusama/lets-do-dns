@@ -1,6 +1,6 @@
 from lets_do_dns.__main__ import main
 from lets_do_dns.errors import RequiredInputMissing
-from mock import ANY, call
+from mock import call
 import pytest
 
 
@@ -20,21 +20,7 @@ class TestAuthenticateInteractions(object):
 
         main()
 
-        stub_authenticate.assert_called_once_with(stub_environment, ANY)
-
-    def test_passed_arguments(self, mocker):
-        mocker.patch('lets_do_dns.__main__.os.environ')
-        mocker.patch('lets_do_dns.__main__.sys')
-        mocker.patch('lets_do_dns.__main__.Environment')
-        mocker.patch(
-            'lets_do_dns.__main__.Arguments', return_value=1)
-
-        stub_authenticate = mocker.patch(
-            'lets_do_dns.__main__.Authenticate')
-
-        main()
-
-        stub_authenticate.assert_called_once_with(ANY, 1)
+        stub_authenticate.assert_called_once_with(stub_environment)
 
     @pytest.mark.parametrize('return_code', [0, 1])
     def test_performs_return_code_passed_to_sys_exit(
