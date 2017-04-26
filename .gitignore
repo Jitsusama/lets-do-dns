@@ -1,15 +1,16 @@
 # Ignore Python Specific Stuff
-venv*
-.cache
+venv*/
+.cache/
 *.pyc
 __pycache__
 build/
 dist/
 *.egg-info/
 .coverage
+.tox/
 
 # Ignore PyCharm Configuration
-.idea
+.idea/
 
 # Ignore API Key File
 digital_ocean_api_key.txt

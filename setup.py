@@ -28,6 +28,7 @@ setup(
         'Operating System :: POSIX :: BSD',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: Name Service (DNS)',
         'Topic :: System :: Systems Administration',
         'Topic :: Utilities',
@@ -38,6 +39,13 @@ setup(
             'lets-do-dns = lets_do_dns.__main__:main'
         ]
     },
-    install_requires=open('requirements.txt').readlines(),
-    tests_require=open('test-requirements.txt').readlines(),
+    install_requires=['requests'],
+    tests_requires=[
+        'pylama',
+        'pylama_pylint',
+        'pytest',
+        'pytest-cov',
+        'pytest-mock',
+        'requests',
+    ]
 )
