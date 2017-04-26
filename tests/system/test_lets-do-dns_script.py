@@ -15,7 +15,7 @@ def test_pre_authentication_hook(env):
     })
 
     program_output = subprocess.check_output('lets-do-dns')
-    record_id = program_output.decode().strip()
+    record_id = program_output.decode()
 
     assert int(record_id) > 0
 

@@ -40,7 +40,7 @@ setup(
         ]
     },
     install_requires=['requests'],
-    tests_requires=[
+    tests_require=[
         'pylama',
         'pylama_pylint',
         'pytest',
