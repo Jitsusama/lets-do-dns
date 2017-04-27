@@ -1,5 +1,3 @@
-"""Test the time delay module."""
-
 from lets_do_dns.acme_dns_auth.time_delay import sleep
 
 

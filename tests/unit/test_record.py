@@ -3,6 +3,8 @@ from mock import call
 
 from lets_do_dns.do_domain.record import Record
 
+# ATTENTION: Look at conftest.py for py.test fixture definitions.
+
 
 @pytest.mark.parametrize('input_record_id', [491834, 882342])
 def test_create_stores_record_id_internally(

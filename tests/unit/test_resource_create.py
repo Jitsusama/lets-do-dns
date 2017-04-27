@@ -3,6 +3,8 @@ from mock import ANY, PropertyMock
 
 from lets_do_dns.do_domain.resource import Resource
 
+# ATTENTION: Look at conftest.py for py.test fixture definitions.
+
 
 def test_calls_post(mocker, certbot_auth_token, fake_record):
     stub_requests = mocker.patch(

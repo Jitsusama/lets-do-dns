@@ -1,5 +1,3 @@
-"""Test Command Runner."""
-
 import pytest
 
 from lets_do_dns.acme_dns_auth.command import run

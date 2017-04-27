@@ -3,6 +3,8 @@ import pytest
 from lets_do_dns.errors import RecordCreationFailure
 from lets_do_dns.do_domain.response import Response
 
+# ATTENTION: Look at conftest.py for py.test fixture definitions.
+
 
 @pytest.mark.parametrize('record_id', [23465545])
 def test_resource_id_returns_integer_on_post_request(
