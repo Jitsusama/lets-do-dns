@@ -15,9 +15,6 @@ TODO
 
 *  Add failure timeout for ``requests.get`` and ``requests.put`` actions.
 
-*  Tidy up py.test fixtures and add comments to test modules when
-   conftest.py is being used for fixtures within that test module.
-
 *  Create a Jenkins CI build script (Jenkinsfile).
 
 *  Push project to PyPi.
