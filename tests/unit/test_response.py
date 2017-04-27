@@ -1,6 +1,6 @@
 import pytest
 
-from lets_do_dns.do_domain.errors import RecordCreationFailure
+from lets_do_dns.errors import RecordCreationFailure
 from lets_do_dns.do_domain.response import Response
 
 
