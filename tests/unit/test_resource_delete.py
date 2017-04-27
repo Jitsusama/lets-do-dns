@@ -16,7 +16,7 @@ def test_calls_delete(mocker, fake_record):
 
 
 @pytest.mark.parametrize('record_id', [82227342, 2342552])
-def test_calls_correct_uri(mocker, env, fake_record, record_id):
+def test_calls_correct_uri(mocker, do_domain, fake_record, record_id):
     stub_requests = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
     fake_record.number = record_id
@@ -26,13 +26,14 @@ def test_calls_correct_uri(mocker, env, fake_record, record_id):
 
     record_delete_uri = (
         'https://api.digitalocean.com/v2/domains/%s/records/%s' % (
-            env.domain, record_id))
+            do_domain, record_id))
 
     stub_requests.assert_called_once_with(record_delete_uri, headers=ANY)
 
 
 @pytest.mark.parametrize('record_id', [4323422, 1231123])
-def test_passes_authorization_header(mocker, env, fake_record, record_id):
+def test_passes_authorization_header(
+        mocker, do_auth_header, fake_record, record_id):
     stub_requests = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
     fake_record.number = record_id
@@ -40,7 +41,7 @@ def test_passes_authorization_header(mocker, env, fake_record, record_id):
     resource = Resource(fake_record)
     resource.delete()
 
-    stub_requests.assert_called_once_with(ANY, headers=env.auth_header)
+    stub_requests.assert_called_once_with(ANY, headers=do_auth_header)
 
 
 @pytest.mark.parametrize('record_id', [77238234, 235223])

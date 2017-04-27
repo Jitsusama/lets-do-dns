@@ -5,19 +5,20 @@ from mock import call
 
 
 def test_triggers_record_creation_after_initialization(
-        mocker, env, create_environment):
+        mocker, do_api_key, do_domain, do_hostname, certbot_auth_token,
+        create_environment):
     mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
 
     stub_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
-    txt_hostname = '%s.%s' % ('_acme-challenge', env.hostname)
+    txt_hostname = '%s.%s' % ('_acme-challenge', do_hostname)
 
     authentication = Authenticate(environment=create_environment)
     authentication.perform()
 
     initialize_then_create = [
-        call(env.key, env.domain, txt_hostname),
-        call().create(env.auth_token)]
+        call(do_api_key, do_domain, txt_hostname),
+        call().create(certbot_auth_token)]
     stub_record.assert_has_calls(initialize_then_create)
 
 

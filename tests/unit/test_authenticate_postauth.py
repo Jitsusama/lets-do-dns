@@ -5,16 +5,16 @@ from mock import call, PropertyMock
 
 
 def test_triggers_record_deletion_after_initialization(
-        mocker, env, delete_environment):
+        mocker, do_api_key, do_domain, do_hostname, delete_environment):
     stub_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
-    txt_hostname = '%s.%s' % ('_acme-challenge', env.hostname)
+    txt_hostname = '%s.%s' % ('_acme-challenge', do_hostname)
 
     authentication = Authenticate(environment=delete_environment(0))
     authentication.perform()
 
     initialize_then_delete = [
-        call(env.key, env.domain, txt_hostname),
+        call(do_api_key, do_domain, txt_hostname),
         call().delete()]
     stub_record.assert_has_calls(initialize_then_delete)
 

@@ -5,37 +5,41 @@ from lets_do_dns.do_domain.record import Record
 
 
 @pytest.mark.parametrize('input_record_id', [491834, 882342])
-def test_create_stores_record_id_internally(mocker, env, input_record_id):
+def test_create_stores_record_id_internally(
+        mocker, do_api_key, do_domain, do_hostname, certbot_auth_token,
+        input_record_id):
     mocker.patch(
         'lets_do_dns.do_domain.record.Resource.create')
     mocker.patch(
         'lets_do_dns.do_domain.record.Resource.__int__',
         return_value=input_record_id)
 
-    record = Record(env.key, env.domain, env.hostname)
-    record.create(env.auth_token)
+    record = Record(do_api_key, do_domain, do_hostname)
+    record.create(certbot_auth_token)
 
     assert record.number == input_record_id
 
 
-def test_create_properly_calls_http_create(mocker, env):
+def test_create_properly_calls_http_create(
+        mocker, do_api_key, do_domain, do_hostname, certbot_auth_token):
     stub_http_create = mocker.patch(
         'lets_do_dns.do_domain.record.Resource')
 
-    record = Record(env.key, env.domain, env.hostname)
-    record.create(env.auth_token)
+    record = Record(do_api_key, do_domain, do_hostname)
+    record.create(certbot_auth_token)
 
     stub_http_create.assert_has_calls([
-        call(record, env.auth_token),
+        call(record, certbot_auth_token),
         call().create()])
 
 
 @pytest.mark.parametrize('record_id', [491834])
-def test_delete_properly_calls_http_delete(mocker, env, record_id):
+def test_delete_properly_calls_http_delete(
+        mocker, do_api_key, do_domain, do_hostname, record_id):
     stub_http_delete = mocker.patch(
         'lets_do_dns.do_domain.record.Resource')
 
-    record = Record(env.key, env.domain, env.hostname)
+    record = Record(do_api_key, do_domain, do_hostname)
     record.number = record_id
     record.delete()
 
@@ -44,12 +48,12 @@ def test_delete_properly_calls_http_delete(mocker, env, record_id):
         call().delete()])
 
 
-def test_printer_calls_printer(mocker, env):
+def test_printer_calls_printer(mocker, do_api_key, do_domain, do_hostname):
     stub_printer = mocker.patch(
         'lets_do_dns.do_domain.record.stdout')
     record_id = 918342
 
-    record = Record(env.key, env.domain, env.hostname)
+    record = Record(do_api_key, do_domain, do_hostname)
     record.number = record_id
     record.printer()
 
