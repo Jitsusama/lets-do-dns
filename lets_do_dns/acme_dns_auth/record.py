@@ -1,11 +1,11 @@
-"""DigitalOcean DNS Records."""
+"""DNS Record."""
 
 from lets_do_dns.printer import stdout
 from lets_do_dns.do_domain.resource import Resource
 
 
 class Record(object):
-    """Handle DigitalOcean DNS records."""
+    """Represent a DNS record and proxy operations to a handler."""
 
     def __init__(self, api_key, domain, hostname):
         self._number = None
@@ -14,13 +14,13 @@ class Record(object):
         self.api_key = api_key
 
     def create(self, value):
-        """Create this record on DigitalOcean with the supplied value."""
+        """Create this record on DNS provider with the supplied value."""
         resource = Resource(self, value)
         resource.create()
         self._number = resource.__int__()
 
     def delete(self):
-        """Delete this record on DigitalOcean."""
+        """Delete this record with DNS provider."""
         resource = Resource(self)
         resource.delete()
 
