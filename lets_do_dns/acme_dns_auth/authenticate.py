@@ -14,18 +14,23 @@ class Authenticate(object):
 
     def perform(self):
         """Execute the authentication logic."""
-        if self._in_post_hook_phase:
-            self._delete_record()
-            self._run_post_cmd()
-        else:
+        if self._in_authentication_hook_stage:
             self._create_record()
             self._print_record_id()
             self._delay_finish()
 
+        elif self._in_cleanup_hook_stage:
+            self._delete_record()
+            self._run_post_cmd()
+
         return 0
 
     @property
-    def _in_post_hook_phase(self):
+    def _in_authentication_hook_stage(self):
+        return self._env.record_id is None
+
+    @property
+    def _in_cleanup_hook_stage(self):
         return self._env.record_id is not None
 
     def _delete_record(self):
