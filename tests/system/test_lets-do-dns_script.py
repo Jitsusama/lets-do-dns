@@ -1,7 +1,7 @@
 import os
 import subprocess
 import pytest
-from requests import get, delete, post
+from requests import get, delete
 
 # ATTENTION: Look at conftest.py for py.test fixture definitions.
 

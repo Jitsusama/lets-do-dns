@@ -1,5 +1,5 @@
 from lets_do_dns.acme_dns_auth.authenticate import Authenticate
-from mock import call, PropertyMock
+from mock import call
 
 # ATTENTION: Look at conftest.py for py.test fixture definitions.
 
