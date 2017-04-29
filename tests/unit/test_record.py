@@ -20,7 +20,7 @@ def test_create_stores_record_id_internally(
     record = Record(do_api_key, do_domain, do_hostname)
     record.create(certbot_auth_token)
 
-    assert record.number == input_record_id
+    assert record.id == input_record_id
 
 
 def test_create_properly_calls_http_create(
@@ -43,7 +43,7 @@ def test_delete_properly_calls_http_delete(
         'lets_do_dns.acme_dns_auth.record.Resource')
 
     record = Record(do_api_key, do_domain, do_hostname)
-    record.number = record_id
+    record.id = record_id
     record.delete()
 
     stub_http_delete.assert_has_calls([
@@ -57,7 +57,7 @@ def test_printer_calls_printer(mocker, do_api_key, do_domain, do_hostname):
     record_id = 918342
 
     record = Record(do_api_key, do_domain, do_hostname)
-    record.number = record_id
+    record.id = record_id
     record.printer()
 
     stub_printer.assert_called_once_with(record_id)

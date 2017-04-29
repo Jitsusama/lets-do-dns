@@ -29,7 +29,7 @@ class Authenticate(object):
         return self._env.record_id is not None
 
     def _delete_record(self):
-        self._record.number = self._env.record_id
+        self._record.id = self._env.record_id
         self._record.delete()
 
     def _run_post_cmd(self):

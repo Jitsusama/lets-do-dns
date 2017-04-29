@@ -21,7 +21,7 @@ def test_calls_delete(mocker, fake_record):
 def test_calls_correct_uri(mocker, do_domain, fake_record, record_id):
     stub_requests = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
-    fake_record.number = record_id
+    fake_record.id = record_id
 
     resource = Resource(fake_record)
     resource.delete()

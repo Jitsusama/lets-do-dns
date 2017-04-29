@@ -8,7 +8,7 @@ class Record(object):
     """Represent a DNS record and proxy operations to a handler."""
 
     def __init__(self, api_key, domain, hostname):
-        self._number = None
+        self.id = None
         self.domain = domain
         self.hostname = hostname
         self.api_key = api_key
@@ -17,7 +17,7 @@ class Record(object):
         """Create this record on DNS provider with the supplied value."""
         resource = Resource(self, value)
         resource.create()
-        self._number = resource.__int__()
+        self.id = resource.__int__()
 
     def delete(self):
         """Delete this record with DNS provider."""
@@ -25,14 +25,5 @@ class Record(object):
         resource.delete()
 
     def printer(self):
-        """Print out record ID number."""
-        stdout(self.number)
-
-    @property
-    def number(self):
-        """Record ID number."""
-        return self._number
-
-    @number.setter
-    def number(self, value):
-        self._number = value
+        """Print out record ID."""
+        stdout(self.id)

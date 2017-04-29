@@ -35,8 +35,8 @@ class Resource(object):
             'https://api.digitalocean.com/v2/domains/%s/records' % (
                 self._record.domain))
 
-        if self._record.number:
-            return '%s/%s' % (common_uri, self._record.number)
+        if self._record.id:
+            return '%s/%s' % (common_uri, self._record.id)
 
         return common_uri
 

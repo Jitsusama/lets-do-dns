@@ -20,17 +20,15 @@ def test_triggers_record_deletion_after_initialization(
 
 
 def test_sets_record_number(mocker, delete_environment):
-    mock_number = mocker.patch(
-        'lets_do_dns.acme_dns_auth.authenticate.Record.number',
-        new_callable=PropertyMock)
-    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record.delete')
-    record_id = 1235234
+    from lets_do_dns.acme_dns_auth.record import Record
+    mock_record = mocker.patch(
+        'lets_do_dns.acme_dns_auth.authenticate.Record', spec=Record)
 
     authentication = Authenticate(
-        environment=delete_environment(record_id))
+        environment=delete_environment(1235234))
     authentication.perform()
 
-    assert mock_number.called_once_with(record_id)
+    assert mock_record.return_value.id == 1235234
 
 
 def test_does_not_pause_after_record_deletion(

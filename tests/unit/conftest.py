@@ -58,7 +58,7 @@ def fake_record(do_api_key, do_domain, do_hostname):
             self.api_key = api_key
             self.domain = domain
             self.hostname = hostname
-            self.number = None
+            self.id = None
 
         def create(self):
             pass
