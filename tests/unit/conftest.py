@@ -27,30 +27,6 @@ def certbot_auth_token():
 
 
 @pytest.fixture()
-def create_environment(
-        do_api_key, do_domain, do_hostname, certbot_auth_token):
-    class FakeEnvironment(object):
-        def __init__(self):
-            self.api_key = do_api_key
-            self.domain = do_domain
-            self.fqdn = '%s.%s' % (do_hostname, do_domain)
-            self.validation_key = certbot_auth_token
-            self.record_id = None
-            self.post_cmd = None
-
-    return FakeEnvironment()
-
-
-@pytest.fixture()
-def delete_environment(create_environment):
-    def updated_environment(record_id):
-        create_environment.record_id = record_id
-        return create_environment
-
-    return updated_environment
-
-
-@pytest.fixture()
 def fake_requests_post_response(
         do_domain, do_hostname, certbot_auth_token):
     class FakeRequestsResponse(object):
