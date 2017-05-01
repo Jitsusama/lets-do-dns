@@ -19,7 +19,7 @@ class Authenticate(object):
             self._print_record_id()
             self._delay_finish()
 
-        elif self._in_cleanup_hook_stage:
+        if self._in_cleanup_hook_stage:
             self._delete_record()
             self._run_post_cmd()
 
