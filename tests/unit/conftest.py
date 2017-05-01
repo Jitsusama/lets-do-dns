@@ -51,22 +51,6 @@ def delete_environment(create_environment):
 
 
 @pytest.fixture()
-def fake_record(do_api_key, do_domain, do_hostname):
-    class FakeRecord(object):
-        def __init__(self, api_key=do_api_key, domain=do_domain,
-                     hostname=do_hostname):
-            self.api_key = api_key
-            self.domain = domain
-            self.hostname = hostname
-            self.id = None
-
-        def create(self):
-            pass
-
-    return FakeRecord()
-
-
-@pytest.fixture()
 def fake_requests_post_response(
         do_domain, do_hostname, certbot_auth_token):
     class FakeRequestsResponse(object):
@@ -114,10 +98,6 @@ def fake_requests_delete_response(do_domain):
         @property
         def ok(self):
             return self.status_code < 400
-
-        @staticmethod
-        def json():
-            return None
 
         @property
         def request(self):

@@ -23,9 +23,7 @@ def test_calls_delete(mocker):
 @pytest.mark.parametrize('record_id', [82227342, 2342552])
 def test_calls_correct_uri(mocker, record_id, do_domain):
     stub_record = mocker.MagicMock(
-        spec=Record, api_key=None, domain=None, id=None)
-    stub_record.domain = do_domain
-    stub_record.id = record_id
+        spec=Record, domain=do_domain, id=record_id, api_key=None)
 
     mock_requests = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
@@ -42,8 +40,7 @@ def test_calls_correct_uri(mocker, record_id, do_domain):
 
 def test_passes_authorization_header(mocker, do_auth_header, do_api_key):
     stub_record = mocker.MagicMock(
-        spec=Record, api_key=None, domain=None, id=None)
-    stub_record.api_key = do_api_key
+        spec=Record, api_key=do_api_key, domain=None, id=None)
 
     mock_delete = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
