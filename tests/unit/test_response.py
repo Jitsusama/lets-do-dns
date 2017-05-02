@@ -5,26 +5,23 @@ from lets_do_dns.errors import RecordCreationFailure
 from lets_do_dns.do_domain.response import Response
 
 
-@pytest.mark.parametrize('record_id', [23465545])
-def test_resource_id_returns_integer_on_post_request(mocker, record_id):
+def test_resource_id_returns_integer_on_post_request(mocker):
     stub_request = mocker.MagicMock(
         spec=requests.Request, method='POST')
     stub_post_response = mocker.MagicMock(
         spec=requests.Response, request=stub_request,
-        json=lambda: {'domain_record': {'id': record_id}})
+        json=lambda: {'domain_record': {'id': 23465545}})
 
     mock_response = Response(stub_post_response)
 
-    assert mock_response.resource_id == record_id
+    assert mock_response.resource_id == 23465545
 
 
-@pytest.mark.parametrize('record_id', [1245542])
-def test_resource_id_returns_nothing_on_delete_request(mocker, record_id):
+def test_resource_id_returns_nothing_on_delete_request(mocker):
     stub_request = mocker.MagicMock(
         spec=requests.Request, method='DELETE')
     stub_delete_response = mocker.MagicMock(
-        spec=requests.Response, request=stub_request,
-        json=lambda: {'domain_record': {'id': record_id}})
+        spec=requests.Response, request=stub_request)
 
     mock_response = Response(stub_delete_response)
 

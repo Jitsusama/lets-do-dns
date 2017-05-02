@@ -1,10 +1,7 @@
-from lets_do_dns.acme_dns_auth.authenticate import Authenticate
-
-from lets_do_dns.environment import Environment
-
 from mock import call
 
-# ATTENTION: Look at conftest.py for py.test fixture definitions.
+from lets_do_dns.acme_dns_auth.authenticate import Authenticate
+from lets_do_dns.environment import Environment
 
 
 def test_triggers_record_creation_after_initialization(mocker):

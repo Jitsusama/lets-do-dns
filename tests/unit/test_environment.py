@@ -1,6 +1,7 @@
+import pytest
+
 from lets_do_dns.environment import Environment
 from lets_do_dns.errors import RequiredInputMissing
-import pytest
 
 
 @pytest.mark.parametrize(
@@ -17,11 +18,11 @@ def test_missing_required_argument_causes_required_parameter_exception(
 
 
 def test_does_not_raise_exception_with_required_arguments_present():
-    environment = {
+    stub_environment = {
         'DO_APIKEY': 'a', 'DO_DOMAIN': 'b',
         'CERTBOT_DOMAIN': 'c', 'CERTBOT_VALIDATION': 'd'}
 
-    Environment(environment)
+    Environment(stub_environment)
 
 
 @pytest.mark.parametrize(
@@ -44,9 +45,8 @@ def test_passes_missing_variables_to_exception_message(
     assert str(exception).find(message_segment) > 0
 
 
-@pytest.fixture
-def input_environment():
-    return {
+def test_stores_environment_variables_as_properties():
+    stub_environment = {
         'DO_APIKEY': 'a',
         'DO_DOMAIN': 'b',
         'CERTBOT_DOMAIN': 'c',
@@ -54,14 +54,11 @@ def input_environment():
         'CERTBOT_AUTH_OUTPUT': 'e',
         'LETS_DO_POSTCMD': 'f'}
 
+    mock_environment = Environment(stub_environment)
 
-def test_stores_environment_variables_as_properties(
-        input_environment):
-    output_environment = Environment(input_environment)
-
-    assert (output_environment.api_key == 'a' and
-            output_environment.domain == 'b' and
-            output_environment.fqdn == 'c' and
-            output_environment.validation_key == 'd' and
-            output_environment.record_id == 'e' and
-            output_environment.post_cmd == 'f')
+    assert (mock_environment.api_key == 'a' and
+            mock_environment.domain == 'b' and
+            mock_environment.fqdn == 'c' and
+            mock_environment.validation_key == 'd' and
+            mock_environment.record_id == 'e' and
+            mock_environment.post_cmd == 'f')

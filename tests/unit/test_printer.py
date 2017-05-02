@@ -1,7 +1,8 @@
 import sys
-from lets_do_dns.printer import stdout, stderr
 from mock import call
 import pytest
+
+from lets_do_dns.printer import stdout, stderr
 
 
 def test_printer_writes_to_stdout(mocker):

@@ -1,7 +1,8 @@
-from lets_do_dns.__main__ import main
-from lets_do_dns.errors import RequiredInputMissing
 from mock import call
 import pytest
+
+from lets_do_dns.__main__ import main
+from lets_do_dns.errors import RequiredInputMissing
 
 
 class TestAuthenticateInteractions(object):

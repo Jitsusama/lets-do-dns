@@ -1,10 +1,8 @@
-import pytest
 from mock import ANY
+import pytest
 
 from lets_do_dns.do_domain.resource import Resource
 from lets_do_dns.acme_dns_auth.record import Record
-
-# ATTENTION: Look at conftest.py for py.test fixture definitions.
 
 
 def test_calls_delete(mocker):
@@ -21,9 +19,9 @@ def test_calls_delete(mocker):
 
 
 @pytest.mark.parametrize('record_id', [82227342, 2342552])
-def test_calls_correct_uri(mocker, record_id, do_domain):
+def test_calls_correct_uri(mocker, record_id):
     stub_record = mocker.MagicMock(
-        spec=Record, domain=do_domain, id=record_id, api_key=None)
+        spec=Record, domain='grrbrr.ca', id=record_id, api_key=None)
 
     mock_requests = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
@@ -31,16 +29,15 @@ def test_calls_correct_uri(mocker, record_id, do_domain):
     resource = Resource(stub_record)
     resource.delete()
 
-    record_delete_uri = (
-        'https://api.digitalocean.com/v2/domains/%s/records/%s' % (
-            do_domain, record_id))
+    expected_uri = (
+        'https://api.digitalocean.com/v2/domains/grrbrr.ca/records/%s'
+        % record_id)
+    mock_requests.assert_called_once_with(expected_uri, headers=ANY)
 
-    mock_requests.assert_called_once_with(record_delete_uri, headers=ANY)
 
-
-def test_passes_authorization_header(mocker, do_auth_header, do_api_key):
+def test_passes_authorization_header(mocker):
     stub_record = mocker.MagicMock(
-        spec=Record, api_key=do_api_key, domain=None, id=None)
+        spec=Record, api_key='dummy-api-key', domain=None, id=None)
 
     mock_delete = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
@@ -48,14 +45,14 @@ def test_passes_authorization_header(mocker, do_auth_header, do_api_key):
     resource = Resource(stub_record)
     resource.delete()
 
-    mock_delete.assert_called_once_with(ANY, headers=do_auth_header)
+    expected_auth_header = {'Authorization': 'Bearer dummy-api-key'}
+    mock_delete.assert_called_once_with(ANY, headers=expected_auth_header)
 
 
-@pytest.mark.parametrize('record_id', [77238234, 235223])
-def test_calls_response_with_delete_response(mocker, record_id):
+def test_calls_response_with_delete_response(mocker):
     mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete',
-        return_value=record_id)
+        return_value='mocked-response')
     stub_record = mocker.MagicMock(spec=Record)
 
     mock_response = mocker.patch(
@@ -64,4 +61,4 @@ def test_calls_response_with_delete_response(mocker, record_id):
     resource = Resource(stub_record())
     resource.delete()
 
-    mock_response.assert_called_with(record_id)
+    mock_response.assert_called_with('mocked-response')

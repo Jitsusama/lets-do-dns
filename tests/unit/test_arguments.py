@@ -1,5 +1,6 @@
-from lets_do_dns.arguments import Arguments
 from mock import ANY, call
+
+from lets_do_dns.arguments import Arguments
 
 
 def test_calls_argumentparser(mocker):

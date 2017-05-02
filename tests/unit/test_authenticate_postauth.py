@@ -1,11 +1,8 @@
-from lets_do_dns.acme_dns_auth.authenticate import Authenticate
-
-from lets_do_dns.environment import Environment
-from lets_do_dns.acme_dns_auth.record import Record
-
 from mock import call
 
-# ATTENTION: Look at conftest.py for py.test fixture definitions.
+from lets_do_dns.acme_dns_auth.authenticate import Authenticate
+from lets_do_dns.environment import Environment
+from lets_do_dns.acme_dns_auth.record import Record
 
 
 def test_triggers_record_deletion_after_initialization(mocker):
