@@ -12,5 +12,5 @@ dist/
 # Ignore PyCharm Configuration
 .idea/
 
-# Ignore API Key File
-digital_ocean_api_key.txt
+# Ignore System Test Configuration File
+tests/system/config.ini
