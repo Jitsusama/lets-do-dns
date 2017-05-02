@@ -1,14 +1,14 @@
-from mock import call
+from mock import call, ANY
 
 from lets_do_dns.acme_dns_auth.authenticate import Authenticate
 from lets_do_dns.environment import Environment
 from lets_do_dns.acme_dns_auth.record import Record
 
 
-def test_triggers_record_deletion_after_initialization(mocker):
+def test_properly_initializes_record(mocker):
     stub_environment = mocker.MagicMock(
-        spec=Environment, api_key='test-key', domain='grrbrr.ca',
-        record_id=0, fqdn='test-host.grrbrr.ca', post_cmd=None)
+        spec=Environment, api_key='dummy-api-key', domain='dummy-domain',
+        record_id=0, fqdn='dummy-host.dummy-domain', post_cmd=None)
 
     mock_record = mocker.patch(
         'lets_do_dns.acme_dns_auth.authenticate.Record')
@@ -16,9 +16,23 @@ def test_triggers_record_deletion_after_initialization(mocker):
     authentication = Authenticate(environment=stub_environment)
     authentication.perform()
 
-    expected_challenge_hostname = '_acme-challenge.test-host'
+    mock_record.assert_called_with(
+        'dummy-api-key', 'dummy-domain', '_acme-challenge.dummy-host')
+
+
+def test_triggers_record_deletion_after_initialization(mocker):
+    stub_environment = mocker.MagicMock(
+        spec=Environment, domain='', record_id=0, fqdn='',
+        api_key=None, post_cmd=None)
+
+    mock_record = mocker.patch(
+        'lets_do_dns.acme_dns_auth.authenticate.Record')
+
+    authentication = Authenticate(environment=stub_environment)
+    authentication.perform()
+
     initialize_then_delete = [
-        call('test-key', 'grrbrr.ca', expected_challenge_hostname),
+        call(ANY, ANY, ANY),
         call().delete()]
     mock_record.assert_has_calls(initialize_then_delete)
 

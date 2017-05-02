@@ -1,7 +1,24 @@
-from mock import call
+from mock import call, ANY
 
 from lets_do_dns.acme_dns_auth.authenticate import Authenticate
 from lets_do_dns.environment import Environment
+
+
+def test_properly_initializes_record(mocker):
+    stub_environment = mocker.MagicMock(
+        spec=Environment, api_key='dummy-api-key', domain='dummy-domain',
+        fqdn='dummy-host.dummy-domain',
+        validation_key=None, post_cmd=None, record_id=None)
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
+
+    mock_record = mocker.patch(
+        'lets_do_dns.acme_dns_auth.authenticate.Record')
+
+    authentication = Authenticate(environment=stub_environment)
+    authentication.perform()
+
+    mock_record.assert_called_with(
+        'dummy-api-key', 'dummy-domain', '_acme-challenge.dummy-host')
 
 
 def test_triggers_record_creation_after_initialization(mocker):
@@ -17,9 +34,8 @@ def test_triggers_record_creation_after_initialization(mocker):
     authentication = Authenticate(environment=stub_environment)
     authentication.perform()
 
-    expected_txt_hostname = '_acme-challenge.create'
     initialize_then_create = [
-        call('stub-api-key', 'stub-domain', expected_txt_hostname),
+        call(ANY, ANY, ANY),
         call().create('stub-validation')]
     mock_record.assert_has_calls(initialize_then_create)
 
