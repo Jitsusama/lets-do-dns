@@ -3,11 +3,14 @@
 
 class RequiredInputMissing(ValueError):
     """Triggered when a required environment variable is missing."""
-
     pass
 
 
 class RecordCreationFailure(RuntimeError):
     """An error was encountered while attempting to create a record."""
+    pass
 
+
+class RecordLookupFailure(RuntimeError):
+    """An error was encountered while verifying DNS record existence."""
     pass

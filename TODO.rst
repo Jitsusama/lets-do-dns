@@ -3,7 +3,7 @@ TODO
 
 *  Perform a DNS lookup during the authentication hook stage, after the
    record has been created, instead of putting in an arbitrary timeout.
-   Retry every 500ms, up to 4 seconds, before giving up with an exception.
+   Retry every 250ms, up to 4 seconds, before giving up with an exception.
 
    Use dnspython library for the lookups.
 

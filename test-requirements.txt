@@ -6,3 +6,4 @@ pytest-cov
 pytest-mock
 radon
 requests==2.13.0
+dnspython==1.15.0

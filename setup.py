@@ -39,7 +39,7 @@ setup(
             'lets-do-dns = lets_do_dns.__main__:main'
         ]
     },
-    install_requires=['requests'],
+    install_requires=['requests', 'dnspython'],
     tests_require=[
         'pylama',
         'pylama_pylint',
