@@ -19,7 +19,6 @@ class Record(object):
         resource = Resource(self, value)
         resource.create()
         self.id = resource.__int__()
-        self.exists()
 
     def delete(self):
         """Delete this record with DNS provider."""

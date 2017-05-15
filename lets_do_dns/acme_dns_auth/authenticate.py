@@ -16,6 +16,7 @@ class Authenticate(object):
         """Execute the authentication logic."""
         if self._in_authentication_hook_stage:
             self._create_record()
+            self._verify_record_exists()
             self._print_record_id()
             self._delay_finish()
 
@@ -43,6 +44,9 @@ class Authenticate(object):
 
     def _create_record(self):
         self._record.create(self._env.validation_key)
+
+    def _verify_record_exists(self):
+        self._record.exists()
 
     def _print_record_id(self):
         self._record.printer()

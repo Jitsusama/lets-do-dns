@@ -35,18 +35,6 @@ def test_create_properly_calls_http_create(mocker):
         call().create()])
 
 
-def test_create_properly_calls_exists_during_create(mocker):
-    mocker.patch('lets_do_dns.acme_dns_auth.dns.lookup')
-    mocker.patch('lets_do_dns.acme_dns_auth.record.Resource')
-
-    mock_exists = mocker.patch.object(Record, 'exists')
-
-    record = Record('stub-api-key', 'stub-domain', 'stub-hostname')
-    record.create('dummy-auth-token')
-
-    mock_exists.assert_called_once_with()
-
-
 def test_delete_properly_calls_http_delete(mocker):
     mock_resource = mocker.patch(
         'lets_do_dns.acme_dns_auth.record.Resource')
@@ -59,7 +47,7 @@ def test_delete_properly_calls_http_delete(mocker):
         call().delete()])
 
 
-def test_exists_properly_calls_lookup_during_create(mocker):
+def test_exists_properly_calls_lookup(mocker):
     mocker.patch('lets_do_dns.acme_dns_auth.record.Resource')
 
     mock_lookup = mocker.patch(

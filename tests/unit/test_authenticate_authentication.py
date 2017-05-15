@@ -40,6 +40,25 @@ def test_triggers_record_creation_after_initialization(mocker):
     mock_record.assert_has_calls(initialize_then_create)
 
 
+def test_calls_exists_on_record_after_creation(mocker):
+    stub_environment = mocker.MagicMock(
+        spec=Environment, domain='stub-domain', fqdn='create.stub-domain',
+        api_key='stub-api-key', validation_key='stub-validation',
+        record_id=None)
+    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
+
+    mock_record = mocker.patch(
+        'lets_do_dns.acme_dns_auth.authenticate.Record')
+
+    authentication = Authenticate(environment=stub_environment)
+    authentication.perform()
+
+    initialize_then_create = [
+        call().create('stub-validation'),
+        call().exists()]
+    mock_record.assert_has_calls(initialize_then_create)
+
+
 def test_pauses_after_successful_record_creation(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment, domain='stub-domain', fqdn='create.stub-domain',
