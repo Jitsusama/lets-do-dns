@@ -22,8 +22,7 @@ def test_create_stores_record_id_internally(mocker, input_record_id):
 
 
 def test_create_properly_calls_http_create(mocker):
-    mocker.patch(
-        'lets_do_dns.acme_dns_auth.dns.lookup')
+    mocker.patch('lets_do_dns.acme_dns_auth.dns.lookup')
 
     mock_resource = mocker.patch(
         'lets_do_dns.acme_dns_auth.record.Resource')
@@ -61,8 +60,7 @@ def test_delete_properly_calls_http_delete(mocker):
 
 
 def test_exists_properly_calls_lookup_during_create(mocker):
-    mocker.patch(
-        'lets_do_dns.acme_dns_auth.record.Resource')
+    mocker.patch('lets_do_dns.acme_dns_auth.record.Resource')
 
     mock_lookup = mocker.patch(
         'lets_do_dns.acme_dns_auth.dns.lookup')
