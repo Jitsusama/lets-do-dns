@@ -89,11 +89,9 @@ def test_integer_property_properly_calls_response(mocker):
 
 
 def test_integer_property_accesses_response_resource_id(mocker):
-    mocker.patch(
-        'lets_do_dns.do_domain.resource.requests.post')
-    mocker.patch(
-        'lets_do_dns.do_domain.resource.Response.__init__',
-        return_value=None)
+    mocker.patch('lets_do_dns.do_domain.resource.requests.post')
+    mocker.patch('lets_do_dns.do_domain.resource.Response.__init__',
+                 return_value=None)
     stub_record = mocker.MagicMock(
         spec=Record, hostname=None, api_key=None, domain=None, id=None)
 
@@ -111,13 +109,11 @@ def test_integer_property_accesses_response_resource_id(mocker):
 @pytest.mark.parametrize('input_record_id', [98765, 49586])
 def test_stores_integer_identifier(mocker, input_record_id):
     mocker.patch('lets_do_dns.do_domain.resource.requests.post')
-    mocker.patch(
-        'lets_do_dns.do_domain.resource.Response.__init__',
-        return_value=None)
-    mocker.patch(
-        'lets_do_dns.do_domain.resource.Response.resource_id',
-        new_callable=PropertyMock,
-        return_value=input_record_id)
+    mocker.patch('lets_do_dns.do_domain.resource.Response.__init__',
+                 return_value=None)
+    mocker.patch('lets_do_dns.do_domain.resource.Response.resource_id',
+                 new_callable=PropertyMock,
+                 return_value=input_record_id)
     stub_record = mocker.MagicMock(
         spec=Record, hostname=None, api_key=None, domain=None, id=None)
 

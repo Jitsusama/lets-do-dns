@@ -67,8 +67,9 @@ def test_calls_response_with_delete_response(mocker):
 
 
 def test_raises_authentication_failure_on_requests_exception(mocker):
-    mocker.patch('lets_do_dns.do_domain.resource.requests.delete',
-                 side_effect=HTTPError)
+    mocker.patch(
+        'lets_do_dns.do_domain.resource.requests.delete',
+        side_effect=HTTPError)
     stub_record = mocker.MagicMock(
         spec=Record, hostname=None, api_key=None, domain=None, id=None)
 
