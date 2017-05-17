@@ -16,12 +16,12 @@ class TestAuthenticateInteractions(object):
             'lets_do_dns.__main__.Environment',
             return_value=stub_environment)
 
-        stub_authenticate = mocker.patch(
+        mock_authenticate = mocker.patch(
             'lets_do_dns.__main__.Authenticate')
 
         main()
 
-        stub_authenticate.assert_called_once_with(stub_environment)
+        mock_authenticate.assert_called_once_with(stub_environment)
 
     @pytest.mark.parametrize('return_code', [0, 1])
     def test_performs_return_code_passed_to_sys_exit(
@@ -33,11 +33,11 @@ class TestAuthenticateInteractions(object):
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch('lets_do_dns.__main__.Environment')
 
-        stub_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
+        mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
 
         main()
 
-        stub_exit.assert_called_once_with(return_code)
+        mock_exit.assert_called_once_with(return_code)
 
     def test_raised_error_message_passed_to_stderr(
             self, mocker):
@@ -82,12 +82,12 @@ class TestArgumentsInteractions(object):
         mocker.patch('lets_do_dns.__main__.Environment')
         mocker.patch('lets_do_dns.__main__.sys', argv=arguments)
 
-        stub_arguments = mocker.patch(
+        mock_arguments = mocker.patch(
             'lets_do_dns.__main__.Arguments')
 
         main()
 
-        stub_arguments.assert_called_once_with(arguments)
+        mock_arguments.assert_called_once_with(arguments)
 
 
 class TestEnvironmentInteractions(object):
@@ -95,14 +95,14 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.sys')
         mocker.patch('lets_do_dns.__main__.Authenticate')
         mocker.patch('lets_do_dns.__main__.Arguments')
-
         stub_environ = mocker.patch('lets_do_dns.__main__.os.environ')
-        stub_environment = mocker.patch(
+
+        mock_environment = mocker.patch(
             'lets_do_dns.__main__.Environment')
 
         main()
 
-        stub_environment.assert_called_once_with(stub_environ)
+        mock_environment.assert_called_once_with(stub_environ)
 
     def test_raised_error_code_passed_to_sys_exit(self, mocker):
         mocker.patch('lets_do_dns.__main__.os.environ')
@@ -114,11 +114,11 @@ class TestEnvironmentInteractions(object):
             'lets_do_dns.__main__.Environment',
             side_effect=RequiredInputMissing())
 
-        stub_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
+        mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
 
         main()
 
-        stub_exit.assert_has_calls([call(2)])
+        mock_exit.assert_has_calls([call(2)])
 
     def test_raised_error_message_passed_to_stderr(self, mocker):
         mocker.patch('lets_do_dns.__main__.os.environ')
@@ -129,8 +129,8 @@ class TestEnvironmentInteractions(object):
             'lets_do_dns.__main__.Environment',
             side_effect=RequiredInputMissing('Missing Required Input'))
 
-        stub_printer = mocker.patch('lets_do_dns.__main__.stderr')
+        mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
 
         main()
 
-        stub_printer.assert_called_once_with('Missing Required Input')
+        mock_printer.assert_called_once_with('Missing Required Input')
