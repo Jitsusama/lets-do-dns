@@ -11,11 +11,11 @@ class AuthenticationFailure(RuntimeError):
     pass
 
 
-class RecordCreationFailure(RuntimeError):
+class RecordCreationFailure(AuthenticationFailure):
     """An error was encountered while attempting to create a record."""
     pass
 
 
-class RecordLookupFailure(RuntimeError):
+class RecordLookupFailure(AuthenticationFailure):
     """An error was encountered while verifying DNS record existence."""
     pass
