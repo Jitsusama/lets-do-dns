@@ -27,9 +27,13 @@ class Resource(object):
 
     def delete(self):
         """Delete HTTP Resource from DigitalOcean."""
-        self._response = Response(
-            requests.delete(
-                self._uri, headers=self._header))
+        try:
+            delete_response = requests.delete(
+                self._uri, headers=self._header)
+        except HTTPError:
+            raise AuthenticationFailure
+        else:
+            self._response = Response(delete_response)
 
     def __int__(self):
         """Unique DigitalOcean identifier for this resource."""

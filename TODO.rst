@@ -7,6 +7,9 @@ TODO
    *  requests.exceptions.RequestException seems to be the common ancestor
       for all exceptions from the requests library.
 
+   *  have the exceptions include text explaining what the exception is
+      about.
+
 *  Add error handling for ``subprocess.check_call`` exceptions and throw
    our own custom exceptions based on them.
 
