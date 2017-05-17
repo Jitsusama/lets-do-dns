@@ -20,10 +20,10 @@ def os_environ_reset():
 @pytest.fixture(scope='module')
 def test_configuration():
     """Read test configuration from :file:`config.ini` file.
-    
+
     The INI file must have a ``[DEFAULT]`` section containing the following
     parameters:
-    
+
     *  ``do_api_key``
     *  ``do_domain``
     *  ``do_hostname``"""
