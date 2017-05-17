@@ -6,6 +6,11 @@ class RequiredInputMissing(ValueError):
     pass
 
 
+class AuthenticationFailure(RuntimeError):
+    """An error was encountered during ownership authentication."""
+    pass
+
+
 class RecordCreationFailure(RuntimeError):
     """An error was encountered while attempting to create a record."""
     pass

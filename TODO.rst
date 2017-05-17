@@ -4,8 +4,11 @@ TODO
 *  Add error handling for ``requests.get`` and ``requests.put`` related
    library exceptions and throw our own custom exceptions based on them.
 
+   *  requests.exceptions.RequestException seems to be the common ancestor
+      for all exceptions from the requests library.
+
 *  Add error handling for ``subprocess.check_call`` exceptions and throw
-   our own custom exceptions base on them.
+   our own custom exceptions based on them.
 
 *  Add failure timeout for ``requests.get`` and ``requests.put`` actions.
 

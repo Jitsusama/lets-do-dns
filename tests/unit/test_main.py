@@ -2,7 +2,7 @@ from mock import call
 import pytest
 
 from lets_do_dns.__main__ import main
-from lets_do_dns.errors import RequiredInputMissing
+from lets_do_dns.errors import RequiredInputMissing, AuthenticationFailure
 
 
 class TestAuthenticateInteractions(object):
@@ -38,6 +38,39 @@ class TestAuthenticateInteractions(object):
         main()
 
         stub_exit.assert_called_once_with(return_code)
+
+    def test_raised_error_message_passed_to_stderr(
+            self, mocker):
+        mocker.patch('lets_do_dns.__main__.Arguments')
+        mocker.patch('lets_do_dns.__main__.Environment')
+        mocker.patch('lets_do_dns.__main__.sys.exit')
+        mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
+                     return_value=None)
+        mocker.patch('lets_do_dns.__main__.Authenticate.perform',
+                     side_effect=AuthenticationFailure('Error Message'))
+
+        mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
+
+        main()
+
+        mock_printer.assert_called_once_with('Error Message')
+
+    def test_raised_error_message_causes_error_code_2_on_exit(
+            self, mocker):
+        mocker.patch('lets_do_dns.__main__.Arguments')
+        mocker.patch('lets_do_dns.__main__.Environment')
+        mocker.patch('lets_do_dns.__main__.sys.exit')
+        mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
+                     return_value=None)
+        mocker.patch('lets_do_dns.__main__.Authenticate.perform',
+                     side_effect=AuthenticationFailure('Error Message'))
+        mocker.patch('lets_do_dns.__main__.stderr')
+
+        mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
+
+        main()
+
+        mock_exit.assert_called_once_with(2)
 
 
 class TestArgumentsInteractions(object):
