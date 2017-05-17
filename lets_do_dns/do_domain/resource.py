@@ -1,7 +1,9 @@
 """Performs lower level functions against DigitalOcean's REST API."""
 
 import requests
+from requests.exceptions import HTTPError
 
+from lets_do_dns.errors import AuthenticationFailure
 from lets_do_dns.do_domain.response import Response
 
 
@@ -15,9 +17,13 @@ class Resource(object):
 
     def create(self):
         """Post HTTP Resource to DigitalOcean."""
-        self._response = Response(
-            requests.post(
-                self._uri, headers=self._header, json=self._json_data))
+        try:
+            post_response = requests.post(
+                self._uri, headers=self._header, json=self._json_data)
+        except HTTPError:
+            raise AuthenticationFailure
+        else:
+            self._response = Response(post_response)
 
     def delete(self):
         """Delete HTTP Resource from DigitalOcean."""

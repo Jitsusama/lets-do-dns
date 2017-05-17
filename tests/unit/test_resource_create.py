@@ -3,6 +3,8 @@ import pytest
 
 from lets_do_dns.do_domain.resource import Resource
 from lets_do_dns.acme_dns_auth.record import Record
+from lets_do_dns.errors import AuthenticationFailure
+from requests.exceptions import HTTPError
 
 
 def test_calls_post(mocker):
@@ -124,3 +126,16 @@ def test_stores_integer_identifier(mocker, input_record_id):
     output_record_id = resource.__int__()
 
     assert output_record_id == input_record_id
+
+
+def test_raises_authentication_failure_on_requests_exception(mocker):
+    mocker.patch('lets_do_dns.do_domain.resource.requests.post',
+                 side_effect=HTTPError)
+    mocker.patch('lets_do_dns.do_domain.resource.Response')
+    stub_record = mocker.MagicMock(
+        spec=Record, hostname=None, api_key=None, domain=None, id=None)
+
+    resource = Resource(stub_record)
+
+    with pytest.raises(AuthenticationFailure):
+        resource.create()
