@@ -4,7 +4,7 @@ import pytest
 from lets_do_dns.do_domain.resource import Resource
 from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.errors import AuthenticationFailure
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError, Timeout
 
 
 def test_calls_delete(mocker):
@@ -66,10 +66,13 @@ def test_calls_response_with_delete_response(mocker):
     mock_response.assert_called_with('mocked-response')
 
 
-def test_raises_authentication_failure_on_requests_exception(mocker):
+@pytest.mark.parametrize(
+    'requests_exception', [ConnectionError, HTTPError, Timeout])
+def test_raises_authentication_failure_on_requests_exception(
+        mocker, requests_exception):
     mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete',
-        side_effect=HTTPError)
+        side_effect=requests_exception)
     stub_record = mocker.MagicMock(
         spec=Record, hostname=None, api_key=None, domain=None, id=None)
 

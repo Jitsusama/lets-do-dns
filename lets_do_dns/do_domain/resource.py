@@ -1,7 +1,7 @@
 """Performs lower level functions against DigitalOcean's REST API."""
 
 import requests
-from requests.exceptions import HTTPError
+from requests.exceptions import RequestException
 
 from lets_do_dns.errors import AuthenticationFailure
 from lets_do_dns.do_domain.response import Response
@@ -20,7 +20,7 @@ class Resource(object):
         try:
             post_response = requests.post(
                 self._uri, headers=self._header, json=self._json_data)
-        except HTTPError:
+        except RequestException:
             raise AuthenticationFailure
         else:
             self._response = Response(post_response)
@@ -30,7 +30,7 @@ class Resource(object):
         try:
             delete_response = requests.delete(
                 self._uri, headers=self._header)
-        except HTTPError:
+        except RequestException:
             raise AuthenticationFailure
         else:
             self._response = Response(delete_response)
