@@ -1,8 +1,8 @@
 """DNS Record."""
 
-from lets_do_dns.printer import stdout
-from lets_do_dns.acme_dns_auth import dns
+import lets_do_dns.dns_tools.lookup as dns
 from lets_do_dns.do_domain.resource import Resource
+from lets_do_dns.printer import stdout
 
 
 class Record(object):
