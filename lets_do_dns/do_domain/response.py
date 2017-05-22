@@ -2,6 +2,8 @@
 
 from lets_do_dns.errors import RecordCreationFailure
 
+from requests.exceptions import HTTPError
+
 
 class Response(object):
     """HTTP resource request response from DigitalOcean."""
@@ -25,16 +27,7 @@ class Response(object):
         return self._response.request.method
 
     def _check_response(self):
-        resource_request_failure = not self._response.ok
-
-        if resource_request_failure:
-            raise self._raise_creation_failure()
-
-    def _raise_creation_failure(self):
-        response_code = self._response.status_code
-        resource_uri = self._response.url
-        error_message = (
-            'Encountered a %s response while creating the record resource '
-            'at %s' % (response_code, resource_uri))
-
-        return RecordCreationFailure(error_message)
+        try:
+            self._response.raise_for_status()
+        except HTTPError as exception:
+            raise RecordCreationFailure(exception)

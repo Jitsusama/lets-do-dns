@@ -1,5 +1,7 @@
+from mock import call
 import pytest
 import requests
+from requests.exceptions import HTTPError
 
 from lets_do_dns.errors import RecordCreationFailure
 from lets_do_dns.do_domain.response import Response
@@ -28,41 +30,27 @@ def test_resource_id_returns_nothing_on_delete_request(mocker):
     assert mock_response.resource_id is None
 
 
-def test_raises_exception_on_bad_status_code(mocker):
-    stub_request = mocker.MagicMock(
-        spec=requests.Request, method='POST')
+def test_calls_raise_for_status(mocker):
+    mock_post_response = mocker.MagicMock(spec=requests.Response)
+
+    Response(mock_post_response)
+
+    mock_post_response.assert_has_calls([call.raise_for_status()])
+
+
+def test_passes_requests_exception_to_record_creation_failure(mocker):
+    stub_error = HTTPError()
+    stub_raise_for_status = mocker.MagicMock(
+        side_effect=stub_error)
     stub_post_response = mocker.MagicMock(
-        spec=requests.Response, request=stub_request,
-        status_code=404, ok=False, url=None)
+        spec=requests.Response,
+        raise_for_status=stub_raise_for_status)
+
+    mock_record_creation_failure = mocker.patch(
+        'lets_do_dns.do_domain.response.RecordCreationFailure',
+        return_value=RecordCreationFailure)
 
     with pytest.raises(RecordCreationFailure):
         Response(stub_post_response)
 
-
-def test_prints_response_status_code_with_raised_exception(mocker):
-    stub_request = mocker.MagicMock(
-        spec=requests.Request, method='POST')
-    stub_requests_response = mocker.MagicMock(
-        spec=requests.Response, request=stub_request,
-        status_code=500, ok=False, url=None)
-
-    with pytest.raises(RecordCreationFailure) as exception:
-        Response(stub_requests_response)
-
-    assert str(exception).find('500') > 0
-
-
-def test_prints_record_uri_with_raised_exception(mocker):
-    expected_uri = (
-        'https://api.digitalocean.com/v2/domains/grrbrr.ca/records')
-
-    stub_request = mocker.MagicMock(
-        spec=requests.Request, method='POST')
-    stub_requests_response = mocker.MagicMock(
-        spec=requests.Response, request=stub_request,
-        status_code=600, ok=False, url=expected_uri)
-
-    with pytest.raises(RecordCreationFailure) as exception:
-        Response(stub_requests_response)
-
-    assert str(exception).find(expected_uri) > 0
+    mock_record_creation_failure.assert_called_once_with(stub_error)
