@@ -1,6 +1,4 @@
 """Wrap dnspython package."""
-from __future__ import absolute_import
-
 from dns.exception import DNSException
 from dns.resolver import query
 
