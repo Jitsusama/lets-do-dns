@@ -3,7 +3,7 @@
 import requests
 from requests.exceptions import RequestException
 
-from lets_do_dns.errors import AuthenticationFailure
+from lets_do_dns.errors import RecordCreationFailure
 from lets_do_dns.do_domain.response import Response
 
 
@@ -20,8 +20,8 @@ class Resource(object):
         try:
             post_response = requests.post(
                 self._uri, headers=self._header, json=self._json_data)
-        except RequestException:
-            raise AuthenticationFailure
+        except RequestException as exception:
+            raise RecordCreationFailure(exception)
         else:
             self._response = Response(post_response)
 
@@ -30,8 +30,8 @@ class Resource(object):
         try:
             delete_response = requests.delete(
                 self._uri, headers=self._header)
-        except RequestException:
-            raise AuthenticationFailure
+        except RequestException as exception:
+            raise RecordCreationFailure(exception)
         else:
             self._response = Response(delete_response)
 
