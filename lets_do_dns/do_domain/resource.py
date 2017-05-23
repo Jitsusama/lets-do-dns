@@ -17,23 +17,22 @@ class Resource(object):
 
     def create(self):
         """Post HTTP Resource to DigitalOcean."""
-        try:
-            post_response = requests.post(
-                self._uri, headers=self._header, json=self._json_data)
-        except RequestException as exception:
-            raise RecordCreationFailure(exception)
-        else:
-            self._response = Response(post_response)
+        self._perform_http_operation(
+            requests.post, json=self._json_data)
 
     def delete(self):
         """Delete HTTP Resource from DigitalOcean."""
+        self._perform_http_operation(
+            requests.delete)
+
+    def _perform_http_operation(self, requests_operation, **kwargs):
         try:
-            delete_response = requests.delete(
-                self._uri, headers=self._header)
+            response = requests_operation(
+                self._uri, headers=self._header, **kwargs)
         except RequestException as exception:
             raise RecordCreationFailure(exception)
         else:
-            self._response = Response(delete_response)
+            self._response = Response(response)
 
     def __int__(self):
         """Unique DigitalOcean identifier for this resource."""
