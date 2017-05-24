@@ -15,7 +15,7 @@ class HookError(RuntimeError):
     """
 
     def __str__(self):
-        """Formatted error message."""
+        """Concatenated error message."""
         return '{}; {}'.format(self.message, self.args[0])
 
     @property

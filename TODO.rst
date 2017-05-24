@@ -4,13 +4,8 @@ TODO
 *  Add error handling for ``requests.get`` and ``requests.put`` related
    library exceptions and throw our own custom exceptions based on them.
 
-   *  requests.exceptions.BaseException seems to be the common ancestor
-      for all exceptions from the requests library.
-
    *  Have the exceptions include text explaining what the exception is
       about.
-
-   *  Separate RecordCreationFailure and RecordDeletionFailure exceptions.
 
 *  Add error handling for ``subprocess.check_call`` exceptions and throw
    our own custom exceptions based on them.
