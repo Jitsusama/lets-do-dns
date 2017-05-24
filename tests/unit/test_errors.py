@@ -20,20 +20,6 @@ def test_authentication_errors_have_docstring(child_exception):
     assert child_exception.__doc__
 
 
-def test_record_creation_failure_str_properly_calls_exception_message(
-        mocker):
-    stub_exception = mocker.Mock()
-
-    mock_exception_message = mocker.patch(
-        'lets_do_dns.errors.api_errors.exception_message',
-        return_value='stub_string')
-
-    exception = RecordCreationFailure(stub_exception)
-    str(exception)
-
-    mock_exception_message.assert_called_once_with(stub_exception)
-
-
 class TestAuthenticationFailures(object):
     @pytest.mark.parametrize('docstring', ['first-string',
                                            'second-string'])
