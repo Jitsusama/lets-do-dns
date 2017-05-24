@@ -1,4 +1,5 @@
 mock
+pydocstyle==1.1.1
 pylama
 pylama_pylint
 pytest
