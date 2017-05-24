@@ -12,7 +12,9 @@ class HookError(RuntimeError):
 
     def __str__(self):
         """Formatted error message."""
-        return '{}; {}'.format(self.message, self.args[0])
+        message_without_period = self.message.strip('.')
+
+        return '{}; {}'.format(message_without_period, self.args[0])
 
     @property
     def message(self):

@@ -57,3 +57,15 @@ class TestHookError(object):
         message = str(HookError(stub_exception))
 
         assert 'stub-message' in message
+
+    def test___str___trims_period_from_end_of_docstring(self, mocker):
+        stub_exception = mocker.Mock(
+            spec=Exception, __str__=lambda _: 'stub-message')
+
+        exception = HookError(stub_exception)
+        message = str(exception)
+
+        docstring = (
+            'Parent class for errors relating to a certbot hook stage;')
+
+        assert message.startswith(docstring)
