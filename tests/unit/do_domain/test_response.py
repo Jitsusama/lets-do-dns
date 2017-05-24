@@ -3,7 +3,7 @@ import pytest
 import requests
 from requests.exceptions import HTTPError
 
-from lets_do_dns.errors import RecordCreationFailure
+from lets_do_dns.errors import RecordCreationFailure, RecordDeletionFailure
 from lets_do_dns.do_domain.response import Response
 
 
@@ -38,19 +38,26 @@ def test_calls_raise_for_status(mocker):
     mock_post_response.assert_has_calls([call.raise_for_status()])
 
 
-def test_passes_requests_exception_to_record_creation_failure(mocker):
+@pytest.mark.parametrize('method, exception', [
+    ('POST', RecordCreationFailure), ('DELETE', RecordDeletionFailure)])
+def test_properly_raises_correct_record_failure_on_related_method_error(
+        mocker, method, exception):
     stub_error = HTTPError()
     stub_raise_for_status = mocker.MagicMock(
         side_effect=stub_error)
-    stub_post_response = mocker.MagicMock(
+    stub_request = mocker.MagicMock(
+        spec=requests.Request, method=method)
+    stub_response = mocker.MagicMock(
         spec=requests.Response,
-        raise_for_status=stub_raise_for_status)
+        raise_for_status=stub_raise_for_status,
+        request=stub_request)
 
-    mock_record_creation_failure = mocker.patch(
-        'lets_do_dns.do_domain.response.RecordCreationFailure',
-        return_value=RecordCreationFailure)
+    class_to_mock = 'lets_do_dns.do_domain.response.{}'.format(
+        exception.__name__)
+    mock_record_failure = mocker.patch(
+        class_to_mock, return_value=exception)
 
-    with pytest.raises(RecordCreationFailure):
-        Response(stub_post_response)
+    with pytest.raises(exception):
+        Response(stub_response)
 
-    mock_record_creation_failure.assert_called_once_with(stub_error)
+    mock_record_failure.assert_called_once_with(stub_error)

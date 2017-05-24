@@ -1,6 +1,6 @@
 """HTTP RESTful API Responses From DigitalOcean."""
 
-from lets_do_dns.errors import RecordCreationFailure
+from lets_do_dns.errors import RecordCreationFailure, RecordDeletionFailure
 
 from requests.exceptions import HTTPError
 
@@ -30,4 +30,7 @@ class Response(object):
         try:
             self._response.raise_for_status()
         except HTTPError as exception:
-            raise RecordCreationFailure(exception)
+            if self._request_type == 'POST':
+                raise RecordCreationFailure(exception)
+            else:
+                raise RecordDeletionFailure(exception)

@@ -24,6 +24,11 @@ class RecordCreationFailure(AuthenticationFailure):
         return api_errors.exception_message(self.args[0])
 
 
+class RecordDeletionFailure(AuthenticationFailure):
+    """An error occurred while deleting the authentication record."""
+    pass
+
+
 class RecordLookupFailure(AuthenticationFailure):
     """An error was encountered while verifying DNS record existence."""
     pass

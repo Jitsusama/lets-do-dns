@@ -1,14 +1,23 @@
 import pytest
 
 from lets_do_dns.errors import (
-    AuthenticationFailure, RecordCreationFailure, RecordLookupFailure)
+    AuthenticationFailure, RecordCreationFailure, RecordDeletionFailure,
+    RecordLookupFailure)
 
 
 @pytest.mark.parametrize(
-    'child_exception', [RecordCreationFailure, RecordLookupFailure])
+    'child_exception', [RecordCreationFailure, RecordDeletionFailure,
+                        RecordLookupFailure])
 def test_authentication_errors_inherit_from_base_error(
         child_exception):
     assert issubclass(child_exception, AuthenticationFailure)
+
+
+@pytest.mark.parametrize(
+    'child_exception', [RecordCreationFailure, RecordDeletionFailure,
+                        RecordLookupFailure])
+def test_authentication_errors_have_docstring(child_exception):
+    assert child_exception.__doc__
 
 
 def test_record_creation_failure_str_properly_calls_exception_message(
