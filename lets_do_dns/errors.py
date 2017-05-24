@@ -9,23 +9,23 @@ class RequiredInputMissingError(ValueError):
 
 class HookError(RuntimeError):
     """Parent class for errors relating to a certbot hook stage.
-    
+
     The first line of a subclassing exception's docstring should contain
-    the message prefix that this exception will return when stringified."""
+    the message prefix that this exception will return when stringified.
+    """
 
     def __str__(self):
         """Formatted error message."""
-        message_without_period = self.message.strip('.')
-
-        return '{}; {}'.format(message_without_period, self.args[0])
+        return '{}; {}'.format(self.message, self.args[0])
 
     @property
     def message(self):
         """Error message."""
         exception_docstring = self.__doc__
         first_line_of_docstring = exception_docstring.splitlines().pop(0)
+        final_message = first_line_of_docstring.strip('.')
 
-        return first_line_of_docstring
+        return final_message
 
 
 class AuthenticationError(HookError):
