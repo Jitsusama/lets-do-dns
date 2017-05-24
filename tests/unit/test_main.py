@@ -2,7 +2,7 @@ from mock import call
 import pytest
 
 from lets_do_dns.__main__ import main
-from lets_do_dns.errors import RequiredInputMissingError, AuthenticationError
+from lets_do_dns.errors import HookError, RequiredInputMissingError
 
 
 class TestAuthenticateInteractions(object):
@@ -42,14 +42,14 @@ class TestAuthenticateInteractions(object):
     def test_raised_error_message_passed_to_stderr(
             self, mocker):
         mocker.patch.object(
-            AuthenticationError, '__str__', lambda _: 'Error Message')
+            HookError, '__str__', lambda _: 'Error Message')
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch('lets_do_dns.__main__.Environment')
         mocker.patch('lets_do_dns.__main__.sys.exit')
         mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
                      return_value=None)
         mocker.patch('lets_do_dns.__main__.Authenticate.perform',
-                     side_effect=AuthenticationError('Error Message'))
+                     side_effect=HookError('Error Message'))
 
         mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
 
@@ -65,7 +65,7 @@ class TestAuthenticateInteractions(object):
         mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
                      return_value=None)
         mocker.patch('lets_do_dns.__main__.Authenticate.perform',
-                     side_effect=AuthenticationError('Error Message'))
+                     side_effect=HookError('Error Message'))
         mocker.patch('lets_do_dns.__main__.stderr')
 
         mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
@@ -129,10 +129,10 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
-            side_effect=RequiredInputMissingError('Missing Required Input'))
+            side_effect=RequiredInputMissingError('stub-message'))
 
         mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
 
         main()
 
-        mock_printer.assert_called_once_with('Missing Required Input')
+        mock_printer.assert_called_once_with('stub-message')

@@ -5,7 +5,7 @@ import sys
 
 from lets_do_dns.arguments import Arguments
 from lets_do_dns.environment import Environment
-from lets_do_dns.errors import RequiredInputMissingError, AuthenticationError
+from lets_do_dns.errors import RequiredInputMissingError, HookError
 from lets_do_dns.printer import stderr
 
 from lets_do_dns.acme_dns_auth import Authenticate
@@ -22,7 +22,7 @@ def main():
     except RequiredInputMissingError as exception:
         _handle_missing_input_exception(exception)
 
-    except AuthenticationError as exception:
+    except HookError as exception:
         _handle_missing_input_exception(exception)
 
     else:

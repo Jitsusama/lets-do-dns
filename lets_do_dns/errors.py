@@ -6,8 +6,8 @@ class RequiredInputMissingError(ValueError):
     pass
 
 
-class AuthenticationError(RuntimeError):
-    """An error was encountered during ownership authentication."""
+class HookError(RuntimeError):
+    """Parent class for errors relating to a certbot hook stage."""
     def __str__(self):
         return '{}; {}'.format(self.message, self.args[0])
 
@@ -16,12 +16,22 @@ class AuthenticationError(RuntimeError):
         return self.__doc__
 
 
+class AuthenticationError(HookError):
+    """An error occurred during the authentication hook stage."""
+    pass
+
+
+class CleanupError(HookError):
+    """An error occurred during the authentication cleanup stage."""
+    pass
+
+
 class RecordCreationError(AuthenticationError):
     """An error was encountered while attempting to create a record."""
     pass
 
 
-class RecordDeletionError(AuthenticationError):
+class RecordDeletionError(CleanupError):
     """An error occurred while deleting the authentication record."""
     pass
 
