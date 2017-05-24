@@ -41,6 +41,8 @@ class TestAuthenticateInteractions(object):
 
     def test_raised_error_message_passed_to_stderr(
             self, mocker):
+        mocker.patch.object(
+            AuthenticationFailure, '__str__', lambda _: 'Error Message')
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch('lets_do_dns.__main__.Environment')
         mocker.patch('lets_do_dns.__main__.sys.exit')

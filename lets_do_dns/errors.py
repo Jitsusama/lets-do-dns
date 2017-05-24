@@ -4,20 +4,22 @@ import lets_do_dns.do_domain.errors as api_errors
 
 
 class RequiredInputMissing(ValueError):
-    """Triggered when a required environment variable is missing."""
+    """Missing one or more required environment variables."""
     pass
 
 
 class AuthenticationFailure(RuntimeError):
     """An error was encountered during ownership authentication."""
-    pass
+    def __str__(self):
+        return '{}; {}'.format(self.message, self.args[0])
+
+    @property
+    def message(self):
+        return self.__doc__
 
 
 class RecordCreationFailure(AuthenticationFailure):
-    """An error was encountered while attempting to create a record.
-
-    This exception wraps around an exception passed by a lower-level
-    API; so it needs to be called with the wrapped exception."""
+    """An error was encountered while attempting to create a record."""
     def __str__(self):
         return api_errors.exception_message(self.args[0])
 
