@@ -33,7 +33,7 @@ class CleanupError(HookError):
 
 
 class RecordCreationError(AuthenticationError):
-    """An error was encountered while attempting to create a record."""
+    """An error occurred while creating the authentication record."""
 
     pass
 
@@ -45,6 +45,6 @@ class RecordDeletionError(CleanupError):
 
 
 class RecordLookupError(AuthenticationError):
-    """An error was encountered while verifying DNS record existence."""
+    """An error occurred while verifying the authentication record."""
 
     pass
