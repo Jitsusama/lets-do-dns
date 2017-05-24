@@ -1,12 +1,12 @@
 """Errors That May Be Encountered While Interfacing With This Package."""
 
 
-class RequiredInputMissing(ValueError):
+class RequiredInputMissingError(ValueError):
     """Missing one or more required environment variables."""
     pass
 
 
-class AuthenticationFailure(RuntimeError):
+class AuthenticationError(RuntimeError):
     """An error was encountered during ownership authentication."""
     def __str__(self):
         return '{}; {}'.format(self.message, self.args[0])
@@ -16,16 +16,16 @@ class AuthenticationFailure(RuntimeError):
         return self.__doc__
 
 
-class RecordCreationFailure(AuthenticationFailure):
+class RecordCreationError(AuthenticationError):
     """An error was encountered while attempting to create a record."""
     pass
 
 
-class RecordDeletionFailure(AuthenticationFailure):
+class RecordDeletionError(AuthenticationError):
     """An error occurred while deleting the authentication record."""
     pass
 
 
-class RecordLookupFailure(AuthenticationFailure):
+class RecordLookupError(AuthenticationError):
     """An error was encountered while verifying DNS record existence."""
     pass

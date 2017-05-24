@@ -2,7 +2,7 @@ import pytest
 from dns.resolver import NXDOMAIN, NoAnswer
 from lets_do_dns.dns_tools.lookup import lookup
 
-from lets_do_dns.errors import RecordLookupFailure
+from lets_do_dns.errors import RecordLookupError
 
 
 def test_properly_calls_lookup(mocker):
@@ -27,5 +27,5 @@ def test_raises_error_on_dns_error(mocker, dns_raises_this):
         'lets_do_dns.dns_tools.lookup.query',
         side_effect=dns_raises_this)
 
-    with pytest.raises(RecordLookupFailure):
+    with pytest.raises(RecordLookupError):
         lookup('stub-hostname.stub-domain')

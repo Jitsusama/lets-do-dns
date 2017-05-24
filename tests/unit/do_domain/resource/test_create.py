@@ -3,7 +3,7 @@ import pytest
 
 from lets_do_dns.do_domain.resource import Resource
 from lets_do_dns.acme_dns_auth.record import Record
-from lets_do_dns.errors import RecordCreationFailure
+from lets_do_dns.errors import RecordCreationError
 import requests.exceptions
 
 
@@ -138,7 +138,7 @@ def test_raises_authentication_failure_on_requests_exception(
 
     resource = Resource(stub_record)
 
-    with pytest.raises(RecordCreationFailure):
+    with pytest.raises(RecordCreationError):
         resource.create()
 
 
@@ -151,12 +151,12 @@ def test_passes_handled_exception_to_authentication_failure(
                  side_effect=stub_timeout)
 
     mock_record_creation_failure = mocker.patch(
-        'lets_do_dns.do_domain.resource.RecordCreationFailure',
-        return_value=RecordCreationFailure)
+        'lets_do_dns.do_domain.resource.RecordCreationError',
+        return_value=RecordCreationError)
 
     resource = Resource(stub_record)
 
-    with pytest.raises(RecordCreationFailure):
+    with pytest.raises(RecordCreationError):
         resource.create()
 
     mock_record_creation_failure.assert_called_once_with(stub_timeout)

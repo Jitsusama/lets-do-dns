@@ -2,7 +2,7 @@ from mock import call
 import pytest
 
 from lets_do_dns.__main__ import main
-from lets_do_dns.errors import RequiredInputMissing, AuthenticationFailure
+from lets_do_dns.errors import RequiredInputMissingError, AuthenticationError
 
 
 class TestAuthenticateInteractions(object):
@@ -42,14 +42,14 @@ class TestAuthenticateInteractions(object):
     def test_raised_error_message_passed_to_stderr(
             self, mocker):
         mocker.patch.object(
-            AuthenticationFailure, '__str__', lambda _: 'Error Message')
+            AuthenticationError, '__str__', lambda _: 'Error Message')
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch('lets_do_dns.__main__.Environment')
         mocker.patch('lets_do_dns.__main__.sys.exit')
         mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
                      return_value=None)
         mocker.patch('lets_do_dns.__main__.Authenticate.perform',
-                     side_effect=AuthenticationFailure('Error Message'))
+                     side_effect=AuthenticationError('Error Message'))
 
         mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
 
@@ -65,7 +65,7 @@ class TestAuthenticateInteractions(object):
         mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
                      return_value=None)
         mocker.patch('lets_do_dns.__main__.Authenticate.perform',
-                     side_effect=AuthenticationFailure('Error Message'))
+                     side_effect=AuthenticationError('Error Message'))
         mocker.patch('lets_do_dns.__main__.stderr')
 
         mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
@@ -114,7 +114,7 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.stderr')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
-            side_effect=RequiredInputMissing())
+            side_effect=RequiredInputMissingError())
 
         mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
 
@@ -129,7 +129,7 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
-            side_effect=RequiredInputMissing('Missing Required Input'))
+            side_effect=RequiredInputMissingError('Missing Required Input'))
 
         mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
 

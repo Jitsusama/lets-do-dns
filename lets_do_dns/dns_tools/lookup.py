@@ -2,7 +2,7 @@
 from dns.exception import DNSException
 from dns.resolver import query
 
-from lets_do_dns.errors import RecordLookupFailure
+from lets_do_dns.errors import RecordLookupError
 
 
 def lookup(fqdn):
@@ -10,4 +10,4 @@ def lookup(fqdn):
     try:
         return query(fqdn, 'TXT')
     except DNSException:
-        raise RecordLookupFailure()
+        raise RecordLookupError()

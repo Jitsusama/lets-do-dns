@@ -3,7 +3,7 @@
 import requests
 from requests.exceptions import RequestException
 
-from lets_do_dns.errors import RecordCreationFailure, RecordDeletionFailure
+from lets_do_dns.errors import RecordCreationError, RecordDeletionError
 from lets_do_dns.do_domain.response import Response
 
 
@@ -31,9 +31,9 @@ class Resource(object):
                 self._uri, headers=self._header, **kwargs)
         except RequestException as exception:
             if requests_operation is requests.post:
-                raise RecordCreationFailure(exception)
+                raise RecordCreationError(exception)
             else:
-                raise RecordDeletionFailure(exception)
+                raise RecordDeletionError(exception)
         else:
             self._response = Response(response)
 

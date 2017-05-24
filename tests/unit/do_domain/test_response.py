@@ -3,7 +3,7 @@ import pytest
 import requests
 from requests.exceptions import HTTPError
 
-from lets_do_dns.errors import RecordCreationFailure, RecordDeletionFailure
+from lets_do_dns.errors import RecordCreationError, RecordDeletionError
 from lets_do_dns.do_domain.response import Response
 
 
@@ -39,7 +39,7 @@ def test_calls_raise_for_status(mocker):
 
 
 @pytest.mark.parametrize('method, exception', [
-    ('POST', RecordCreationFailure), ('DELETE', RecordDeletionFailure)])
+    ('POST', RecordCreationError), ('DELETE', RecordDeletionError)])
 def test_properly_raises_correct_record_failure_on_related_method_error(
         mocker, method, exception):
     stub_error = HTTPError()
