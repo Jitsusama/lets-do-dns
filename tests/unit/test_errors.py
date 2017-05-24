@@ -34,9 +34,9 @@ class TestHookError(object):
         'docstring', ['first-string', 'second-string'])
     def test_message_returns_first_line_of_docstring(self, docstring):
         failure = HookError()
-        failure.__doc__ = docstring
+        failure.__doc__ = '{}\nsecond-line'.format(docstring)
 
-        assert docstring in failure.message
+        assert docstring == failure.message
 
     def test___str___includes_message(self, mocker):
         stub_exception = mocker.Mock(
