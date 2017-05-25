@@ -41,12 +41,9 @@ class Environment(object):
 
     def _generate_exception_message(self):
         if len(self._missing_parameters) == 1:
-            return (
-                'Missing the following required environment variable: '
-                '%s' % self._missing_parameters[0])
+            return self._missing_parameters[0]
 
         if len(self._missing_parameters) > 1:
-            return (
-                'Missing the following required environment variables: '
-                '%s and %s' % (', '.join(self._missing_parameters[:-1]),
-                               self._missing_parameters[-1]))
+            return '{} and {}'.format(
+                ', '.join(self._missing_parameters[:-1]),
+                self._missing_parameters[-1])

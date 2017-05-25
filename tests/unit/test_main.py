@@ -114,7 +114,7 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.stderr')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
-            side_effect=RequiredInputMissingError())
+            side_effect=RequiredInputMissingError('stub-message'))
 
         mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
 
@@ -127,6 +127,9 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.sys')
         mocker.patch('lets_do_dns.__main__.Authenticate')
         mocker.patch('lets_do_dns.__main__.Arguments')
+        mocker.patch(
+            'lets_do_dns.__main__.RequiredInputMissingError.__str__',
+            return_value='stub-message')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
             side_effect=RequiredInputMissingError('stub-message'))

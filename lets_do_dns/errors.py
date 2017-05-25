@@ -1,58 +1,52 @@
-"""Errors That May Be Encountered While Interfacing With This Package."""
+"""Errors that may be encountered while interfacing with this package."""
 
 
-class RequiredInputMissingError(ValueError):
-    """Missing one or more required environment variables."""
+class BaseError(Exception):
+    """Base error class for all lets_do_dns errors.
 
-    pass
-
-
-class HookError(RuntimeError):
-    """Parent class for errors relating to a certbot hook stage.
-
-    The first line of a subclassing exception's docstring should contain
-    the message prefix that this exception will return when stringified.
+    These errors will have their string representation based on their
+    docstring. As such, the first line of a subclassing exception's
+    docstring should contain the message prefix that the exception will
+    return when stringified.
     """
 
     def __str__(self):
-        """Concatenated error message."""
+        """Exception description followed by the first passed argument."""
         return '{}; {}'.format(self.message, self.args[0])
 
     @property
     def message(self):
-        """Error message."""
-        exception_docstring = self.__doc__
-        first_line_of_docstring = exception_docstring.splitlines().pop(0)
-        final_message = first_line_of_docstring.strip('.')
+        """Description of the exception."""
+        docstring = self.__doc__
+        first_line = docstring.splitlines().pop(0)
+        suffixing_periods_removed = first_line.strip('.')
 
-        return final_message
+        return suffixing_periods_removed
+
+
+class RequiredInputMissingError(BaseError):
+    """Missing one or more required environment variables."""
+
+
+class HookError(BaseError):
+    """Errors relating to a certbot hook stage."""
 
 
 class AuthenticationError(HookError):
     """An error occurred during the authentication hook stage."""
 
-    pass
-
 
 class CleanupError(HookError):
     """An error occurred during the authentication cleanup stage."""
-
-    pass
 
 
 class RecordCreationError(AuthenticationError):
     """An error occurred while creating the authentication record."""
 
-    pass
-
 
 class RecordDeletionError(CleanupError):
     """An error occurred while deleting the authentication record."""
 
-    pass
-
 
 class RecordLookupError(AuthenticationError):
     """An error occurred while verifying the authentication record."""
-
-    pass
