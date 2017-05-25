@@ -10,5 +10,5 @@ def lookup(fqdn):
     """Perform a DNS TXT record lookup against the provided FQDN."""
     try:
         return query(fqdn, 'TXT')
-    except DNSException:
-        raise RecordLookupError()
+    except DNSException as exception:
+        raise RecordLookupError(exception)

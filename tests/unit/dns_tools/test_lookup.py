@@ -29,3 +29,19 @@ def test_raises_error_on_dns_error(mocker, dns_raises_this):
 
     with pytest.raises(RecordLookupError):
         lookup('stub-hostname.stub-domain')
+
+
+def test_passes_dns_exception_to_raised_error(mocker):
+    stub_no_answer = NoAnswer()
+    mocker.patch('lets_do_dns.dns_tools.lookup.query',
+                 side_effect=stub_no_answer)
+
+    mock_lookup_error = mocker.patch(
+        'lets_do_dns.dns_tools.lookup.RecordLookupError',
+        autospec=True, return_value=RecordLookupError)
+
+    with pytest.raises(RecordLookupError):
+        lookup('stub-hostname.stub-domain')
+
+    mock_lookup_error.assert_called_once_with(stub_no_answer)
+
