@@ -19,9 +19,9 @@ class BaseError(Exception):
         """Description of the exception."""
         docstring = self.__doc__
         first_line = docstring.splitlines().pop(0)
-        suffixing_periods_removed = first_line.strip('.')
+        period_suffix_removed = first_line.strip('.')
 
-        return suffixing_periods_removed
+        return period_suffix_removed
 
 
 class RequiredInputMissingError(BaseError):
@@ -31,13 +31,27 @@ class RequiredInputMissingError(BaseError):
 class HookError(BaseError):
     """Errors relating to a certbot hook stage."""
 
+    hook_name = None
+
+    @property
+    def message(self):
+        parent_message = super(HookError, self).message
+        error_message = '{} during the {} hook stage'.format(
+            parent_message, self.hook_name)
+
+        return error_message
+
 
 class AuthenticationError(HookError):
     """An error occurred during the authentication hook stage."""
 
+    hook_name = 'authentication'
+
 
 class CleanupError(HookError):
     """An error occurred during the authentication cleanup stage."""
+
+    hook_name = 'cleanup'
 
 
 class RecordCreationError(AuthenticationError):
