@@ -103,7 +103,7 @@ class TestHookError(object):
 
 
 class TestPostCommandError(object):
-    def test___str___includes_parent_message_(self, mocker):
+    def test___str___includes_parent_message(self, mocker):
         stub_message = mocker.PropertyMock(
             return_value='stub-message')
         stub_subprocess_exception = mocker.MagicMock(
