@@ -44,4 +44,3 @@ def test_passes_dns_exception_to_raised_error(mocker):
         lookup('stub-hostname.stub-domain')
 
     mock_lookup_error.assert_called_once_with(stub_no_answer)
-
