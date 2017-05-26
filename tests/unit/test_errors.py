@@ -1,3 +1,5 @@
+from subprocess import CalledProcessError
+
 import pytest
 
 from lets_do_dns.errors import (
@@ -98,3 +100,47 @@ class TestHookError(object):
         error.hook_name = hook_under_test
 
         assert hook_under_test in error.message
+
+
+class TestPostCommandError(object):
+    def test___str___includes_parent_message_(self, mocker):
+        stub_message = mocker.PropertyMock(
+            return_value='stub-message')
+        stub_subprocess_exception = mocker.MagicMock(
+            spec=CalledProcessError,
+            __str__=lambda _: 'stub-error-message', output=None)
+        mocker.patch(
+            'lets_do_dns.errors.HookError.message', new=stub_message)
+
+        error = PostCommandError(stub_subprocess_exception)
+
+        assert 'stub-message' in str(error)
+
+    def test___str___includes_command_output_when_present(self, mocker):
+        stub_subprocess_exception = mocker.MagicMock(
+            spec=CalledProcessError,
+            __str__=lambda _: 'stub-message', output='stub-output')
+
+        error = PostCommandError(stub_subprocess_exception)
+
+        assert 'stub-output' in str(error)
+
+    def test___str___does_not_include_command_output_when_absent(
+            self, mocker):
+        stub_subprocess_exception = mocker.MagicMock(
+            spec=CalledProcessError,
+            __str__=lambda _: 'stub-message', output=None)
+
+        error = PostCommandError(stub_subprocess_exception)
+
+        assert 'None' not in str(error)
+
+    def test___str___prepends_output_text_lines_with_four_spaces(
+            self, mocker):
+        stub_subprocess_exception = mocker.MagicMock(
+            spec=CalledProcessError,
+            __str__=lambda _: 'stub-message', output='line 1\nline 2')
+
+        error = PostCommandError(stub_subprocess_exception)
+
+        assert '\n    line 1\n    line 2' in str(error)

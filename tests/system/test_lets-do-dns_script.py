@@ -65,7 +65,7 @@ def test_post_authentication_hook_with_post_command(
     os.environ.update({
         'DO_APIKEY': do_api_key,
         'DO_DOMAIN': do_domain,
-        'LETS_DO_POSTCMD': 'echo hello',
+        'LETS_DO_POSTCMD': 'ls file-does-not-exist',
         'CERTBOT_DOMAIN':
             '%s.%s' % (do_hostname, do_domain),
         'CERTBOT_VALIDATION':
@@ -74,14 +74,16 @@ def test_post_authentication_hook_with_post_command(
             str(do_record_id),
     })
 
-    postcmd_output = subprocess.check_output('lets-do-dns')
+    postcmd_process = subprocess.Popen(
+        ['lets-do-dns'], stderr=subprocess.PIPE)
+    _, postcmd_output = postcmd_process.communicate()
 
     request_uri = '%s/%s/records/%s' % (
         do_base_uri, do_domain, do_record_id)
     get_response = get(request_uri, headers=do_auth_header)
 
-    assert (get_response.status_code == 404 and
-            postcmd_output.decode() == 'hello\n')
+    assert (get_response.status_code == 404
+            and 'file-does-not-exist' in postcmd_output.decode())
 
 
 def test_help_command():

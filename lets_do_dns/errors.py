@@ -57,6 +57,34 @@ class CleanupError(HookError):
 class PostCommandError(CleanupError):
     """An error occurred while executing the post command."""
 
+    def __str__(self):
+        """Return parent text along with program output (if present)."""
+        parent_str = super(PostCommandError, self).__str__()
+        final_string = self._string_appended_with_command_output_text(
+            parent_str)
+
+        return final_string
+
+    def _string_appended_with_command_output_text(self, text):
+        command_output = self.args[0].output
+        if not command_output:
+            return text
+
+        command_output = self._prepend_lines_with_spaces(
+            command_output)
+        final_string = '{} with the following text:\n\n{}'.format(
+            text, command_output)
+
+        return final_string
+
+    @staticmethod
+    def _prepend_lines_with_spaces(text):
+        spaces = ' ' * 4
+        prepended_lines = [
+            '{}{}'.format(spaces, line) for line in text.splitlines()]
+
+        return '\n'.join(prepended_lines)
+
 
 class RecordCreationError(AuthenticationError):
     """An error occurred while creating the authentication record."""
