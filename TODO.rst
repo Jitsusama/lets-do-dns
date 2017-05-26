@@ -1,12 +1,6 @@
 TODO
 ====
 
-*  Add error handling for ``requests.get`` and ``requests.put`` related
-   library exceptions and throw our own custom exceptions based on them.
-
-   *  Have the exceptions include text explaining what the exception is
-      about.
-
 *  Add error handling for ``subprocess.check_call`` exceptions and throw
    our own custom exceptions based on them.
 

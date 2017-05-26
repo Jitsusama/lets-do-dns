@@ -3,25 +3,25 @@ import pytest
 from lets_do_dns.errors import (
     BaseError, AuthenticationError, CleanupError, HookError,
     RecordCreationError, RecordDeletionError, RecordLookupError,
-    RequiredInputMissingError)
+    InputError)
 
 
 @pytest.mark.parametrize(
-    'child_exception', [RecordCreationError, RecordDeletionError,
-                        RecordLookupError, RequiredInputMissingError])
-def test_docstring_based_message_errors_have_docstring(child_exception):
-    assert child_exception.__doc__
+    'base_exception', [RecordCreationError, RecordDeletionError,
+                       RecordLookupError, InputError])
+def test_base_errors_have_docstring(base_exception):
+    assert base_exception.__doc__
 
 
 @pytest.mark.parametrize(
     'hook_exception', [AuthenticationError, CleanupError])
-def test_hook_errors_contain_hook_name(hook_exception):
+def test_hook_errors_have_hook_name(hook_exception):
     assert hook_exception.hook_name
 
 
 class TestInheritance(object):
     @pytest.mark.parametrize(
-        'exception', [HookError, RequiredInputMissingError])
+        'exception', [HookError, InputError])
     def test_base_errors(self, exception):
         assert issubclass(exception, BaseError)
 

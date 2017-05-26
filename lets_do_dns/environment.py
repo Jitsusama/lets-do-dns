@@ -1,5 +1,5 @@
 """Environment Wrapper and Validator."""
-from lets_do_dns.errors import RequiredInputMissingError
+from lets_do_dns.errors import InputError
 
 
 class Environment(object):
@@ -37,7 +37,7 @@ class Environment(object):
         exception_message = self._generate_exception_message()
 
         if exception_message:
-            raise RequiredInputMissingError(exception_message)
+            raise InputError(exception_message)
 
     def _generate_exception_message(self):
         if len(self._missing_parameters) == 1:

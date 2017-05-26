@@ -2,7 +2,7 @@ from mock import call
 import pytest
 
 from lets_do_dns.__main__ import main
-from lets_do_dns.errors import HookError, RequiredInputMissingError
+from lets_do_dns.errors import HookError, InputError
 
 
 class TestAuthenticateInteractions(object):
@@ -114,7 +114,7 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.stderr')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
-            side_effect=RequiredInputMissingError('stub-message'))
+            side_effect=InputError('stub-message'))
 
         mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
 
@@ -128,11 +128,11 @@ class TestEnvironmentInteractions(object):
         mocker.patch('lets_do_dns.__main__.Authenticate')
         mocker.patch('lets_do_dns.__main__.Arguments')
         mocker.patch(
-            'lets_do_dns.__main__.RequiredInputMissingError.__str__',
+            'lets_do_dns.__main__.InputError.__str__',
             return_value='stub-message')
         mocker.patch(
             'lets_do_dns.__main__.Environment',
-            side_effect=RequiredInputMissingError('stub-message'))
+            side_effect=InputError('stub-message'))
 
         mock_printer = mocker.patch('lets_do_dns.__main__.stderr')
 

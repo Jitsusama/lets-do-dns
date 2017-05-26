@@ -24,7 +24,7 @@ class BaseError(Exception):
         return period_suffix_removed
 
 
-class RequiredInputMissingError(BaseError):
+class InputError(BaseError):
     """Missing one or more required environment variables."""
 
 

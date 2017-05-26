@@ -1,7 +1,7 @@
 import pytest
 
 from lets_do_dns.environment import Environment
-from lets_do_dns.errors import RequiredInputMissingError
+from lets_do_dns.errors import InputError
 
 
 @pytest.mark.parametrize(
@@ -13,7 +13,7 @@ from lets_do_dns.errors import RequiredInputMissingError
      {'DO_APIKEY': 'a', 'DO_DOMAIN': 'b', 'CERTBOT_DOMAIN': 'c'}])
 def test_missing_required_argument_causes_required_parameter_exception(
         environment):
-    with pytest.raises(RequiredInputMissingError):
+    with pytest.raises(InputError):
         Environment(environment)
 
 
@@ -39,7 +39,7 @@ def test_does_not_raise_exception_with_required_arguments_present():
       'CERTBOT_VALIDATION')])
 def test_passes_missing_variables_to_exception_message(
         environment, message_segment):
-    with pytest.raises(RequiredInputMissingError) as exception:
+    with pytest.raises(InputError) as exception:
         Environment(environment)
 
     assert str(exception).find(message_segment) > 0
