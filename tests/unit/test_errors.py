@@ -1,9 +1,9 @@
 import pytest
 
 from lets_do_dns.errors import (
-    BaseError, AuthenticationError, CleanupError, HookError,
-    RecordCreationError, RecordDeletionError, RecordLookupError,
-    InputError)
+    BaseError, HookError, InputError, AuthenticationError, CleanupError,
+    RecordCreationError, RecordLookupError,
+    RecordDeletionError, PostCommandError)
 
 
 @pytest.mark.parametrize(
@@ -32,12 +32,13 @@ class TestInheritance(object):
 
     @pytest.mark.parametrize(
         'child_exception', [RecordCreationError, RecordLookupError])
-    def test_authentication_errors(
-            self, child_exception):
+    def test_authentication_errors(self, child_exception):
         assert issubclass(child_exception, AuthenticationError)
 
-    def test_cleanup_errors(self):
-        assert issubclass(RecordDeletionError, CleanupError)
+    @pytest.mark.parametrize(
+        'child_exception', [RecordDeletionError, PostCommandError])
+    def test_cleanup_errors(self, child_exception):
+        assert issubclass(child_exception, CleanupError)
 
 
 class TestBaseError(object):

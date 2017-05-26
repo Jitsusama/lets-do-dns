@@ -54,6 +54,10 @@ class CleanupError(HookError):
     hook_name = 'cleanup'
 
 
+class PostCommandError(CleanupError):
+    """An error occurred while executing the post command."""
+
+
 class RecordCreationError(AuthenticationError):
     """An error occurred while creating the authentication record."""
 
