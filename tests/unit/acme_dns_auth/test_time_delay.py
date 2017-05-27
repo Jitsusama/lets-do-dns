@@ -3,7 +3,7 @@
 from lets_do_dns.acme_dns_auth.time_delay import sleep
 
 
-def test_sleep_calls_time_sleep(mocker):
+def test_properly_calls_time_sleep(mocker):
     mock_sleep = mocker.patch(
         'lets_do_dns.acme_dns_auth.time_delay.time.sleep')
 

@@ -9,7 +9,7 @@ from lets_do_dns.acme_dns_auth.command import run
 
 @pytest.mark.parametrize('command', [
     'do-important-stuff.sh', 'do-silly-stuff.sh --help'])
-def test_run_properly_calls_check_output(mocker, command):
+def test_properly_calls_check_output(mocker, command):
     mock_check_output = mocker.patch(
         'lets_do_dns.acme_dns_auth.command.check_output')
 
@@ -19,7 +19,7 @@ def test_run_properly_calls_check_output(mocker, command):
         command, shell=True, stderr=STDOUT)
 
 
-def test_run_wraps_subprocess_exception_in_command_error(mocker):
+def test_wraps_subprocess_exception_in_command_error(mocker):
     stub_called_process_error = CalledProcessError(
         returncode=1, cmd='stub-command')
     mocker.patch(

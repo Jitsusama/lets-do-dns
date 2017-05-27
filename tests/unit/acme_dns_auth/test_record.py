@@ -8,7 +8,7 @@ from lets_do_dns.acme_dns_auth.record import Record
 
 
 @pytest.mark.parametrize('expected_record_id', [491834, 882342])
-def test_create_stores_record_id_internally(mocker, expected_record_id):
+def test_create_stores_record_id(mocker, expected_record_id):
     mocker.patch('lets_do_dns.dns_tools.lookup.lookup')
     stub_int = mocker.patch(
         'lets_do_dns.acme_dns_auth.record.Resource.__int__',
@@ -23,7 +23,7 @@ def test_create_stores_record_id_internally(mocker, expected_record_id):
     assert record.id == expected_record_id
 
 
-def test_create_properly_calls_http_create(mocker):
+def test_create_properly_calls_resource_create_after_resource_init(mocker):
     mocker.patch('lets_do_dns.dns_tools.lookup.lookup')
 
     mock_resource = mocker.patch(
@@ -37,7 +37,7 @@ def test_create_properly_calls_http_create(mocker):
         call().create()])
 
 
-def test_delete_properly_calls_http_delete(mocker):
+def test_delete_properly_calls_resource_delete_after_resource_init(mocker):
     mock_resource = mocker.patch(
         'lets_do_dns.acme_dns_auth.record.Resource')
 
@@ -61,7 +61,7 @@ def test_exists_properly_calls_lookup(mocker):
     mock_lookup.assert_called_once_with('stub-host.stub-domain')
 
 
-def test_printer_calls_printer(mocker):
+def test_printer_calls_stdout(mocker):
     mock_stdout = mocker.patch(
         'lets_do_dns.acme_dns_auth.record.stdout')
     record_id = 918342

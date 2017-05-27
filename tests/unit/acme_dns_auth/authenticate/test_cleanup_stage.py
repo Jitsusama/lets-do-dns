@@ -23,7 +23,7 @@ def test_properly_initializes_record(mocker):
         'stub-api-key', 'stub-domain', '_acme-challenge.stub-host')
 
 
-def test_triggers_record_deletion_after_initialization(mocker):
+def test_triggers_record_delete_after_record_init(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key=None, domain='stub-domain',
@@ -56,7 +56,7 @@ def test_sets_record_number(mocker):
     assert mock_record.return_value.id == 12352
 
 
-def test_does_not_pause_after_record_deletion(mocker):
+def test_does_not_call_sleep(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key=None, domain='stub-domain',
