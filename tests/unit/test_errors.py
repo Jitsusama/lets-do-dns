@@ -1,5 +1,6 @@
-from subprocess import CalledProcessError
+"""Tests the lets_do_dns.environment.py module."""
 
+from subprocess import CalledProcessError
 import pytest
 
 from lets_do_dns.errors import (
@@ -23,9 +24,9 @@ def test_hook_errors_have_hook_name(hook_exception):
 
 class TestInheritance(object):
     @pytest.mark.parametrize(
-        'exception', [HookError, InputError])
-    def test_base_errors(self, exception):
-        assert issubclass(exception, BaseError)
+        'child_exception', [HookError, InputError])
+    def test_base_errors(self, child_exception):
+        assert issubclass(child_exception, BaseError)
 
     @pytest.mark.parametrize(
         'child_exception', [AuthenticationError, CleanupError])
@@ -114,7 +115,7 @@ class TestPostCommandError(object):
 
         error = PostCommandError(stub_subprocess_exception)
 
-        assert 'stub-message' in str(error)
+        assert 'stub-message' in error.__str__()
 
     def test___str___includes_command_output_when_present(self, mocker):
         stub_subprocess_exception = mocker.MagicMock(
@@ -123,7 +124,7 @@ class TestPostCommandError(object):
 
         error = PostCommandError(stub_subprocess_exception)
 
-        assert 'stub-output' in str(error)
+        assert 'stub-output' in error.__str__()
 
     def test___str___does_not_include_command_output_when_absent(
             self, mocker):
@@ -133,7 +134,7 @@ class TestPostCommandError(object):
 
         error = PostCommandError(stub_subprocess_exception)
 
-        assert 'None' not in str(error)
+        assert 'None' not in error.__str__()
 
     def test___str___prepends_output_text_lines_with_four_spaces(
             self, mocker):
@@ -143,4 +144,4 @@ class TestPostCommandError(object):
 
         error = PostCommandError(stub_subprocess_exception)
 
-        assert '\n    line 1\n    line 2' in str(error)
+        assert '\n    line 1\n    line 2' in error.__str__()

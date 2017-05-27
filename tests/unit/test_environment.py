@@ -1,7 +1,9 @@
+"""Tests the lets_do_dns.environment.py module."""
+
 import pytest
+from lets_do_dns.errors import InputError
 
 from lets_do_dns.environment import Environment
-from lets_do_dns.errors import InputError
 
 
 @pytest.mark.parametrize(
@@ -11,7 +13,7 @@ from lets_do_dns.errors import InputError
      {'DO_APIKEY': 'a', 'CERTBOT_DOMAIN': 'c', 'CERTBOT_VALIDATION': 'd'},
      {'DO_APIKEY': 'a', 'DO_DOMAIN': 'b', 'CERTBOT_VALIDATION': 'd'},
      {'DO_APIKEY': 'a', 'DO_DOMAIN': 'b', 'CERTBOT_DOMAIN': 'c'}])
-def test_missing_required_argument_causes_required_parameter_exception(
+def test_missing_required_arguments_raises_input_error(
         environment):
     with pytest.raises(InputError):
         Environment(environment)
@@ -37,7 +39,7 @@ def test_does_not_raise_exception_with_required_arguments_present():
       'CERTBOT_DOMAIN'),
      ({'DO_APIKEY': 'a', 'DO_DOMAIN': 'b', 'CERTBOT_DOMAIN': 'c'},
       'CERTBOT_VALIDATION')])
-def test_passes_missing_variables_to_exception_message(
+def test_passes_missing_variables_to_input_error(
         environment, message_segment):
     with pytest.raises(InputError) as exception:
         Environment(environment)
