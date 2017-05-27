@@ -1,3 +1,5 @@
+"""End to end system tests for the lets-do-dns program."""
+
 import os
 import subprocess
 import pytest
@@ -12,7 +14,7 @@ def test_pre_authentication_hook(
         'DO_APIKEY': do_api_key,
         'DO_DOMAIN': do_domain,
         'CERTBOT_DOMAIN':
-            '%s.%s' % (do_hostname, do_domain),
+            '{}.{}'.format(do_hostname, do_domain),
         'CERTBOT_VALIDATION':
             'test_pre_authentication_hook',
     })
@@ -20,17 +22,17 @@ def test_pre_authentication_hook(
     program_output = subprocess.check_output('lets-do-dns')
     record_id = program_output.decode()
 
-    request_uri = '%s/%s/records/%s' % (
+    request_uri = '{}/{}/records/{}'.format(
         do_base_uri, do_domain, record_id)
 
     try:
         response = get(request_uri, headers=do_auth_header)
         record_data = response.json()['domain_record']
-        expected_hostname = '_acme-challenge.%s' % do_hostname
+        expected_hostname = '_acme-challenge.{}'.format(do_hostname)
 
-        assert (record_data['type'] == 'TXT' and
-                record_data['name'] == expected_hostname and
-                record_data['data'] == 'test_pre_authentication_hook')
+        assert (record_data['type'] == 'TXT'
+                and record_data['name'] == expected_hostname
+                and record_data['data'] == 'test_pre_authentication_hook')
 
     finally:  # we always want to delete the created record.
         delete(request_uri, headers=do_auth_header)
@@ -43,7 +45,7 @@ def test_post_authentication_hook_without_post_command(
         'DO_APIKEY': do_api_key,
         'DO_DOMAIN': do_domain,
         'CERTBOT_DOMAIN':
-            '%s.%s' % (do_hostname, do_domain),
+            '{}.{}'.format(do_hostname, do_domain),
         'CERTBOT_VALIDATION':
             'test_post_authentication_hook_without_post_command',
         'CERTBOT_AUTH_OUTPUT':
@@ -52,7 +54,7 @@ def test_post_authentication_hook_without_post_command(
 
     subprocess.check_call('lets-do-dns')
 
-    request_uri = '%s/%s/records/%s' % (
+    request_uri = '{}/{}/records/{}'.format(
         do_base_uri, do_domain, do_record_id)
     get_response = get(request_uri, headers=do_auth_header)
 
@@ -67,7 +69,7 @@ def test_post_authentication_hook_with_post_command(
         'DO_DOMAIN': do_domain,
         'LETS_DO_POSTCMD': 'ls file-does-not-exist',
         'CERTBOT_DOMAIN':
-            '%s.%s' % (do_hostname, do_domain),
+            '{}.{}'.format(do_hostname, do_domain),
         'CERTBOT_VALIDATION':
             'test_post_authentication_hook_with_post_command',
         'CERTBOT_AUTH_OUTPUT':
@@ -78,7 +80,7 @@ def test_post_authentication_hook_with_post_command(
         ['lets-do-dns'], stderr=subprocess.PIPE)
     _, postcmd_output = postcmd_process.communicate()
 
-    request_uri = '%s/%s/records/%s' % (
+    request_uri = '{}/{}/records/{}'.format(
         do_base_uri, do_domain, do_record_id)
     get_response = get(request_uri, headers=do_auth_header)
 
@@ -89,7 +91,7 @@ def test_post_authentication_hook_with_post_command(
 def test_help_command():
     help_output = subprocess.check_output(['lets-do-dns', '--help'])
 
-    assert str(help_output).find('lets-do-dns') >= 0
+    assert 'lets-do-dns' in help_output.decode()
 
 
 def test_missing_required_environment_variables_exits_properly():
