@@ -1,16 +1,18 @@
+"""Tests the lets_do_dns.acme_dns_auth.record.py module."""
+
 from mock import call
 import pytest
-
-from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.do_domain.resource import Resource
 
+from lets_do_dns.acme_dns_auth.record import Record
 
-@pytest.mark.parametrize('input_record_id', [491834, 882342])
-def test_create_stores_record_id_internally(mocker, input_record_id):
+
+@pytest.mark.parametrize('expected_record_id', [491834, 882342])
+def test_create_stores_record_id_internally(mocker, expected_record_id):
     mocker.patch('lets_do_dns.dns_tools.lookup.lookup')
     stub_int = mocker.patch(
         'lets_do_dns.acme_dns_auth.record.Resource.__int__',
-        return_value=input_record_id)
+        return_value=expected_record_id)
     mocker.patch(
         'lets_do_dns.acme_dns_auth.record.Resource',
         spec=Resource, __int__=stub_int)
@@ -18,7 +20,7 @@ def test_create_stores_record_id_internally(mocker, input_record_id):
     record = Record(None, None, None)
     record.create(None)
 
-    assert record.id == input_record_id
+    assert record.id == expected_record_id
 
 
 def test_create_properly_calls_http_create(mocker):
@@ -53,10 +55,10 @@ def test_exists_properly_calls_lookup(mocker):
     mock_lookup = mocker.patch(
         'lets_do_dns.dns_tools.lookup.lookup')
 
-    record = Record('stub-api-key', 'stub-domain', 'stub-hostname')
+    record = Record('stub-api-key', 'stub-domain', 'stub-host')
     record.exists()
 
-    mock_lookup.assert_called_once_with('stub-hostname.stub-domain')
+    mock_lookup.assert_called_once_with('stub-host.stub-domain')
 
 
 def test_printer_calls_printer(mocker):
