@@ -1,31 +1,33 @@
+"""Tests the lets_do_dns.do_domain.resource.py module."""
+
 from mock import ANY, PropertyMock
 import pytest
-
-from lets_do_dns.do_domain.resource import Resource
+import requests.exceptions
 from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.errors import RecordCreationError
-import requests.exceptions
+
+from lets_do_dns.do_domain.resource import Resource
 
 
 def test_calls_post(mocker):
     stub_record = mocker.MagicMock(
         spec=Record, api_key=None, domain=None, id=None, hostname=None)
 
-    mock_requests = mocker.patch(
+    mock_post = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.post')
 
     resource = Resource(stub_record)
     resource.create()
 
-    mock_requests.assert_called_once()
+    mock_post.assert_called_once()
 
 
-def test_calls_correct_uri(mocker):
+def test_calls_post_with_correct_uri(mocker):
     stub_record = mocker.MagicMock(
         spec=Record, domain='grrbrr.ca',
         api_key=None, id=None, hostname=None)
 
-    mock_requests = mocker.patch(
+    mock_post = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.post')
 
     resource = Resource(stub_record)
@@ -33,27 +35,27 @@ def test_calls_correct_uri(mocker):
 
     expected_uri = (
         'https://api.digitalocean.com/v2/domains/grrbrr.ca/records')
-    mock_requests.assert_called_once_with(
+    mock_post.assert_called_once_with(
         expected_uri, headers=ANY, json=ANY)
 
 
-def test_passes_authorization_header(mocker):
+def test_calls_post_with_correct_authorization_header(mocker):
     stub_record = mocker.MagicMock(
         spec=Record, api_key='dummy-api-key',
         domain=None, id=None, hostname=None)
 
-    mock_requests = mocker.patch(
+    mock_post = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.post')
 
     resource = Resource(stub_record)
     resource.create()
 
     expected_auth_header = {'Authorization': 'Bearer dummy-api-key'}
-    mock_requests.assert_called_once_with(
+    mock_post.assert_called_once_with(
         ANY, headers=expected_auth_header, json=ANY)
 
 
-def test_passes_json_body(mocker):
+def test_calls_post_with_correct_json_body(mocker):
     stub_record = mocker.MagicMock(
         spec=Record, hostname='dummy-hostname',
         api_key=None, domain=None, id=None)
@@ -72,10 +74,9 @@ def test_passes_json_body(mocker):
         ANY, headers=ANY, json=expected_json_request)
 
 
-def test_integer_property_properly_calls_response(mocker):
-    mocker.patch(
-        'lets_do_dns.do_domain.resource.requests.post',
-        return_value='mocked-response')
+def test_properly_calls_response(mocker):
+    mocker.patch('lets_do_dns.do_domain.resource.requests.post',
+                 return_value='stub-response')
     stub_record = mocker.MagicMock(
         spec=Record, hostname=None, api_key=None, domain=None, id=None)
 
@@ -85,10 +86,10 @@ def test_integer_property_properly_calls_response(mocker):
     resource = Resource(stub_record)
     resource.create()
 
-    mock_response.assert_called_once_with('mocked-response')
+    mock_response.assert_called_once_with('stub-response')
 
 
-def test_integer_property_accesses_response_resource_id(mocker):
+def test_integer_property_accesses_resource_id(mocker):
     mocker.patch('lets_do_dns.do_domain.resource.requests.post')
     mocker.patch('lets_do_dns.do_domain.resource.Response.__init__',
                  return_value=None)

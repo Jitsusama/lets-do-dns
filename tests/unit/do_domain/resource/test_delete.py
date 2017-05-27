@@ -1,31 +1,33 @@
+"""Tests the lets_do_dns.do_domain.resource.py module."""
+
 from mock import ANY
 import pytest
-
-from lets_do_dns.do_domain.resource import Resource
+import requests.exceptions
 from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.errors import RecordDeletionError
-import requests.exceptions
+
+from lets_do_dns.do_domain.resource import Resource
 
 
 def test_calls_delete(mocker):
     stub_record = mocker.MagicMock(
         spec=Record, api_key=None, domain=None, id=None)
 
-    mock_requests = mocker.patch(
+    mock_delete = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
 
     resource = Resource(stub_record)
     resource.delete()
 
-    mock_requests.assert_called_once()
+    mock_delete.assert_called_once()
 
 
 @pytest.mark.parametrize('record_id', [82227342, 2342552])
-def test_calls_correct_uri(mocker, record_id):
+def test_calls_delete_with_correct_uri(mocker, record_id):
     stub_record = mocker.MagicMock(
         spec=Record, domain='grrbrr.ca', id=record_id, api_key=None)
 
-    mock_requests = mocker.patch(
+    mock_delete = mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete')
 
     resource = Resource(stub_record)
@@ -34,10 +36,10 @@ def test_calls_correct_uri(mocker, record_id):
     expected_uri = (
         'https://api.digitalocean.com/v2/domains/grrbrr.ca/records/%s'
         % record_id)
-    mock_requests.assert_called_once_with(expected_uri, headers=ANY)
+    mock_delete.assert_called_once_with(expected_uri, headers=ANY)
 
 
-def test_passes_authorization_header(mocker):
+def test_calls_delete_with_correct_authorization_header(mocker):
     stub_record = mocker.MagicMock(
         spec=Record, api_key='dummy-api-key', domain=None, id=None)
 
@@ -54,7 +56,7 @@ def test_passes_authorization_header(mocker):
 def test_calls_response_with_delete_response(mocker):
     mocker.patch(
         'lets_do_dns.do_domain.resource.requests.delete',
-        return_value='mocked-response')
+        return_value='stub-response')
     stub_record = mocker.MagicMock(spec=Record)
 
     mock_response = mocker.patch(
@@ -63,7 +65,7 @@ def test_calls_response_with_delete_response(mocker):
     resource = Resource(stub_record())
     resource.delete()
 
-    mock_response.assert_called_with('mocked-response')
+    mock_response.assert_called_with('stub-response')
 
 
 @pytest.mark.parametrize(
