@@ -1,7 +1,7 @@
-"""letsencrypt's certbot Authentication Logic."""
+"""letsencrypt's certbot authentication logic."""
 
-from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.acme_dns_auth.command import run
+from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.acme_dns_auth.time_delay import sleep
 
 
@@ -23,8 +23,6 @@ class Authenticate(object):
         if self._in_cleanup_hook_stage:
             self._delete_record()
             self._run_post_cmd()
-
-        return 0
 
     @property
     def _in_authentication_hook_stage(self):

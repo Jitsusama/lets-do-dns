@@ -1,8 +1,7 @@
 from mock import call
-import pytest
+from lets_do_dns.errors import HookError, InputError
 
 from lets_do_dns.__main__ import main
-from lets_do_dns.errors import HookError, InputError
 
 
 class TestAuthenticateInteractions(object):
@@ -22,22 +21,6 @@ class TestAuthenticateInteractions(object):
         main()
 
         mock_authenticate.assert_called_once_with(stub_environment)
-
-    @pytest.mark.parametrize('return_code', [0, 1])
-    def test_performs_return_code_passed_to_sys_exit(
-            self, mocker, return_code):
-        mocker.patch('lets_do_dns.__main__.Authenticate.__init__',
-                     return_value=None)
-        mocker.patch('lets_do_dns.__main__.Authenticate.perform',
-                     return_value=return_code)
-        mocker.patch('lets_do_dns.__main__.Arguments')
-        mocker.patch('lets_do_dns.__main__.Environment')
-
-        mock_exit = mocker.patch('lets_do_dns.__main__.sys.exit')
-
-        main()
-
-        mock_exit.assert_called_once_with(return_code)
 
     def test_raised_error_message_passed_to_stderr(
             self, mocker):

@@ -1,16 +1,18 @@
-import pytest
-from dns.resolver import NXDOMAIN, NoAnswer
-from lets_do_dns.dns_tools.lookup import lookup
+"""Tests the lets_do_dns.dns_tools.lookup.py module."""
 
+from dns.resolver import NXDOMAIN, NoAnswer
+import pytest
 from lets_do_dns.errors import RecordLookupError
+
+from lets_do_dns.dns_tools.lookup import lookup
 
 
 def test_properly_calls_lookup(mocker):
-    stub_query = mocker.patch('lets_do_dns.dns_tools.lookup.query')
+    mock_query = mocker.patch('lets_do_dns.dns_tools.lookup.query')
 
-    lookup('stub-hostname.stub-domain')
+    lookup('stub-host.stub-domain')
 
-    stub_query.assert_called_once_with('stub-hostname.stub-domain', 'TXT')
+    mock_query.assert_called_once_with('stub-host.stub-domain', 'TXT')
 
 
 def test_returns_result_of_lookup(mocker):
@@ -18,7 +20,9 @@ def test_returns_result_of_lookup(mocker):
         'lets_do_dns.dns_tools.lookup.query',
         return_value='stub-result')
 
-    assert lookup('stub-hostname.stub-domain') == 'stub-result'
+    lookup_result = lookup('stub-host.stub-domain')
+
+    assert lookup_result == 'stub-result'
 
 
 @pytest.mark.parametrize('dns_raises_this', [NoAnswer, NXDOMAIN])
@@ -28,7 +32,7 @@ def test_raises_error_on_dns_error(mocker, dns_raises_this):
         side_effect=dns_raises_this)
 
     with pytest.raises(RecordLookupError):
-        lookup('stub-hostname.stub-domain')
+        lookup('stub-host.stub-domain')
 
 
 def test_passes_dns_exception_to_raised_error(mocker):
@@ -41,6 +45,6 @@ def test_passes_dns_exception_to_raised_error(mocker):
         autospec=True, return_value=RecordLookupError)
 
     with pytest.raises(RecordLookupError):
-        lookup('stub-hostname.stub-domain')
+        lookup('stub-host.stub-domain')
 
     mock_lookup_error.assert_called_once_with(stub_no_answer)

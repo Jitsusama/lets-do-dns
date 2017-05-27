@@ -24,7 +24,7 @@ def test_properly_initializes_record(mocker):
         'stub-api-key', 'stub-domain', '_acme-challenge.stub-host')
 
 
-def test_triggers_record_creation_after_initialization(mocker):
+def test_properly_calls_record_create_after_record_init(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key='stub-api-key', domain='stub-domain',
@@ -44,7 +44,7 @@ def test_triggers_record_creation_after_initialization(mocker):
     mock_record.assert_has_calls(initialize_then_create)
 
 
-def test_calls_exists_on_record_after_creation(mocker):
+def test_calls_record_exists_after_record_create(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key='stub-api-key', domain='stub-domain',
@@ -59,12 +59,12 @@ def test_calls_exists_on_record_after_creation(mocker):
     authentication.perform()
 
     initialize_then_create = [
-        call().create('stub-validation'),
+        call().create(ANY),
         call().exists()]
     mock_record.assert_has_calls(initialize_then_create)
 
 
-def test_pauses_after_successful_record_creation(mocker):
+def test_properly_calls_sleep(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key=None, domain='stub-domain',
@@ -81,7 +81,7 @@ def test_pauses_after_successful_record_creation(mocker):
     mock_sleep.assert_called_once_with(2)
 
 
-def test_passes_record_id_to_printer_after_record_creation(mocker):
+def test_passes_record_id_to_printer(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key=None, domain='stub-domain',
@@ -96,18 +96,3 @@ def test_passes_record_id_to_printer_after_record_creation(mocker):
     authentication.perform()
 
     mock_record.assert_has_calls([call().printer()])
-
-
-def test_returns_zero_after_successful_record_creation(mocker):
-    stub_environment = mocker.MagicMock(
-        spec=Environment,
-        api_key=None, domain='stub-domain',
-        fqdn='stub-host.stub-domain', validation_key=None,
-        record_id=None)
-    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.sleep')
-    mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Record')
-
-    authentication = Authenticate(environment=stub_environment)
-    return_code = authentication.perform()
-
-    assert return_code == 0
