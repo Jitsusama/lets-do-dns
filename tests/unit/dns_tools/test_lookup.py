@@ -7,7 +7,7 @@ from lets_do_dns.errors import RecordLookupError
 from lets_do_dns.dns_tools.lookup import lookup
 
 
-def test_properly_calls_lookup(mocker):
+def test_properly_calls_query(mocker):
     mock_query = mocker.patch('lets_do_dns.dns_tools.lookup.query')
 
     lookup('stub-host.stub-domain')
@@ -15,7 +15,7 @@ def test_properly_calls_lookup(mocker):
     mock_query.assert_called_once_with('stub-host.stub-domain', 'TXT')
 
 
-def test_returns_result_of_lookup(mocker):
+def test_returns_result_of_query(mocker):
     mocker.patch(
         'lets_do_dns.dns_tools.lookup.query',
         return_value='stub-result')
