@@ -16,9 +16,9 @@ class Authenticate(object):
         """Execute the authentication logic."""
         if self._in_authentication_hook_stage:
             self._create_record()
-            self._verify_record_exists()
             self._print_record_id()
             self._delay_finish()
+            self._verify_record_exists()
 
         if self._in_cleanup_hook_stage:
             self._delete_record()

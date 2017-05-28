@@ -44,7 +44,7 @@ def test_properly_calls_record_create_after_record_init(mocker):
     mock_record.assert_has_calls(initialize_then_create)
 
 
-def test_calls_record_exists_after_record_create(mocker):
+def test_calls_record_exists_after_record_printer(mocker):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key='stub-api-key', domain='stub-domain',
@@ -59,7 +59,7 @@ def test_calls_record_exists_after_record_create(mocker):
     authentication.perform()
 
     initialize_then_create = [
-        call().create(ANY),
+        call().printer(),
         call().exists()]
     mock_record.assert_has_calls(initialize_then_create)
 
