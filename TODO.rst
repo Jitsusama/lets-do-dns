@@ -1,11 +1,6 @@
 TODO
 ====
 
-*  Use logging framework for exceptions.
-
-   *  Possibly send logs to native system event viewer. Or, see if certbot
-      will properly log logging framework messages.
-
 *  Create a Jenkins CI build script (Jenkinsfile).
 
 *  Push project to PyPi.
