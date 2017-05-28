@@ -28,7 +28,8 @@ class Resource(object):
     def _perform_http_operation(self, requests_operation, **kwargs):
         try:
             response = requests_operation(
-                self._uri, headers=self._header, **kwargs)
+                self._uri, headers=self._header,
+                timeout=self._http_timeout, **kwargs)
         except RequestException as exception:
             if requests_operation is requests.post:
                 raise RecordCreationError(exception)
@@ -61,3 +62,10 @@ class Resource(object):
         return {'type': 'TXT',
                 'name': self._record.hostname,
                 'data': self.value}
+
+    @property
+    def _http_timeout(self):
+        tcp_connection_timeout = 6.3
+        http_data_timeout = 4.7
+
+        return tcp_connection_timeout, http_data_timeout

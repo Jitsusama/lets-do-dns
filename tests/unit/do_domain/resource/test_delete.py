@@ -36,7 +36,8 @@ def test_calls_delete_with_correct_uri(mocker, record_id):
     expected_uri = (
         'https://api.digitalocean.com/v2/domains/grrbrr.ca/records/%s'
         % record_id)
-    mock_delete.assert_called_once_with(expected_uri, headers=ANY)
+    mock_delete.assert_called_once_with(
+        expected_uri, headers=ANY, timeout=ANY)
 
 
 def test_calls_delete_with_correct_authorization_header(mocker):
@@ -50,7 +51,23 @@ def test_calls_delete_with_correct_authorization_header(mocker):
     resource.delete()
 
     expected_auth_header = {'Authorization': 'Bearer dummy-api-key'}
-    mock_delete.assert_called_once_with(ANY, headers=expected_auth_header)
+    mock_delete.assert_called_once_with(
+        ANY, headers=expected_auth_header, timeout=ANY)
+
+
+def test_calls_delete_with_correct_timeouts(mocker):
+    stub_record = mocker.MagicMock(
+        spec=Record,
+        api_key=None, hostname=None, domain=None, id=None)
+
+    mock_post = mocker.patch(
+        'lets_do_dns.do_domain.resource.requests.delete')
+
+    resource = Resource(stub_record, None)
+    resource.delete()
+
+    mock_post.assert_called_once_with(
+        ANY, headers=ANY, timeout=(6.3, 4.7))
 
 
 def test_calls_response_with_delete_response(mocker):

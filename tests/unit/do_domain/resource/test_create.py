@@ -36,7 +36,7 @@ def test_calls_post_with_correct_uri(mocker):
     expected_uri = (
         'https://api.digitalocean.com/v2/domains/grrbrr.ca/records')
     mock_post.assert_called_once_with(
-        expected_uri, headers=ANY, json=ANY)
+        expected_uri, headers=ANY, json=ANY, timeout=ANY)
 
 
 def test_calls_post_with_correct_authorization_header(mocker):
@@ -52,7 +52,7 @@ def test_calls_post_with_correct_authorization_header(mocker):
 
     expected_auth_header = {'Authorization': 'Bearer dummy-api-key'}
     mock_post.assert_called_once_with(
-        ANY, headers=expected_auth_header, json=ANY)
+        ANY, headers=expected_auth_header, json=ANY, timeout=ANY)
 
 
 def test_calls_post_with_correct_json_body(mocker):
@@ -71,7 +71,22 @@ def test_calls_post_with_correct_json_body(mocker):
         'name': 'dummy-hostname',
         'data': 'dummy-auth-token'}
     mock_post.assert_called_once_with(
-        ANY, headers=ANY, json=expected_json_request)
+        ANY, headers=ANY, json=expected_json_request, timeout=ANY)
+
+
+def test_calls_post_with_correct_timeouts(mocker):
+    stub_record = mocker.MagicMock(
+        spec=Record,
+        hostname=None, api_key=None, domain=None, id=None)
+
+    mock_post = mocker.patch(
+        'lets_do_dns.do_domain.resource.requests.post')
+
+    resource = Resource(stub_record, None)
+    resource.create()
+
+    mock_post.assert_called_once_with(
+        ANY, headers=ANY, json=ANY, timeout=(6.3, 4.7))
 
 
 def test_properly_calls_response(mocker):

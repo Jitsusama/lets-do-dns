@@ -1,11 +1,6 @@
 TODO
 ====
 
-*  Add error handling for ``subprocess.check_call`` exceptions and throw
-   our own custom exceptions based on them.
-
-*  Add failure timeout for ``requests.get`` and ``requests.put`` actions.
-
 *  Use logging framework for exceptions.
 
    *  Possibly send logs to native system event viewer. Or, see if certbot
