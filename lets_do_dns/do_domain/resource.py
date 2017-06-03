@@ -65,7 +65,7 @@ class Resource(object):
 
     @property
     def _http_timeout(self):
-        tcp_connection_timeout = 6.3
-        http_data_timeout = 4.7
+        tcp_connection_timeout = 10
+        http_data_timeout = 10
 
         return tcp_connection_timeout, http_data_timeout

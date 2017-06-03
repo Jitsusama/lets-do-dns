@@ -67,7 +67,7 @@ def test_calls_delete_with_correct_timeouts(mocker):
     resource.delete()
 
     mock_post.assert_called_once_with(
-        ANY, headers=ANY, timeout=(6.3, 4.7))
+        ANY, headers=ANY, timeout=(10, 10))
 
 
 def test_calls_response_with_delete_response(mocker):

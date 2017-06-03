@@ -1,8 +1,6 @@
 TODO
 ====
 
-*  Extend HTTP timeouts.
-
 *  Push project to PyPi.
 
 *  Develop a script/program that can be triggered by this program to handle

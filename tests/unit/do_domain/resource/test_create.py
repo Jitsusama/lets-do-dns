@@ -86,7 +86,7 @@ def test_calls_post_with_correct_timeouts(mocker):
     resource.create()
 
     mock_post.assert_called_once_with(
-        ANY, headers=ANY, json=ANY, timeout=(6.3, 4.7))
+        ANY, headers=ANY, json=ANY, timeout=(10, 10))
 
 
 def test_properly_calls_response(mocker):
