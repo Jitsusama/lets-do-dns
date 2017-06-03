@@ -26,7 +26,8 @@ def test_configuration():
 
     *  ``do_api_key``
     *  ``do_domain``
-    *  ``do_hostname``"""
+    *  ``do_hostname``
+    """
     file_path = os.path.realpath(__file__)
     directory_path = os.path.dirname(file_path)
     config_file = '%s/config.ini' % directory_path

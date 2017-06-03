@@ -1,7 +1,7 @@
 TODO
 ====
 
-*  Create a Jenkins CI build script (Jenkinsfile).
+*  Extend HTTP timeouts.
 
 *  Push project to PyPi.
 
