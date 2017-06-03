@@ -1,0 +1,7 @@
+build
+dist
+*.egg-info
+.git
+.cache
+.idea
+.tox
