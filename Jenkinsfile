@@ -68,6 +68,23 @@ node {
                     junit "py36-test-results.xml"
                 }
             }
+        }, certbot: {
+            echo "Create certbot/lets-do-dns Environment"
+            certbot = docker.build("lets-do-dns", ".")
+
+            certbot.inside {
+                withCredentials([string(credentialsId: 'DO_APIKEY', variable: 'DO_APIKEY'),
+                                 string(credentialsId: 'DO_DOMAIN', variable: 'DO_DOMAIN'),
+                                 string(credentialsId: 'CERTBOT_EMAIL', variable: 'CERTBOT_EMAIL')]) {
+                    withEnv(["DO_APIKEY = $DO_APIKEY", "DO_DOMAIN = $DO_DOMAIN"]) {
+                        sh """\
+certbot certonly --manual\
+    --manual-auth-hook lets-do-dns --manual-cleanup-hook lets-do-dns\
+    --preferred-challenges dns -d test.$DO_DOMAIN --test-cert --manual-public-ip-logging-ok\
+    --non-interactive --agree-tos --email $CERTBOT_EMAIL"""
+                    }
+                }
+            }
         }
     }
 
