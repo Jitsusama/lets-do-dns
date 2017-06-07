@@ -21,12 +21,15 @@ node {
         python_build = docker.build("python:2.7.ldd", "-f jenkins/Dockerfile.py27 .")
     }
 
-    stage("Build Python Artifact") {
+    stage("Build Python Artifacts") {
         python_build.inside {
             echo "Remove Old Artifacts"
-            sh "rm dist/*.whl || exit 0"
+            sh "rm dist/* || exit 0"
 
-            echo "Create New Artifact"
+            echo "Create Source Artifact"
+            sh "python setup.py sdist"
+
+            echo "Create Wheel Artifact"
             sh "python setup.py bdist_wheel"
         }
     }
@@ -37,7 +40,7 @@ node {
             python_27 = docker.build("python:2.7.ldd", "-f jenkins/Dockerfile.py27 .")
 
             python_27.inside {
-                echo "Install Artifact"
+                echo "Install Wheel Artifact"
                 sh "pip install dist/*.whl"
 
                 echo "Run py.test Test Suite"
@@ -53,7 +56,7 @@ node {
             python_36 = docker.build("python:3.6.ldd", "-f jenkins/Dockerfile.py36 .")
 
             python_36.inside {
-                echo "Install Artifact"
+                echo "Install Wheel Artifact"
                 sh "pip install dist/*.whl"
 
                 echo "Run py.test Test Suite"
@@ -69,7 +72,7 @@ node {
     }
 
     stage("Archive Python Artifact") {
-        archiveArtifacts artifacts: "dist/*.whl",
+        archiveArtifacts artifacts: "dist/*",
                 fingerprint: true,
                 onlyIfSuccessful: true
     }
