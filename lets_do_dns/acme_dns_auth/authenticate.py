@@ -1,8 +1,10 @@
 """letsencrypt's certbot authentication logic."""
 
 from lets_do_dns.acme_dns_auth.command import run
-from lets_do_dns.acme_dns_auth.record import Record
 from lets_do_dns.acme_dns_auth.time_delay import sleep
+from lets_do_dns.dns_tools.lookup import lookup
+from lets_do_dns.do_domain.resource import Resource
+from lets_do_dns.printer import stdout
 
 
 class Authenticate(object):
@@ -10,18 +12,18 @@ class Authenticate(object):
 
     def __init__(self, environment):
         self._env = environment
-        self._record = self._init_record()
+        self._resource = self._init_resource()
 
     def perform(self):
         """Execute the authentication logic."""
         if self._in_authentication_hook_stage:
-            self._create_record()
+            self._create_resource()
             self._print_record_id()
             self._delay_finish()
-            self._verify_record_exists()
+            self._verify_resource_exists()
 
         if self._in_cleanup_hook_stage:
-            self._delete_record()
+            self._delete_resource()
             self._run_post_cmd()
 
     @property
@@ -32,26 +34,27 @@ class Authenticate(object):
     def _in_cleanup_hook_stage(self):
         return self._env.record_id is not None
 
-    def _delete_record(self):
-        self._record.id = self._env.record_id
-        self._record.delete()
+    def _delete_resource(self):
+        self._resource.delete()
 
     def _run_post_cmd(self):
         if self._env.post_cmd:
             run(self._env.post_cmd)
 
-    def _create_record(self):
-        self._record.create(self._env.validation_key)
+    def _create_resource(self):
+        self._resource.create()
 
-    def _verify_record_exists(self):
-        self._record.exists()
+    def _verify_resource_exists(self):
+        return lookup(self._env.fqdn)
 
     def _print_record_id(self):
-        self._record.printer()
+        stdout(self._resource.__int__())
 
-    def _init_record(self):
+    def _init_resource(self):
         hostname = self._parse_hostname()
-        record = Record(self._env.api_key, self._env.domain, hostname)
+        record = Resource(
+            self._env.api_key, hostname, self._env.domain,
+            self._env.validation_key, self._env.record_id)
         return record
 
     def _parse_hostname(self):

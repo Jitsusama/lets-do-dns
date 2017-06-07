@@ -10,9 +10,13 @@ from lets_do_dns.do_domain.response import Response
 class Resource(object):
     """Embody a DigitalOcean HTTP DNS Resource."""
 
-    def __init__(self, record, value=None):
-        self._record = record
+    def __init__(
+            self, api_key, hostname, domain, value=None, record_id=None):
+        self.api_key = api_key
+        self.hostname = hostname
+        self.domain = domain
         self.value = value
+        self.record_id = record_id
         self._response = None
 
     def create(self):
@@ -45,22 +49,22 @@ class Resource(object):
     @property
     def _uri(self):
         common_uri = (
-            'https://api.digitalocean.com/v2/domains/%s/records' % (
-                self._record.domain))
+            'https://api.digitalocean.com/v2/domains'
+            '/%s/records' % self.domain)
 
-        if self._record.id:
-            return '%s/%s' % (common_uri, self._record.id)
+        if self.record_id:
+            return '%s/%s' % (common_uri, self.record_id)
 
         return common_uri
 
     @property
     def _header(self):
-        return {'Authorization': 'Bearer %s' % self._record.api_key}
+        return {'Authorization': 'Bearer %s' % self.api_key}
 
     @property
     def _json_data(self):
         return {'type': 'TXT',
-                'name': self._record.hostname,
+                'name': self.hostname,
                 'data': self.value}
 
     @property
