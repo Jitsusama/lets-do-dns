@@ -11,8 +11,8 @@ setup(
     author_email='joel@grrbrr.ca',
     url='https://github.com/jitsusama/lets-do-dns',
     download_url=(
-        'https://github.com/jitsusama/lets-do-dns/archive/%s.tar.gz' % (
-            __version__)),
+        'https://github.com/jitsusama/lets-do-dns/releases'
+        '/download/v{0}/lets-do-dns-{0}.tar.gz'.format(__version__)),
     keywords=['certbot', 'letsencrypt', 'DigitalOcean', 'DNS', 'SSL'],
     description=(
         "A letsencrypt certbot auth/cleanup hook program engineered to "
