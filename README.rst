@@ -19,10 +19,7 @@ following command:
 
 .. code-block:: bash
 
-   pip install .
-
-I plan on putting this program up on PyPi_ at some point. Whenever that
-happens, this program should be called lets-do-dns.
+   pip install lets-do-dns
 
 Usage
 -----
@@ -53,4 +50,3 @@ Here's an example of how you can use this program:
 .. _certbot: https://certbot.eff.org
 .. _ACME-DNS: https://tools.ietf.org/html/draft-ietf-acme-acme-06#section-8.4
 .. _DigitalOcean: https://digitalocean.com
-.. _PyPi: https://pypi.python.org

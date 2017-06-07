@@ -1,8 +1,6 @@
 TODO
 ====
 
-*  Push project to PyPi.
-
 *  Develop a script/program that can be triggered by this program to handle
    updating Docker container processes when new keys they rely on are
    released.
