@@ -71,7 +71,7 @@ node {
         }
     }
 
-    stage("Archive Python Artifact") {
+    stage("Archive Python Artifacts") {
         archiveArtifacts artifacts: "dist/*",
                 fingerprint: true,
                 onlyIfSuccessful: true
