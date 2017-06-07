@@ -66,7 +66,8 @@ def test_properly_calls_dns_lookup(mocker):
     authentication = Authenticate(environment=stub_environment)
     authentication.perform()
 
-    mock_lookup.assert_called_once_with('stub-host.stub-domain')
+    mock_lookup.assert_called_once_with(
+        '_acme-challenge.stub-host.stub-domain')
 
 
 def test_properly_calls_sleep(mocker):

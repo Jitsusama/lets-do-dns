@@ -45,7 +45,9 @@ class Authenticate(object):
         self._resource.create()
 
     def _verify_resource_exists(self):
-        return lookup(self._env.fqdn)
+        fqdn = '{}.{}'.format(self._parse_hostname(), self._env.domain)
+
+        return lookup(fqdn)
 
     def _print_record_id(self):
         stdout(self._resource.__int__())
