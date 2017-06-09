@@ -1,6 +1,5 @@
 lets-do-dns
 ===========
-
 This program's purpose is to function as a manual authentication and
 cleanup hook for the Let's Encrypt EFF_\'s certbot_ client program when you
 wish to use ACME-DNS authentication during the certificate authentication
@@ -24,7 +23,7 @@ That said, there are 4 ways that you can install this program;
       pip install lets-do-dns
 
 *  You can also install this program from a clone of the source
-   repository. as so (remember, if you want to modify the source code
+   repository, as so (remember, if you want to modify the source code
    without re-installing, pass the ``-e`` flag to PIP):
 
    .. code-block:: bash
