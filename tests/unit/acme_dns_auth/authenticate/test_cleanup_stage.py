@@ -75,6 +75,5 @@ def test_passes_postcmd_to_run(mocker, fqdn):
     mock_run.assert_called_once_with(
         'test-program --help',
         env={'CERTBOT_HOSTNAME': fqdn,
-             'PATH': ["/bin", "/sbin",
-                      "/usr/bin", "/usr/sbin",
-                      "/usr/local/bin", "/usr/local/sbin"]})
+             'PATH': ("/bin:/sbin:/usr/bin:/usr/sbin:"
+                      "/usr/local/bin:/usr/local/sbin")})
