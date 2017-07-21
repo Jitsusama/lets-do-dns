@@ -1,6 +1,7 @@
 """Tests the lets_do_dns.acme_dns_auth.authenticate.py module."""
 
 from mock import call, ANY
+import pytest
 from lets_do_dns.environment import Environment
 
 from lets_do_dns.acme_dns_auth.authenticate import Authenticate
@@ -57,12 +58,13 @@ def test_does_not_call_sleep(mocker):
     mock_sleep.assert_not_called()
 
 
-def test_passes_postcmd_to_run(mocker):
+@pytest.mark.parametrize(
+    'fqdn', ['stub-host1.stub-domain', 'stub-host2.stub-domain'])
+def test_passes_postcmd_to_run(mocker, fqdn):
     stub_environment = mocker.MagicMock(
         spec=Environment,
         api_key=None, domain='stub-domain', validation_key=None,
-        fqdn='stub-host.stub-domain', record_id=3,
-        post_cmd='test-program --help')
+        fqdn=fqdn, record_id=3, post_cmd='test-program --help')
     mocker.patch('lets_do_dns.acme_dns_auth.authenticate.Resource')
 
     mock_run = mocker.patch('lets_do_dns.acme_dns_auth.authenticate.run')
@@ -70,4 +72,5 @@ def test_passes_postcmd_to_run(mocker):
     authentication = Authenticate(environment=stub_environment)
     authentication.perform()
 
-    mock_run.assert_called_once_with('test-program --help')
+    mock_run.assert_called_once_with(
+        'test-program --help', env={'CERTBOT_HOSTNAME': fqdn})

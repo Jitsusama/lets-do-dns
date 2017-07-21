@@ -39,7 +39,8 @@ class Authenticate(object):
 
     def _run_post_cmd(self):
         if self._env.post_cmd:
-            run(self._env.post_cmd)
+            run(self._env.post_cmd,
+                env={'CERTBOT_HOSTNAME': self._env.fqdn})
 
     def _create_resource(self):
         self._resource.create()
